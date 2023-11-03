@@ -1,45 +1,59 @@
-import { Subscription } from 'rxjs'
-import { instanceOfChildrenStream$ } from './advanced-children$'
+import { Observable, Subscription } from 'rxjs'
 import { CustomElementsMap } from './factory'
-import { VirtualDOM } from './interface'
-import { AttributeType, instanceOfStream$, Stream$ } from './stream$'
+import {
+    AttributeType,
+    instanceOfStream,
+    RxStream,
+    instanceOfChildrenStream,
+    RxStreamAppend,
+    RxStreamSync,
+} from './rx-stream'
+import { VirtualDOM } from './virtual-dom'
+import {
+    AnyVirtualDOM,
+    AttributeLike,
+    ChildLike,
+    ChildrenPolicy,
+    RxAttribute,
+    RxChild,
+    RxChildren,
+} from './types'
+import { setup } from '../auto-generated'
 
-export const apiVersion = '1'
+export const apiVersion = setup.apiVersion
+const customElementPrefix = `${setup.name.split('/')[1]}-${apiVersion}`
+
 /**
- * The actual element associated to a {@link VirtualDOM}.
+ * The actual {@link HTMLElement} associated to a {@link VirtualDOM}.
  * It implements the *regular* constructor of the target HTML element on top of which reactive trait is added.
  *
  * The implementation is based on
  * [custom elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements).
  *
- * @category Concepts
  */
-export class HTMLElement$ extends ReactiveTrait(HTMLElement) {}
+export class RxHTMLElementBase extends ReactiveTrait(HTMLElement) {}
+
+export type RxHTMLElement<Tag extends keyof HTMLElementTagNameMap> =
+    RxHTMLElementBase & HTMLElementTagNameMap[Tag]
 
 class HTMLPlaceHolderElement extends HTMLElement {
     private currentElement: HTMLElement
-    constructor() {
-        super()
-    }
 
-    initialize(stream$: Stream$<VirtualDOM>): Subscription {
+    initialize(stream$: RxStream<VirtualDOM>): Subscription {
         this.currentElement = this
 
-        const apply = (vDom: VirtualDOM) => {
-            if (vDom instanceof HTMLElement) {
-                this.currentElement.replaceWith(vDom)
-                this.currentElement = vDom
-                return vDom
-            }
+        const apply = (vDom: VirtualDOM): RxHTMLElementBase => {
+            // if (vDom instanceof HTMLElement) {
+            //     this.currentElement.replaceWith(vDom)
+            //     this.currentElement = vDom
+            //     return vDom
+            // }
             const div = render(vDom)
             this.currentElement.replaceWith(div)
             this.currentElement = div
             return div
         }
-
-        return stream$.subscribe((vDom: VirtualDOM) => {
-            return apply(vDom)
-        })
+        return stream$.subscribe((vDom: VirtualDOM) => apply(vDom))
     }
 }
 
@@ -58,27 +72,127 @@ const specialBindings = {
     },
 }
 
-function ReactiveTrait<T extends Constructor<HTMLElement>>(Base: T) {
+function isInstanceOfObservable(d: unknown): d is Observable<unknown> {
+    return d && (d as Observable<unknown>).subscribe !== undefined
+}
+function isInstanceOfRxAttribute(d: unknown): d is RxAttribute<unknown> {
+    return d && (d as RxAttribute<unknown>).source$ !== undefined
+}
+function isInstanceOfRxChild(d: unknown): d is RxChild<unknown> {
+    return d && (d as RxChild<unknown>).source$ !== undefined
+}
+function isInstanceOfRxChildren(
+    d: unknown,
+): d is RxChildren<ChildrenPolicy, unknown> {
+    return d && (d as RxChildren<ChildrenPolicy, unknown>).source$ !== undefined
+}
+function extractRxStreams<Tag extends keyof HTMLElementTagNameMap>(
+    vDom: Readonly<VirtualDOM<Tag>>,
+): {
+    attributes: [string, AttributeType | RxStream<unknown>][]
+    children:
+        | (AnyVirtualDOM | HTMLElement | RxStream<unknown, VirtualDOM>)[]
+        | RxStream<unknown, VirtualDOM[]>
+        | RxStreamAppend<unknown>
+        | RxStreamSync<unknown>
+} {
+    const allAttributes = Object.entries(vDom).filter(
+        ([k, _]) =>
+            k !== 'children' &&
+            k !== 'connectedCallback' &&
+            k !== 'disconnectedCallback',
+    )
+
+    const attributes = allAttributes.map(
+        (attribute: AttributeLike<unknown>) => {
+            if (isInstanceOfObservable(attribute)) {
+                return new RxStream(attribute, (d) => d, {})
+            }
+            if (isInstanceOfRxAttribute(attribute)) {
+                return new RxStream(attribute.source$, attribute.vdomMap, {
+                    sideEffects: attribute.sideEffects,
+                    untilFirst: attribute.untilFirst,
+                })
+            }
+            return attribute
+        },
+    ) as [string, AttributeType | RxStream<unknown>][]
+
+    if (!vDom.children) {
+        return { attributes, children: [] }
+    }
+    if (Array.isArray(vDom.children)) {
+        const children = vDom.children.map((child: ChildLike) => {
+            if (isInstanceOfRxChild(child)) {
+                return new RxStream(child.source$, child.vdomMap, {
+                    sideEffects: child.sideEffects,
+                    untilFirst: child.untilFirst,
+                })
+            }
+            return child
+        })
+        return { attributes, children }
+    }
+    if (!isInstanceOfRxChildren(vDom.children)) {
+        console.warn('Type of children unknown', vDom.children)
+        return { attributes, children: [] }
+    }
+    if (vDom.children.policy === 'replace') {
+        const children = new RxStream(
+            vDom.children.source$,
+            vDom.children.vdomMap,
+            {
+                sideEffects: vDom.children.sideEffects,
+                untilFirst: vDom.children.untilFirst,
+            },
+        )
+        return { attributes, children }
+    }
+    if (vDom.children.policy === 'append') {
+        const children = new RxStreamAppend(
+            vDom.children.source$,
+            vDom.children.vdomMap,
+            {
+                sideEffects: vDom.children.sideEffects,
+                orderOperator: vDom.children.orderOperator,
+            },
+        )
+        return { attributes, children }
+    }
+    if (vDom.children.policy === 'sync') {
+        const children = new RxStreamSync(
+            vDom.children.source$,
+            vDom.children.vdomMap,
+            {
+                sideEffects: vDom.children.sideEffects,
+                orderOperator: vDom.children.orderOperator,
+            },
+        )
+        return { attributes, children }
+    }
+    console.warn('Unknown RxChildren policy', vDom.children)
+    return { attributes, children: [] }
+}
+
+function ReactiveTrait<
+    T extends Constructor<HTMLElement>,
+    Tag extends keyof HTMLElementTagNameMap,
+>(Base: T) {
     return class extends Base {
         /**
          * Virtual DOM
          */
-        vDom: Readonly<VirtualDOM>
+        vDom: Readonly<VirtualDOM<Tag>>
 
         /**
          * @ignore
          */
         subscriptions = new Array<Subscription>()
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TS2545: A mixin class must have a constructor with a single rest parameter of type 'any[]'.
-        constructor(...args: any[]) {
-            super(...args)
-        }
-
         /**
          * @ignore
          */
-        initialize(vDom: VirtualDOM) {
+        initializeVirtualDom(vDom: VirtualDOM<Tag>) {
             this.vDom = vDom
         }
         /**
@@ -88,51 +202,52 @@ function ReactiveTrait<T extends Constructor<HTMLElement>>(Base: T) {
             if (!this.vDom) {
                 return
             }
-            const attributes = Object.entries(this.vDom).filter(
-                ([k, v]) => k != 'children' && !instanceOfStream$(v),
-            )
-            const attributes$ = Object.entries(this.vDom).filter(
-                ([k, v]) => k != 'children' && instanceOfStream$(v),
-            )
+            const { attributes, children } = extractRxStreams<Tag>(this.vDom)
 
-            attributes.forEach(([k, v]: [k: string, v: AttributeType]) => {
-                this.applyAttribute(k, v)
-            })
-            attributes$.forEach(
-                ([k, attr$]: [k: string, attr$: Stream$<AttributeType>]) => {
-                    this.subscriptions.push(
-                        attr$.subscribe((v) => {
-                            this.applyAttribute(k, v)
-                            return v
-                        }, this),
-                    )
-                },
-            )
-            if (this.vDom.children && Array.isArray(this.vDom.children)) {
-                this.renderChildren(this.vDom.children)
+            attributes
+                .filter(([_, v]) => !instanceOfStream(v))
+                .forEach(([k, v]: [k: string, v: AttributeType]) => {
+                    this.applyAttribute(k, v)
+                })
+
+            attributes
+                .filter(([_, v]) => instanceOfStream(v))
+                .forEach(
+                    ([k, attr$]: [
+                        k: string,
+                        attr$: RxStream<AttributeType>,
+                    ]) => {
+                        this.subscriptions.push(
+                            attr$.subscribe((v: AttributeType) => {
+                                this.applyAttribute(k, v)
+                                return this as unknown as RxHTMLElement<Tag>
+                            }, this),
+                        )
+                    },
+                )
+            if (Array.isArray(children)) {
+                this.renderChildren(children)
             }
-
-            if (
-                this.vDom.children &&
-                instanceOfStream$<VirtualDOM[]>(this.vDom.children)
-            ) {
+            if (instanceOfStream<unknown, VirtualDOM[]>(this.vDom.children)) {
                 this.subscriptions.push(
                     this.vDom.children.subscribe((children) => {
-                        this.textContent = ''
+                        this.replaceChildren()
                         this.renderChildren(children)
-                        return children
+                        return this as unknown as RxHTMLElement<Tag>
                     }),
                 )
             }
 
-            if (
-                this.vDom.children &&
-                instanceOfChildrenStream$(this.vDom.children)
-            ) {
-                this.subscriptions.push(this.vDom.children.subscribe(this))
+            if (instanceOfChildrenStream(this.vDom.children)) {
+                this.subscriptions.push(
+                    this.vDom.children.subscribe(
+                        this as unknown as RxHTMLElement<Tag>,
+                    ),
+                )
             }
-            this.vDom.connectedCallback &&
-                this.vDom.connectedCallback(this as unknown as HTMLElement$)
+            this.vDom?.connectedCallback?.(
+                this as unknown as RxHTMLElement<Tag>,
+            )
         }
 
         /**
@@ -140,24 +255,24 @@ function ReactiveTrait<T extends Constructor<HTMLElement>>(Base: T) {
          */
         disconnectedCallback() {
             this.subscriptions.forEach((s) => s.unsubscribe())
-            this.vDom &&
-                this.vDom.disconnectedCallback &&
-                this.vDom.disconnectedCallback(this as unknown as HTMLElement$)
+            this.vDom?.disconnectedCallback?.(
+                this as unknown as RxHTMLElement<Tag>,
+            )
         }
 
         /**
          * @ignore
          */
         renderChildren(
-            children: Array<VirtualDOM | Stream$<VirtualDOM> | HTMLElement>,
-        ): Array<HTMLElement$> {
+            children: (AnyVirtualDOM | RxStream<VirtualDOM> | HTMLElement)[],
+        ): Array<RxHTMLElementBase> {
             const rendered = []
             children
                 .filter((child) => child != undefined)
                 .forEach((child) => {
-                    if (instanceOfStream$(child)) {
+                    if (instanceOfStream(child)) {
                         const placeHolder = document.createElement(
-                            `fv-${apiVersion}-placeholder`,
+                            `${customElementPrefix}-placeholder`,
                         ) as HTMLPlaceHolderElement
                         this.appendChild(placeHolder)
                         this.subscriptions.push(placeHolder.initialize(child))
@@ -165,7 +280,7 @@ function ReactiveTrait<T extends Constructor<HTMLElement>>(Base: T) {
                     } else if (child instanceof HTMLElement) {
                         this.appendChild(child)
                     } else {
-                        const div = render(child)
+                        const div = render(child as VirtualDOM)
                         this.appendChild(div)
                         rendered.push(div)
                     }
@@ -185,7 +300,7 @@ function ReactiveTrait<T extends Constructor<HTMLElement>>(Base: T) {
         /**
          * The provided subscription get owned by the element:
          * it will be unsubscribed when the element is removed from the DOM.
-         * @param subs: subscriptions to own
+         * @param subs subscriptions to own
          */
         ownSubscriptions(...subs: Subscription[]) {
             this.subscriptions.push(...subs)
@@ -193,65 +308,79 @@ function ReactiveTrait<T extends Constructor<HTMLElement>>(Base: T) {
     }
 }
 
-function factory(tag = 'div'): HTMLElement$ {
-    if (!CustomElementsMap[tag]) {
+function factory<Tag extends keyof HTMLElementTagNameMap>(
+    tag: Tag,
+): RxHTMLElement<Tag> {
+    if (!CustomElementsMap[tag as string]) {
         throw Error(
             `The element ${tag} is not registered in flux-view's factory`,
         )
     }
 
     return document.createElement(tag, {
-        is: `fv-${apiVersion}-${tag}`,
-    }) as HTMLElement$
+        is: `${customElementPrefix}-${tag}`,
+    }) as RxHTMLElement<Tag>
 }
 
 /**
- * Transform a {@link VirtualDOM} into a {@link HTMLElement$}.
+ * Transform a {@link VirtualDOM} into a {@link RxHTMLElement}.
+ *
+ * >  The HTML element returned is initialized **only when attached** to the document's DOM tree.
  *
  * @param vDom the virtual DOM
- * @returns the 'real' DOM element
- * @category Concepts
- * @category Entry Points
+ * @returns the corresponding DOM element
  */
-export function render(vDom: VirtualDOM): HTMLElement$ {
+export function render<Tag extends keyof HTMLElementTagNameMap>(
+    vDom: VirtualDOM<Tag>,
+): RxHTMLElement<Tag> {
     if (vDom == undefined) {
         console.error('Got an undefined virtual DOM, return empty div')
-        return factory('div')
+        return undefined
     }
-    const element = factory(vDom.tag)
-    element.initialize(vDom)
+    const element: RxHTMLElement<Tag> = factory<Tag>(vDom.tag)
+    // why 'never', could have been 'any' but my IDE suggest never is better :/
+    // The problem is that somehow the signature of the method 'initializeVirtualDom' is doubled:
+    //  {(vDom: VirtualDOM<Tag>): void, (vDom: VirtualDOM<keyof HTMLElementTagNameMap>): void}
+    // I don't get why.
+    element.initializeVirtualDom(vDom as never)
     return element
 }
 
-function registerElement(tag: string, BaseClass) {
-    class ExtendedClass extends ReactiveTrait(BaseClass) {
-        constructor() {
-            super()
-        }
-    }
+function registerElement<Tag extends keyof HTMLElementTagNameMap>(
+    tag: Tag,
+    BaseClass: typeof HTMLElement,
+) {
+    class ExtendedClass extends ReactiveTrait<typeof BaseClass, Tag>(
+        BaseClass,
+    ) {}
     customElements.define(
-        `fv-${apiVersion}-${tag}`,
+        `${customElementPrefix}-${tag}`,
         ExtendedClass as CustomElementConstructor,
         { extends: tag },
     )
 }
 
 function register() {
-    if (customElements.get(`fv-${apiVersion}-placeholder`)) {
+    if (customElements.get(`${customElementPrefix}-placeholder`)) {
         console.warn(
-            `flux-view with api version ${apiVersion} has already defined custom elements`,
+            `@youwol/rx-vdom with api version ${apiVersion} has already defined custom elements`,
         )
         return
     }
 
     customElements.define(
-        `fv-${apiVersion}-placeholder`,
+        `${customElementPrefix}-placeholder`,
         HTMLPlaceHolderElement,
     )
 
-    Object.entries(CustomElementsMap).forEach(([tag, HTMLElementClass]) => {
-        registerElement(tag, HTMLElementClass)
-    })
+    Object.entries(CustomElementsMap).forEach(
+        ([tag, HTMLElementClass]: [
+            tag: keyof HTMLElementTagNameMap,
+            typeof HTMLElement,
+        ]) => {
+            HTMLElementClass && registerElement(tag, HTMLElementClass)
+        },
+    )
 }
 
 register()
