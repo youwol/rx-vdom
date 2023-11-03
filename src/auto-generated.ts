@@ -1,7 +1,7 @@
 
 const runTimeDependencies = {
     "externals": {
-        "rxjs": "^6.5.5"
+        "rxjs": "^7.5.6"
     },
     "includedInBundle": {
         "@ungap/custom-elements": "1.2.0"
@@ -11,26 +11,26 @@ const externals = {
     "rxjs": {
         "commonjs": "rxjs",
         "commonjs2": "rxjs",
-        "root": "rxjs_APIv6"
+        "root": "rxjs_APIv7"
     },
     "rxjs/operators": {
         "commonjs": "rxjs/operators",
         "commonjs2": "rxjs/operators",
         "root": [
-            "rxjs_APIv6",
+            "rxjs_APIv7",
             "operators"
         ]
     }
 }
 const exportedSymbols = {
     "rxjs": {
-        "apiKey": "6",
+        "apiKey": "7",
         "exportedSymbol": "rxjs"
     }
 }
 
 const mainEntry : {entryFile: string,loadDependencies:string[]} = {
-    "entryFile": "index.ts",
+    "entryFile": "./index.ts",
     "loadDependencies": [
         "rxjs"
     ]
@@ -39,18 +39,18 @@ const mainEntry : {entryFile: string,loadDependencies:string[]} = {
 const secondaryEntries : {[k:string]:{entryFile: string, name: string, loadDependencies:string[]}}= {}
 
 const entries = {
-     '@youwol/flux-view': 'index.ts',
-    ...Object.values(secondaryEntries).reduce( (acc,e) => ({...acc, [`@youwol/flux-view/${e.name}`]:e.entryFile}), {})
+     '@youwol/rx-vdom': './index.ts',
+    ...Object.values(secondaryEntries).reduce( (acc,e) => ({...acc, [`@youwol/rx-vdom/${e.name}`]:e.entryFile}), {})
 }
 export const setup = {
-    name:'@youwol/flux-view',
-        assetId:'QHlvdXdvbC9mbHV4LXZpZXc=',
-    version:'1.1.2-wip',
+    name:'@youwol/rx-vdom',
+        assetId:'QHlvdXdvbC9yeC12ZG9t',
+    version:'1.0.0-wip',
     shortDescription:"Tiny library to render HTML documents using reactive programing primitives.",
-    developerDocumentation:'https://platform.youwol.com/applications/@youwol/cdn-explorer/latest?package=@youwol/flux-view&tab=doc',
-    npmPackage:'https://www.npmjs.com/package/@youwol/flux-view',
-    sourceGithub:'https://github.com/youwol/flux-view',
-    userGuide:'https://l.youwol.com/doc/@youwol/flux-view',
+    developerDocumentation:'https://platform.youwol.com/applications/@youwol/cdn-explorer/latest?package=@youwol/rx-vdom&tab=doc',
+    npmPackage:'https://www.npmjs.com/package/@youwol/rx-vdom',
+    sourceGithub:'https://github.com/youwol/rx-vdom',
+    userGuide:'https://l.youwol.com/doc/@youwol/rx-vdom',
     apiVersion:'1',
     runTimeDependencies,
     externals,
@@ -76,7 +76,7 @@ export const setup = {
             modules,
             scripts,
         }).then(() => {
-            return window[`@youwol/flux-view_APIv1`]
+            return window[`@youwol/rx-vdom_APIv1`]
         })
     },
     installAuxiliaryModule: ({name, cdnClient, installParameters}:{
@@ -91,7 +91,7 @@ export const setup = {
         const parameters = installParameters || {}
         const scripts = [
             ...(parameters.scripts || []),
-            `@youwol/flux-view#1.1.2-wip~dist/@youwol/flux-view/${entry.name}.js`
+            `@youwol/rx-vdom#1.0.0-wip~dist/@youwol/rx-vdom/${entry.name}.js`
         ]
         const modules = [
             ...(parameters.modules || []),
@@ -102,7 +102,7 @@ export const setup = {
             modules,
             scripts,
         }).then(() => {
-            return window[`@youwol/flux-view/${entry.name}_APIv1`]
+            return window[`@youwol/rx-vdom/${entry.name}_APIv1`]
         })
     },
     getCdnDependencies(name?: string){
