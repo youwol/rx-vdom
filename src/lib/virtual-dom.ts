@@ -21,23 +21,22 @@ import { AttributeLike, ChildrenLike, ExposedMembers } from './types'
  *  by {@link ExposedMembers}.
  *  *  add additional lifecycle hooks
  *
+ *  > The definition of a virtual dom does not require the library: this is only about interfaces (in typescript
+ *  importing types definition are however very useful). Hence, consuming libraries can create reactive elements
+ *  without having to be linked to `@youwol/rx-vdom`, only libraries that actually {@link render} virtual dom actually
+ *  needs `@youwol/rx-vdom`.
  *
- *
- *
- * # Why moving from flux-view:
  * ## Strong type checking
- * ### DOM's attributes awareness
+ *
+ * A particular effort has been dedicated to provide as much as possible type checking of virtual DOM
+ * against the underlying associated HTMLElement. It provides an improved development environment, for instance:
+ * * DOM's attributes awareness
  *
  * ![image](/api/assets-gateway/raw/package/QHlvdXdvbC9yeC12ZG9t/0.1.0-wip/assets/error-<b>-no-href.png)
  *
- * ### DOM's attributes type checking & inlined help
+ * * DOM's attributes type checking & inlined help
  *
  * ![image](/api/assets-gateway/raw/package/QHlvdXdvbC9yeC12ZG9t/0.1.0-wip/assets/error-wrong-type.png)
- *
- * ## VirtualDOM definition does not need `@youwol/rx-vdom`
- *
- * ## Move to `rxjs#7.x`
- *
  *
  *
  * @template Tag the `tag` of the DOM element. See typescript interface `HTMLElementTagNameMap` in `l.dom.ts` or
