@@ -1,23 +1,29 @@
-// taken from lib.dom.ts (HTMLElementTagNameMap);
-
 /**
- * Taken from lib.dom.ts (HTMLElementTagNameMap); following element are **not supported** (instantiation failed for them, no idea):
- * -    applet (HTMLAppletElement)
- * -    basefont: (HTMLBaseFontElement)
  *
+ * Supported Tags, taken from [HTMLElementTagNameMap](https://raw.githubusercontent.com/microsoft/TypeScript/main/src/lib/dom.generated.d.ts).
+ * See also [here](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
+ *
+ * Exceptions:
+ * *  `dialog`: can not be instantiated in Mozilla
+ * *  `search`: can not be instantiated in jest tests
+ * */
+export type SupportedTags = keyof Omit<
+    HTMLElementTagNameMap,
+    'dialog' | 'search'
+>
+/**
+ * Taken from lib.dom.ts (HTMLElementTagNameMap).
  */
-export const CustomElementsMap = {
+export const CustomElementsMap: Record<SupportedTags, typeof HTMLElement> = {
     a: HTMLAnchorElement,
     abbr: HTMLElement,
     address: HTMLElement,
-    //"applet": HTMLAppletElement, Not in jest
     area: HTMLAreaElement,
     article: HTMLElement,
     aside: HTMLElement,
     audio: HTMLAudioElement,
     b: HTMLElement,
     base: HTMLBaseElement,
-    //"basefont": HTMLBaseFontElement, Not in jest
     bdi: HTMLElement,
     bdo: HTMLElement,
     blockquote: HTMLQuoteElement,
@@ -36,8 +42,6 @@ export const CustomElementsMap = {
     del: HTMLModElement,
     details: HTMLDetailsElement,
     dfn: HTMLElement,
-    //"dialog": HTMLDialogElement, Not in Mozilla
-    dir: HTMLDirectoryElement,
     div: HTMLDivElement,
     dl: HTMLDListElement,
     dt: HTMLElement,
@@ -46,11 +50,8 @@ export const CustomElementsMap = {
     fieldset: HTMLFieldSetElement,
     figcaption: HTMLElement,
     figure: HTMLElement,
-    font: HTMLFontElement,
     footer: HTMLElement,
     form: HTMLFormElement,
-    frame: HTMLFrameElement,
-    frameset: HTMLFrameSetElement,
     h1: HTMLHeadingElement,
     h2: HTMLHeadingElement,
     h3: HTMLHeadingElement,
@@ -75,7 +76,6 @@ export const CustomElementsMap = {
     main: HTMLElement,
     map: HTMLMapElement,
     mark: HTMLElement,
-    marquee: HTMLMarqueeElement,
     menu: HTMLMenuElement,
     meta: HTMLMetaElement,
     meter: HTMLMeterElement,
@@ -87,7 +87,6 @@ export const CustomElementsMap = {
     option: HTMLOptionElement,
     output: HTMLOutputElement,
     p: HTMLParagraphElement,
-    param: HTMLParamElement,
     picture: HTMLPictureElement,
     pre: HTMLPreElement,
     progress: HTMLProgressElement,
@@ -111,11 +110,11 @@ export const CustomElementsMap = {
     sup: HTMLElement,
     table: HTMLTableElement,
     tbody: HTMLTableSectionElement,
-    td: HTMLTableCellElement, //should have been : HTMLTableDataCellElement => but get undefined, HTMLTableCellElement is the parent class
+    td: HTMLTableCellElement,
     template: HTMLTemplateElement,
     textarea: HTMLTextAreaElement,
     tfoot: HTMLTableSectionElement,
-    th: HTMLTableCellElement, //should have been : HTMLTableHeaderCellElement  => but get undefined, HTMLTableCellElement is the parent class
+    th: HTMLTableCellElement,
     thead: HTMLTableSectionElement,
     time: HTMLTimeElement,
     title: HTMLTitleElement,

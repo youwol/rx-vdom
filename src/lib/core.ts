@@ -1,5 +1,5 @@
 import { Observable, Subscription } from 'rxjs'
-import { CustomElementsMap } from './factory'
+import { CustomElementsMap, SupportedTags } from './factory'
 import {
     AttributeType,
     instanceOfStream,
@@ -33,8 +33,13 @@ const customElementPrefix = `${setup.name.split('/')[1]}-${apiVersion}`
  */
 export class RxHTMLElementBase extends ReactiveTrait(HTMLElement) {}
 
-export type RxHTMLElement<Tag extends keyof HTMLElementTagNameMap> =
-    RxHTMLElementBase & HTMLElementTagNameMap[Tag]
+/**
+ * The actual HTMLElement rendered from a {@link VirtualDOM}.
+ * It implements the regular HTMLElement API of corresponding tag on top of which reactive trait is added.
+ *
+ */
+export type RxHTMLElement<Tag extends SupportedTags> = RxHTMLElementBase &
+    HTMLElementTagNameMap[Tag]
 
 class HTMLPlaceHolderElement extends HTMLElement {
     private currentElement: HTMLElement
@@ -86,7 +91,7 @@ function isInstanceOfRxChildren(
 ): d is RxChildren<ChildrenPolicy, unknown> {
     return d && (d as RxChildren<ChildrenPolicy, unknown>).source$ !== undefined
 }
-function extractRxStreams<Tag extends keyof HTMLElementTagNameMap>(
+function extractRxStreams<Tag extends SupportedTags>(
     vDom: Readonly<VirtualDOM<Tag>>,
 ): {
     attributes: [string, AttributeType | RxStream<unknown>][]
@@ -176,7 +181,7 @@ function extractRxStreams<Tag extends keyof HTMLElementTagNameMap>(
 
 function ReactiveTrait<
     T extends Constructor<HTMLElement>,
-    Tag extends keyof HTMLElementTagNameMap,
+    Tag extends SupportedTags,
 >(Base: T) {
     return class extends Base {
         /**
@@ -308,9 +313,7 @@ function ReactiveTrait<
     }
 }
 
-function factory<Tag extends keyof HTMLElementTagNameMap>(
-    tag: Tag,
-): RxHTMLElement<Tag> {
+function factory<Tag extends SupportedTags>(tag: Tag): RxHTMLElement<Tag> {
     if (!CustomElementsMap[tag as string]) {
         throw Error(
             `The element ${tag} is not registered in flux-view's factory`,
@@ -330,7 +333,7 @@ function factory<Tag extends keyof HTMLElementTagNameMap>(
  * @param vDom the virtual DOM
  * @returns the corresponding DOM element
  */
-export function render<Tag extends keyof HTMLElementTagNameMap>(
+export function render<Tag extends SupportedTags>(
     vDom: VirtualDOM<Tag>,
 ): RxHTMLElement<Tag> {
     if (vDom == undefined) {
@@ -340,13 +343,13 @@ export function render<Tag extends keyof HTMLElementTagNameMap>(
     const element: RxHTMLElement<Tag> = factory<Tag>(vDom.tag)
     // why 'never', could have been 'any' but my IDE suggest never is better :/
     // The problem is that somehow the signature of the method 'initializeVirtualDom' is doubled:
-    //  {(vDom: VirtualDOM<Tag>): void, (vDom: VirtualDOM<keyof HTMLElementTagNameMap>): void}
+    //  {(vDom: VirtualDOM<Tag>): void, (vDom: VirtualDOM<SupportedTags>): void}
     // I don't get why.
     element.initializeVirtualDom(vDom as never)
     return element
 }
 
-function registerElement<Tag extends keyof HTMLElementTagNameMap>(
+function registerElement<Tag extends SupportedTags>(
     tag: Tag,
     BaseClass: typeof HTMLElement,
 ) {
@@ -374,10 +377,7 @@ function register() {
     )
 
     Object.entries(CustomElementsMap).forEach(
-        ([tag, HTMLElementClass]: [
-            tag: keyof HTMLElementTagNameMap,
-            typeof HTMLElement,
-        ]) => {
+        ([tag, HTMLElementClass]: [tag: SupportedTags, typeof HTMLElement]) => {
             HTMLElementClass && registerElement(tag, HTMLElementClass)
         },
     )

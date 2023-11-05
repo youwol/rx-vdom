@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs'
 import { VirtualDOM } from './virtual-dom'
 import { RxHTMLElementBase } from './core'
+import { SupportedTags } from './factory'
 
 /**
  * The attributes of any `HTMLElement` that should not be mapped into a {@link VirtualDOM} attribute
@@ -22,17 +23,16 @@ export type BlackListed = 'toString'
  *
  * @template Tag the `tag` of the DOM element.
  */
-export type RemoveUnwantedMembers<Tag extends keyof HTMLElementTagNameMap> =
-    Omit<
-        HTMLElementTagNameMap[Tag],
-        | 'tag'
-        | 'tagName'
-        | 'className'
-        | 'children'
-        | 'connectedCallback'
-        | 'disconnectedCallback'
-        | BlackListed
-    >
+export type RemoveUnwantedMembers<Tag extends SupportedTags> = Omit<
+    HTMLElementTagNameMap[Tag],
+    | 'tag'
+    | 'tagName'
+    | 'className'
+    | 'children'
+    | 'connectedCallback'
+    | 'disconnectedCallback'
+    | BlackListed
+>
 
 /**
  * Full specification of a reactive attribute.
@@ -95,7 +95,7 @@ export type AttributeLike<Target> =
  *
  * @template Tag the `tag` of the DOM element.
  */
-export type ExposedMembers<Tag extends keyof HTMLElementTagNameMap> = {
+export type ExposedMembers<Tag extends SupportedTags> = {
     [Property in keyof RemoveUnwantedMembers<Tag>]: HTMLElementTagNameMap[Tag][Property] extends string
         ? AttributeLike<string>
         : HTMLElementTagNameMap[Tag][Property] extends number
@@ -111,7 +111,7 @@ export type ExposedMembers<Tag extends keyof HTMLElementTagNameMap> = {
  * Mapping between the possible tag name as defined in `HTMLElementTagNameMap` and the associated {@link VirtualDOM}.
  */
 export type VirtualDOMTagNameMap = {
-    [Property in keyof HTMLElementTagNameMap]: VirtualDOM<Property>
+    [Property in SupportedTags]: VirtualDOM<Property>
 }
 
 /**

@@ -1,5 +1,6 @@
 import { RxHTMLElement } from './core'
 import { AttributeLike, ChildrenLike, ExposedMembers } from './types'
+import { SupportedTags } from './factory'
 
 /**
  * # In a nutshell
@@ -39,10 +40,9 @@ import { AttributeLike, ChildrenLike, ExposedMembers } from './types'
  * ![image](/api/assets-gateway/raw/package/QHlvdXdvbC9yeC12ZG9t/0.1.0-wip/assets/error-wrong-type.png)
  *
  *
- * @template Tag the `tag` of the DOM element. See typescript interface `HTMLElementTagNameMap` in `l.dom.ts` or
- * [here](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
+ * @template Tag the `tag` of the DOM element.
  */
-export type VirtualDOM<Tag extends keyof HTMLElementTagNameMap = 'div'> = {
+export type VirtualDOM<Tag extends SupportedTags = 'div'> = {
     /**
      * The tag of the element, corresponds to the template parameter Tag
      */
