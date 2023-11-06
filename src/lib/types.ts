@@ -343,11 +343,6 @@ export type ChildrenTraitComparison<TDomain> = {
 }
 
 /**
- * Generalization of the HTMLElement concept: either a straight HTMLElement or a reactive one (RxHTMLElement).
- */
-export type HTMLElementLike = HTMLElement | RxHTMLElementBase
-
-/**
  * Encapsulates and HTML element along with the domainData that was originally emitted.
  *
  * @template TDomain type of the domain data (conveys by the `source$` observable).
