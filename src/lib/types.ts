@@ -175,11 +175,11 @@ export type RxChild<TDomain = unknown> = {
 export type ChildrenPolicy = 'replace' | 'append' | 'sync'
 
 /**
- * Factorize common options for the  'append' and 'sync' {@link RxChildren} policies.
+ * API for the `append` policy of  {@link RxChildren}.
  *
  * @template TDomain type of the domain data (conveys by the `source$` observable).
  */
-export type ChildrenOptionsAppendSyncCommon<TDomain> = {
+export type ChildrenOptionsAppend<TDomain> = {
     /**
      * Source of domain data.
      */
@@ -189,6 +189,29 @@ export type ChildrenOptionsAppendSyncCommon<TDomain> = {
      * @param domainData single element over those emitted by `source$`.
      */
     vdomMap: (domainData: TDomain) => VirtualDOM
+
+    /**
+     * Execute side effects once the children have been updated.
+     *
+     * @param parent parent of the children.
+     * @param update description of the update.
+     */
+    sideEffects?: (
+        parent: RxElementTrait,
+        update: RenderingUpdate<TDomain>,
+    ) => void
+
+    /**
+     * Specifies how the children are ordered in the parent element.
+     * Order is defined using this callback.
+     *
+     * @param d1 Domain data associated to the first element for comparison
+     * @param d2 Domain data associated to the second element for comparison
+     * @return a value:
+     * -    if `>0`, sort `d1` after `d2`
+     * -    if `<0`, sort `d1` before `d2`
+     */
+    orderOperator?: (d1: TDomain, d2: TDomain) => number
 }
 
 /**
@@ -228,31 +251,23 @@ export type ChildrenOptionsReplace<TDomain> = {
      * emitted by `source$`.
      */
     sideEffects?: (element: ResolvedHTMLElement<TDomain>) => void
-} & ChildrenTraitUpdate<TDomain> &
-    ChildrenTraitOrdering<TDomain>
-
-/**
- * API for the `append` policy of  {@link RxChildren}.
- *
- * @template TDomain type of the domain data (conveys by the `source$` observable of
- * {@link ChildrenOptionsAppendSyncCommon}).
- */
-export type ChildrenOptionsAppend<TDomain> =
-    ChildrenOptionsAppendSyncCommon<TDomain> &
-        ChildrenTraitUpdate<TDomain> &
-        ChildrenTraitOrdering<TDomain>
+}
 
 /**
  * API for the `sync` policy of  {@link RxChildren}.
  *
- * @template TDomain type of the domain data (conveys by the `source$` observable of
- * {@link ChildrenOptionsAppendSyncCommon}).
+ * @template TDomain type of the domain data (conveys by the `source$` observable).
  */
-export type ChildrenOptionsSync<TDomain> =
-    ChildrenOptionsAppendSyncCommon<TDomain> &
-        ChildrenTraitUpdate<TDomain> &
-        ChildrenTraitOrdering<TDomain> &
-        ChildrenTraitComparison<TDomain>
+export type ChildrenOptionsSync<TDomain> = ChildrenOptionsAppend<TDomain> & {
+    /**
+     * Default is to use reference equality.
+     *
+     * @param d1 first domain data for comparison.
+     * @param d2 second domain data for comparison.
+     * @return `true` if the `d1` and `d2` represents the same element, `false` otherwise.
+     */
+    comparisonOperator?: (d1: TDomain, d2: TDomain) => boolean
+}
 
 /**
  * Type helper to map individual `ChildrenPolicy` to its corresponding API.
@@ -288,59 +303,6 @@ export type ChildrenLike =
     | RxChildren<'replace'>
     | RxChildren<'append'>
     | RxChildren<'sync'>
-
-/**
- * Specifies the side effects associated to an update of children.
- *
- * @template TDomain type of the domain data (conveys by the `source$` observable).
- */
-export type ChildrenTraitUpdate<TDomain> = {
-    /**
-     * Execute side effects once the children have been updated.
-     *
-     * @param parent parent of the children.
-     * @param update description of the update.
-     */
-    sideEffects?: (
-        parent: RxElementTrait,
-        update: RenderingUpdate<TDomain>,
-    ) => void
-}
-
-/**
- * Specifies the order in which children are included in the parent element.
- *
- * @template TDomain type of the domain data (conveys by the `source$` observable).
- */
-export type ChildrenTraitOrdering<TDomain> = {
-    /**
-     * Specifies how the children are ordered in the parent element.
-     * Order is defined using this callback.
-     *
-     * @param d1 Domain data associated to the first element for comparison
-     * @param d2 Domain data associated to the second element for comparison
-     * @return a value:
-     * -    if `>0`, sort `d1` after `d2`
-     * -    if `<0`, sort `d1` before `d2`
-     */
-    orderOperator?: (d1: TDomain, d2: TDomain) => number
-}
-
-/**
- * Specifies whether two domain data represents the same {@link VirtualDOM} (or {@link HTMLElement}).
- *
- * @template TDomain type of the domain data (conveys by the `source$` observable).
- */
-export type ChildrenTraitComparison<TDomain> = {
-    /**
-     * Default is to use reference equality.
-     *
-     * @param d1 first domain data for comparison.
-     * @param d2 second domain data for comparison.
-     * @return `true` if the `d1` and `d2` represents the same element, `false` otherwise.
-     */
-    comparisonOperator?: (d1: TDomain, d2: TDomain) => boolean
-}
 
 /**
  * Encapsulates and HTML element along with the domainData that was originally emitted.

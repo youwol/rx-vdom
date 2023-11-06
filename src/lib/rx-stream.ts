@@ -3,9 +3,8 @@ import { map } from 'rxjs/operators'
 import { VirtualDOM } from './virtual-dom'
 import { render } from './core'
 import {
-    ChildrenTraitComparison,
-    ChildrenTraitOrdering,
-    ChildrenTraitUpdate,
+    ChildrenOptionsAppend,
+    ChildrenOptionsSync,
     RenderingUpdate,
     ResolvedHTMLElement,
     RxElementTrait,
@@ -130,7 +129,7 @@ export abstract class RxStreamChildren<TDomain> {
         {
             sideEffects,
             orderOperator,
-        }: ChildrenTraitUpdate<TDomain> & ChildrenTraitOrdering<TDomain>,
+        }: Omit<ChildrenOptionsAppend<TDomain>, 'source$' | 'vdomMap'>,
     ) {
         this.vDomMap = vDomMap
         this.sideEffects = sideEffects
@@ -209,7 +208,7 @@ export class RxStreamAppend<TDomain> extends RxStreamChildren<TDomain> {
     constructor(
         public readonly stream$: Observable<TDomain[]>,
         public readonly vDomMap: (tDomain: TDomain, ...args) => VirtualDOM,
-        options: ChildrenTraitUpdate<TDomain> & ChildrenTraitOrdering<TDomain>,
+        options: Omit<ChildrenOptionsAppend<TDomain>, 'source$' | 'vdomMap'>,
     ) {
         super(stream$, vDomMap, options)
     }
@@ -242,9 +241,7 @@ export class RxStreamSync<TDomain> extends RxStreamChildren<TDomain> {
     constructor(
         public readonly stream$: Observable<TDomain[]>,
         public readonly vDomMap: (tDomain: TDomain, ...args) => VirtualDOM,
-        options: ChildrenTraitUpdate<TDomain> &
-            ChildrenTraitOrdering<TDomain> &
-            ChildrenTraitComparison<TDomain>,
+        options: Omit<ChildrenOptionsSync<TDomain>, 'source$' | 'vdomMap'>,
     ) {
         super(stream$, vDomMap, options)
         if (options.comparisonOperator) {
