@@ -8,7 +8,7 @@ import {
     RxStreamAppend,
     RxStreamSync,
 } from './rx-stream'
-import { VirtualDOM } from './virtual-dom'
+import { VirtualDOM, RxHTMLElement } from './virtual-dom'
 import {
     AnyVirtualDOM,
     AttributeLike,
@@ -17,29 +17,12 @@ import {
     RxAttribute,
     RxChild,
     RxChildren,
+    RxElementTrait,
 } from './types'
 import { setup } from '../auto-generated'
 
 export const apiVersion = setup.apiVersion
 const customElementPrefix = `${setup.name.split('/')[1]}-${apiVersion}`
-
-/**
- * The actual {@link HTMLElement} associated to a {@link VirtualDOM}.
- * It implements the *regular* constructor of the target HTML element on top of which reactive trait is added.
- *
- * The implementation is based on
- * [custom elements](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements).
- *
- */
-export class RxHTMLElementBase extends ReactiveTrait(HTMLElement) {}
-
-/**
- * The actual HTMLElement rendered from a {@link VirtualDOM}.
- * It implements the regular HTMLElement API of corresponding tag on top of which reactive trait is added.
- *
- */
-export type RxHTMLElement<Tag extends SupportedTags> = RxHTMLElementBase &
-    HTMLElementTagNameMap[Tag]
 
 class HTMLPlaceHolderElement extends HTMLElement {
     private currentElement: HTMLElement
@@ -47,7 +30,7 @@ class HTMLPlaceHolderElement extends HTMLElement {
     initialize(stream$: RxStream<VirtualDOM>): Subscription {
         this.currentElement = this
 
-        const apply = (vDom: VirtualDOM): RxHTMLElementBase => {
+        const apply = (vDom: VirtualDOM): RxElementTrait => {
             // if (vDom instanceof HTMLElement) {
             //     this.currentElement.replaceWith(vDom)
             //     this.currentElement = vDom
@@ -179,7 +162,7 @@ function extractRxStreams<Tag extends SupportedTags>(
     return { attributes, children: [] }
 }
 
-function ReactiveTrait<
+export function ReactiveTrait<
     T extends Constructor<HTMLElement>,
     Tag extends SupportedTags,
 >(Base: T) {
@@ -270,7 +253,7 @@ function ReactiveTrait<
          */
         renderChildren(
             children: (AnyVirtualDOM | RxStream<VirtualDOM> | HTMLElement)[],
-        ): Array<RxHTMLElementBase> {
+        ): Array<RxElementTrait> {
             const rendered = []
             children
                 .filter((child) => child != undefined)

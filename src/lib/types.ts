@@ -1,7 +1,12 @@
 import { Observable } from 'rxjs'
 import { VirtualDOM } from './virtual-dom'
-import { RxHTMLElementBase } from './core'
 import { SupportedTags } from './factory'
+import { ReactiveTrait } from './core'
+
+/**
+ * Common API of all {@link RxHTMLElement}.
+ */
+export class RxElementTrait extends ReactiveTrait(HTMLElement) {}
 
 /**
  * The attributes of any `HTMLElement` that should not be mapped into a {@link VirtualDOM} attribute
@@ -297,7 +302,7 @@ export type ChildrenTraitUpdate<TDomain> = {
      * @param update description of the update.
      */
     sideEffects?: (
-        parent: RxHTMLElementBase,
+        parent: RxElementTrait,
         update: RenderingUpdate<TDomain>,
     ) => void
 }
@@ -357,7 +362,7 @@ export type ResolvedHTMLElement<TDomain> = {
      * The actual DOM element. If the child has been defined using a straight HTMLElement, its type is `HTMLElement`,
      * otherwise it is `RxHTMLElement`.
      */
-    element: RxHTMLElementBase
+    element: RxElementTrait
 }
 
 /**

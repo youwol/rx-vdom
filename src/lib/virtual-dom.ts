@@ -1,12 +1,14 @@
-import { RxHTMLElement } from './core'
-import { AttributeLike, ChildrenLike, ExposedMembers } from './types'
+import {
+    AttributeLike,
+    ChildrenLike,
+    ExposedMembers,
+    RxElementTrait,
+} from './types'
 import { SupportedTags } from './factory'
 
 /**
- * # In a nutshell
- *
- *  VirtualDOM captures the same properties and organization than an HTML DOM element with the differences that
- *  attributes and children can be provided in multiple forms, in particular using RxJS observables.
+ * VirtualDOM mirrors the characteristics and structure of an HTML DOM element with the ability
+ * for its attributes and children to be supplied through RxJS observables.
  *
  *  Bringing observable based values within the DOM enables powerful options to express reactivity.
  *  Also, compared to other framework (e.g. Angular, React), there is a gain in efficiency because
@@ -71,3 +73,11 @@ export type VirtualDOM<Tag extends SupportedTags = 'div'> = {
 
     disconnectedCallback?: (element: RxHTMLElement<Tag>) => void
 } & Partial<ExposedMembers<Tag>>
+
+/**
+ * The actual HTMLElement rendered from a {@link VirtualDOM}.
+ * It implements the regular HTMLElement API of corresponding tag on top of which reactive trait is added.
+ *
+ */
+export type RxHTMLElement<Tag extends SupportedTags> = RxElementTrait &
+    HTMLElementTagNameMap[Tag]

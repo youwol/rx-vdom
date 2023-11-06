@@ -8,6 +8,7 @@ import {
     ChildrenTraitUpdate,
     RenderingUpdate,
     ResolvedHTMLElement,
+    RxElementTrait,
 } from './types'
 
 /**
@@ -60,7 +61,7 @@ export class RxStream<TDomain, TDom = TDomain> {
      * Implementation function that supposed to be called only by {@link RxHTMLElementBase}.
      */
     subscribe(
-        realizeDom: (tDom: TDom, ...args) => RxHTMLElementBase,
+        realizeDom: (tDom: TDom, ...args) => RxElementTrait,
         ...withData
     ) {
         const mappedSource$: Observable<[TDom, TDomain]> = this.source$.pipe(
@@ -75,7 +76,7 @@ export class RxStream<TDomain, TDom = TDomain> {
     }
 
     private finalize(
-        realizeDom: (tDom: TDom, ...args) => RxHTMLElementBase,
+        realizeDom: (tDom: TDom, ...args) => RxElementTrait,
         value: TDom,
         d: TDomain,
     ) {
@@ -105,11 +106,11 @@ export abstract class RxStreamChildren<TDomain> {
     ClassType = 'ChildrenStream$'
     /**
      * Callback that gets called when the DOM has been updated.
-     * @param parent parent: parent {@link RxHTMLElementBase}
+     * @param parent parent: parent {@link RxElementTrait}
      * @param update update: description of the update, see {@link RenderingUpdate}
      */
     public readonly sideEffects: (
-        parent: RxHTMLElementBase,
+        parent: RxElementTrait,
         update: RenderingUpdate<TDomain>,
     ) => void
 
@@ -141,14 +142,14 @@ export abstract class RxStreamChildren<TDomain> {
     }
 
     protected abstract update(
-        parentElement: RxHTMLElementBase,
+        parentElement: RxElementTrait,
         domainData: Array<TDomain>,
     ): RenderingUpdate<TDomain>
 
     /**
-     * Only for internal use (within {@link RxHTMLElementBase}), should not actually be exposed.
+     * Only for internal use (within {@link RxElementTrait}), should not actually be exposed.
      */
-    subscribe(parentElement: RxHTMLElementBase) {
+    subscribe(parentElement: RxElementTrait) {
         return this.stream$
             .pipe(
                 map((domains: TDomain[]) => {
@@ -159,7 +160,7 @@ export abstract class RxStreamChildren<TDomain> {
     }
 
     protected addChildRef(
-        parentElement: RxHTMLElementBase,
+        parentElement: RxElementTrait,
         ref: ResolvedHTMLElement<TDomain>,
     ) {
         this.children.push(ref)
@@ -172,7 +173,7 @@ export abstract class RxStreamChildren<TDomain> {
         ref.element.remove()
     }
 
-    protected reorder(parentElement: RxHTMLElementBase) {
+    protected reorder(parentElement: RxElementTrait) {
         if (!this.orderOperator) {
             return
         }
@@ -214,7 +215,7 @@ export class RxStreamAppend<TDomain> extends RxStreamChildren<TDomain> {
     }
 
     protected update(
-        parentElement: RxHTMLElementBase,
+        parentElement: RxElementTrait,
         domainData: TDomain[],
     ): RenderingUpdate<TDomain> {
         const added = domainData.map((d) => {
@@ -256,7 +257,7 @@ export class RxStreamSync<TDomain> extends RxStreamChildren<TDomain> {
     private actualElements: ResolvedHTMLElement<TDomain>[] = []
 
     protected update(
-        parentElement: RxHTMLElementBase,
+        parentElement: RxElementTrait,
         expectedData: Array<TDomain>,
     ): RenderingUpdate<TDomain> {
         const actualData = this.actualElements.map(
