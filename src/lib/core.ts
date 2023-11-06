@@ -21,8 +21,7 @@ import {
 } from './types'
 import { setup } from '../auto-generated'
 
-export const apiVersion = setup.apiVersion
-const customElementPrefix = `${setup.name.split('/')[1]}-${apiVersion}`
+const customElementPrefix = `${setup.name.split('/')[1]}-${setup.apiVersion}`
 
 class HTMLPlaceHolderElement extends HTMLElement {
     private currentElement: HTMLElement
@@ -349,7 +348,7 @@ function registerElement<Tag extends SupportedTags>(
 function register() {
     if (customElements.get(`${customElementPrefix}-placeholder`)) {
         console.warn(
-            `@youwol/rx-vdom with api version ${apiVersion} has already defined custom elements`,
+            `@youwol/rx-vdom with api version ${setup.apiVersion} has already defined custom elements`,
         )
         return
     }
