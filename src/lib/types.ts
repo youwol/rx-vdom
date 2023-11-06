@@ -120,10 +120,10 @@ export type VirtualDOMTagNameMap = {
 }
 
 /**
- * Type union of all possible VirtualDom types (regarding the {@link VirtualDOM} `tag` attribute).
+ * Type union of all possible virtual DOM types (the {@link VirtualDOM} `tag` attribute).
  * i.e.:
  * ```
- * VirtualDom<'a'> | VirtualDom<'b'> | VirtualDom<'br'> // etc
+ * VirtualDOM<'a'> | VirtualDOM<'b'> | VirtualDOM<'br'> // etc
  * ```
  */
 export type AnyVirtualDOM = VirtualDOMTagNameMap[keyof VirtualDOMTagNameMap]
@@ -168,9 +168,11 @@ export type RxChild<TDomain = unknown> = {
 }
 
 /**
- * Available policy for {@link RxChildren}:
- * *  `replace` : all children are replaced at every  ̀source$` emit a new item(s).
- *
+ * Various policies for {@link RxChildren} are available:
+ * *  **replace**: All children are replaced each time a new item(s) is emitted by `source$`.
+ * *  **append**: All children are appended at every emission of new item(s) from `source$`.
+ * *  **sync**: Synchronize only the updated, new, or deleted children when `source$` emits a 'store' of DomainData,
+ * which typically consists of an immutable DomainData list.
  */
 export type ChildrenPolicy = 'replace' | 'append' | 'sync'
 
@@ -291,12 +293,12 @@ export type RxChildren<Policy extends ChildrenPolicy, TDomain = unknown> = {
 } & ChildrenTypesOptionMap<TDomain>[Policy]
 
 /**
- * Union of the types allowed to define a child.
+ * Union of the types allowed to define a child in a {@link VirtualDOM}.
  */
 export type ChildLike = AnyVirtualDOM | HTMLElement | RxChild
 
 /**
- * Union of the types allowed to define a list of children.
+ * Union of the types allowed to define children in a {@link VirtualDOM}.
  */
 export type ChildrenLike =
     | ChildLike[]
@@ -305,7 +307,7 @@ export type ChildrenLike =
     | RxChildren<'sync'>
 
 /**
- * Encapsulates and HTML element along with the domainData that was originally emitted.
+ * Encapsulates and HTML element along with the domain data that originally created it.
  *
  * @template TDomain type of the domain data (conveys by the `source$` observable).
  */
@@ -316,17 +318,15 @@ export type ResolvedHTMLElement<TDomain> = {
     domainData?: TDomain
 
     /**
-     * The actual DOM element. If the child has been defined using a straight HTMLElement, its type is `HTMLElement`,
-     * otherwise it is `RxHTMLElement`.
+     * The actual DOM element with {@link RxElementTrait} trait.
      */
     element: RxElementTrait
 }
 
 /**
- * Describes an update when a DOM element has been modified when using {@link RxChildren}
+ * Describes an update when a DOM elements has been updated when using {@link RxChildren}
  * with policies `append` or `sync`.
  *
- * @category Reactive Children
  */
 export type RenderingUpdate<TDomain> = {
     added: ResolvedHTMLElement<TDomain>[]

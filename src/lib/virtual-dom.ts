@@ -10,29 +10,26 @@ import { SupportedTags } from './factory'
  * VirtualDOM mirrors the characteristics and structure of an HTML DOM element with the ability
  * for its attributes and children to be supplied through RxJS observables.
  *
- *  Bringing observable based values within the DOM enables powerful options to express reactivity.
- *  Also, compared to other framework (e.g. Angular, React), there is a gain in efficiency because
- *  updates are explicit and there is no need to spend time in calculating diff and/or detecting changes.
+ * This introduction of observable-based values into the DOM opens up powerful opportunities for expressing reactivity.
+ * Moreover, when compared to other frameworks like Angular and React, there is an efficiency advantage because updates
+ * are explicit, eliminating the need for time-consuming calculations of differences and change detection.
  *
- *  Virtual DOMs can be converted into 'real' {@link RxHTMLElement | HTML elements} using the function {@link render}.
+ * Virtual DOMs can be transformed into actual HTML elements using the {@link render} function.
  *
- *  Virtual DOM are expressed as javascript object that mimics the HTML format:
- *  *  hierarchical structure
- *  *  each element type is defined by its **tag**
- *  *  expose (almost) the same attributes for the given **tag**.
- *  The mapping between the original properties of a given HTMLElement and those exposed in the virtual DOM is defined
- *  by {@link ExposedMembers}.
- *  *  add additional lifecycle hooks
+ * The representation of Virtual DOMs is in the form of JavaScript objects that closely resemble the HTML format:
+ * *  They exhibit a hierarchical structure.
+ * *  Each element type is defined by its HTML tag.
+ * *  They expose almost identical attributes for a given tag.
+ * The mapping between the original attributes of an HTMLElement and those presented in the virtual DOM is determined
+ * by {@link ExposedMembers}.
+ * *  They introduce additional lifecycle hooks.
  *
- *  > The definition of a virtual dom does not require the library: this is only about interfaces (in typescript
- *  importing types definition are however very useful). Hence, consuming libraries can create reactive elements
- *  without having to be linked to `@youwol/rx-vdom`, only libraries that actually {@link render} virtual dom actually
- *  needs `@youwol/rx-vdom`.
+ * > The definition of a virtual DOM doesn't mandate the use of the `@youwol/rx-vdom` library.
+ * Only libraries responsible for rendering virtual DOMs require the `@youwol/rx-vdom` dependency.
  *
- * ## Strong type checking
- *
- * A particular effort has been dedicated to provide as much as possible type checking of virtual DOM
- * against the underlying associated HTMLElement. It provides an improved development environment, for instance:
+ * A significant focus has been placed on delivering comprehensive type checking for virtual DOM elements
+ *  in alignment with their corresponding HTMLElements.
+ *  It results in an enhanced development environment when using typescript, e.g.:
  * * DOM's attributes awareness
  *
  * ![image](/api/assets-gateway/raw/package/QHlvdXdvbC9yeC12ZG9t/0.1.0-wip/assets/error-<b>-no-href.png)
@@ -46,7 +43,7 @@ import { SupportedTags } from './factory'
  */
 export type VirtualDOM<Tag extends SupportedTags = 'div'> = {
     /**
-     * The tag of the element, corresponds to the template parameter Tag
+     * The tag of the element, corresponds to the template parameter `Tag`.
      */
     tag?: Tag
 
@@ -66,11 +63,17 @@ export type VirtualDOM<Tag extends SupportedTags = 'div'> = {
     children?: ChildrenLike
 
     /**
+     * Lifecycle hook called just after the element has been attached to the window's DOM.
      *
-     * @param element
+     * @param element reference on the HTML element attached
      */
     connectedCallback?: (element: RxHTMLElement<Tag>) => void
 
+    /**
+     * Lifecycle hook called just after the element has been detached to the window's DOM.
+     *
+     * @param element reference on the HTML element detached
+     */
     disconnectedCallback?: (element: RxHTMLElement<Tag>) => void
 } & Partial<ExposedMembers<Tag>>
 
