@@ -1,6 +1,5 @@
-import { render, VirtualDOM } from '../lib'
+import { render, VirtualDOM, RxHTMLElement } from '../lib'
 import { AssertTrue as Assert, Has, IsExact } from 'conditional-type-checks'
-import { RxHTMLElement } from '../lib/core'
 
 test('virtual dom and types', () => {
     const vDom: VirtualDOM<'a'> = {
