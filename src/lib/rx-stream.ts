@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { VirtualDOM } from './virtual-dom'
-import { render, RxHTMLElementBase } from './core'
+import { render } from './core'
 import {
     ChildrenTraitComparison,
     ChildrenTraitOrdering,
@@ -58,7 +58,7 @@ export class RxStream<TDomain, TDom = TDomain> {
     }
 
     /**
-     * Implementation function that supposed to be called only by {@link RxHTMLElementBase}.
+     * Implementation function that supposed to be called only by {@link RxElementTrait}.
      */
     subscribe(
         realizeDom: (tDom: TDom, ...args) => RxElementTrait,
