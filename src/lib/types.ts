@@ -164,17 +164,30 @@ export type ChildrenTypesOptionMap<TDomain> = {
 }
 
 /**
+ * Check whether 2 types are equals.
+ *
+ * See [type level equal operator](https://github.com/Microsoft/TypeScript/issues/27024) and
+ * [distributive conditional types](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html#distributive-conditional-types).
+ *
+ */
+export type Equals<X, Y> = (<T>() => T extends X ? 1 : 2) extends <
+    T,
+>() => T extends Y ? 1 : 2
+    ? true
+    : false
+
+/**
  * Extract the attributes & methods of an HTMLElement of given tag that are exposed in {@link VirtualDOM}.
  * It includes:
  * *  most of the properties of primitive types (`string`, `number`, `boolean`), only a few restriction provided by
- * {@link RemoveUnwantedMembers} are used
+ * {@link FilterHTMLMembers} are used
  * (essentially to provide a lighter API, see  `tag`/`tagName`, and `class`/`className`).
  * *  all the signal handlers: any methods starting with the prefix `on` (e.g. `onclick`, `onmousedown`, *etc*).
  *
  * @template Tag the `tag` of the DOM element.
  */
 export type ExposedMembers<Tag extends SupportedTags> = {
-    [Property in keyof RemoveUnwantedMembers<Tag>]: HTMLElementTagNameMap[Tag][Property] extends string
+    [Property in keyof FilterHTMLMembers<Tag>]: HTMLElementTagNameMap[Tag][Property] extends string
         ? AttributeLike<string>
         : HTMLElementTagNameMap[Tag][Property] extends number
         ? AttributeLike<number>
@@ -186,9 +199,9 @@ export type ExposedMembers<Tag extends SupportedTags> = {
 }
 
 /**
- * Remove a couple of HTML attributes for a given tag that should not be exposed in {@link VirtualDOM}.
+ * Select writable HTML attributes for a given tag to be exposed in {@link VirtualDOM}.
  *
- * It gathers:
+ * From the writable attributes it removes:
  * *  the properties defined by a {@link VirtualDOM} itself. Note that `className` and `tagName` are removed to
  * expose them as `class` and `tag`.
  * *  a list of {@link BlackListed} members
@@ -196,8 +209,8 @@ export type ExposedMembers<Tag extends SupportedTags> = {
  *
  * @template Tag the `tag` of the DOM element.
  */
-export type RemoveUnwantedMembers<Tag extends SupportedTags> = Omit<
-    HTMLElementTagNameMap[Tag],
+export type FilterHTMLMembers<Tag extends SupportedTags> = Omit<
+    WritablePart<HTMLElementTagNameMap[Tag]>,
     | 'tag'
     | 'tagName'
     | 'className'
@@ -336,3 +349,24 @@ export type RxChildren<Policy extends ChildrenPolicy, TDomain = unknown> = {
 export type VirtualDOMTagNameMap = {
     [Property in SupportedTags]: VirtualDOM<Property>
 }
+
+/**
+ * Extract the writable keys of a type.
+ *
+ * Taken from this [SO discussion](https://stackoverflow.com/questions/52443276/how-to-exclude-getter-only-properties-from-type-in-typescript)
+ */
+export type WritableKeysOf<T> = {
+    [P in keyof T]: Equals<
+        { [Q in P]: T[P] },
+        { -readonly [Q in P]: T[P] }
+    > extends true
+        ? P
+        : never
+}[keyof T]
+
+/**
+ * Extract writable part of a type.
+ *
+ * @template T type to transform
+ */
+export type WritablePart<T> = Pick<T, WritableKeysOf<T>>
