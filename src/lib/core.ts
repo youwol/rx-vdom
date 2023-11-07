@@ -85,6 +85,7 @@ function extractRxStreams<Tag extends SupportedTags>(
 } {
     const allAttributes = Object.entries(vDom).filter(
         ([k, _]) =>
+            k !== 'tag' &&
             k !== 'children' &&
             k !== 'connectedCallback' &&
             k !== 'disconnectedCallback',
