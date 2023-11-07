@@ -65,8 +65,8 @@ function isInstanceOfObservable(d: unknown): d is Observable<unknown> {
 function isInstanceOfRxAttribute(d: unknown): d is RxAttribute<unknown> {
     return d && (d as RxAttribute<unknown>).source$ !== undefined
 }
-function isInstanceOfRxChild(d: unknown): d is RxChild<unknown> {
-    return d && (d as RxChild<unknown>).source$ !== undefined
+function isInstanceOfRxChild(d: unknown): d is RxChild {
+    return d && (d as RxChild).source$ !== undefined
 }
 function isInstanceOfRxChildren(
     d: unknown,
@@ -276,7 +276,7 @@ export function ReactiveTrait<
                     } else if (child instanceof HTMLElement) {
                         this.appendChild(child)
                     } else {
-                        const div = render(child as VirtualDOM)
+                        const div = render(child)
                         this.appendChild(div)
                         rendered.push(div)
                     }
