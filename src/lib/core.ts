@@ -26,10 +26,10 @@ const customElementPrefix = `${setup.name.split('/')[1]}-${setup.apiVersion}`
 class HTMLPlaceHolderElement extends HTMLElement {
     private currentElement: HTMLElement
 
-    initialize(stream$: RxStream<VirtualDOM>): Subscription {
+    initialize(stream$: RxStream<AnyVirtualDOM>): Subscription {
         this.currentElement = this
 
-        const apply = (vDom: VirtualDOM): RxElementTrait => {
+        const apply = (vDom: AnyVirtualDOM): RxElementTrait => {
             // if (vDom instanceof HTMLElement) {
             //     this.currentElement.replaceWith(vDom)
             //     this.currentElement = vDom
@@ -40,7 +40,7 @@ class HTMLPlaceHolderElement extends HTMLElement {
             this.currentElement = div
             return div
         }
-        return stream$.subscribe((vDom: VirtualDOM) => apply(vDom))
+        return stream$.subscribe((vDom: AnyVirtualDOM) => apply(vDom))
     }
 }
 
@@ -78,8 +78,8 @@ function extractRxStreams<Tag extends SupportedTags>(
 ): {
     attributes: [string, AttributeType | RxStream<unknown>][]
     children:
-        | (AnyVirtualDOM | HTMLElement | RxStream<unknown, VirtualDOM>)[]
-        | RxStream<unknown, VirtualDOM[]>
+        | (AnyVirtualDOM | HTMLElement | RxStream<unknown, AnyVirtualDOM>)[]
+        | RxStream<unknown, AnyVirtualDOM[]>
         | RxStreamAppend<unknown>
         | RxStreamSync<unknown>
 } {
@@ -114,10 +114,14 @@ function extractRxStreams<Tag extends SupportedTags>(
     if (Array.isArray(vDom.children)) {
         const children = vDom.children.map((child: ChildLike) => {
             if (isInstanceOfRxChild(child)) {
-                return new RxStream(child.source$, child.vdomMap, {
-                    sideEffects: child.sideEffects,
-                    untilFirst: child.untilFirst,
-                })
+                return new RxStream<unknown, AnyVirtualDOM>(
+                    child.source$,
+                    child.vdomMap,
+                    {
+                        sideEffects: child.sideEffects,
+                        untilFirst: child.untilFirst,
+                    },
+                )
             }
             return child
         })
@@ -218,7 +222,9 @@ export function ReactiveTrait<
             if (Array.isArray(children)) {
                 this.renderChildren(children)
             }
-            if (instanceOfStream<unknown, VirtualDOM[]>(this.vDom.children)) {
+            if (
+                instanceOfStream<unknown, AnyVirtualDOM[]>(this.vDom.children)
+            ) {
                 this.subscriptions.push(
                     this.vDom.children.subscribe((children) => {
                         this.replaceChildren()
@@ -254,7 +260,7 @@ export function ReactiveTrait<
          * @ignore
          */
         renderChildren(
-            children: (AnyVirtualDOM | RxStream<VirtualDOM> | HTMLElement)[],
+            children: (AnyVirtualDOM | RxStream<AnyVirtualDOM> | HTMLElement)[],
         ): Array<RxElementTrait> {
             const rendered = []
             children

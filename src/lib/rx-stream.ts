@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
-import { VirtualDOM } from './virtual-dom'
 import { render } from './core'
 import {
+    AnyVirtualDOM,
     ChildrenOptionsAppend,
     ChildrenOptionsSync,
     RenderingUpdate,
@@ -125,7 +125,7 @@ export abstract class RxStreamChildren<TDomain> {
      */
     protected constructor(
         public readonly stream$: Observable<TDomain[]>,
-        public readonly vDomMap: (tDomain: TDomain, ...args) => VirtualDOM,
+        public readonly vDomMap: (tDomain: TDomain, ...args) => AnyVirtualDOM,
         {
             sideEffects,
             orderOperator,
@@ -207,7 +207,7 @@ export function instanceOfChildrenStream<T>(
 export class RxStreamAppend<TDomain> extends RxStreamChildren<TDomain> {
     constructor(
         public readonly stream$: Observable<TDomain[]>,
-        public readonly vDomMap: (tDomain: TDomain, ...args) => VirtualDOM,
+        public readonly vDomMap: (tDomain: TDomain, ...args) => AnyVirtualDOM,
         options: Omit<ChildrenOptionsAppend<TDomain>, 'source$' | 'vdomMap'>,
     ) {
         super(stream$, vDomMap, options)
@@ -240,7 +240,7 @@ export class RxStreamSync<TDomain> extends RxStreamChildren<TDomain> {
 
     constructor(
         public readonly stream$: Observable<TDomain[]>,
-        public readonly vDomMap: (tDomain: TDomain, ...args) => VirtualDOM,
+        public readonly vDomMap: (tDomain: TDomain, ...args) => AnyVirtualDOM,
         options: Omit<ChildrenOptionsSync<TDomain>, 'source$' | 'vdomMap'>,
     ) {
         super(stream$, vDomMap, options)

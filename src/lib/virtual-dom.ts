@@ -41,7 +41,7 @@ import { SupportedTags } from './factory'
  *
  * @template Tag the `tag` of the DOM element.
  */
-export type VirtualDOM<Tag extends SupportedTags = 'div'> = {
+export type VirtualDOM<Tag extends SupportedTags> = {
     /**
      * The tag of the element, corresponds to the template parameter `Tag`.
      */

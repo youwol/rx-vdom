@@ -62,7 +62,7 @@ export type ChildrenOptionsAppend<TDomain> = {
      * Mapping between one `TDomain` element over those emitted by `source$` and its corresponding view.
      * @param domainData single element over those emitted by `source$`.
      */
-    vdomMap: (domainData: TDomain) => VirtualDOM
+    vdomMap: (domainData: TDomain) => AnyVirtualDOM
 
     /**
      * Execute side effects once the children have been updated.
@@ -103,12 +103,12 @@ export type ChildrenOptionsReplace<TDomain> = {
      * @param domainData domain data emitted by `source$`
      * @return the list of children that replace the previous one.
      */
-    vdomMap: (domainData: TDomain) => VirtualDOM[]
+    vdomMap: (domainData: TDomain) => AnyVirtualDOM[]
 
     /**
      * Virtual DOMs displayed until a first data is emitted by `source$`.
      */
-    untilFirst?: VirtualDOM[]
+    untilFirst?: AnyVirtualDOM[]
 
     /**
      * If provided, apply a last transformation of the virtual DOMs returned by `vdomMap` before being actually set as
@@ -116,7 +116,7 @@ export type ChildrenOptionsReplace<TDomain> = {
      *
      * @param domValue value of the attribute returned by `vdomMap`.
      */
-    wrapper?: (domValue: VirtualDOM[]) => VirtualDOM[]
+    wrapper?: (domValue: AnyVirtualDOM[]) => AnyVirtualDOM[]
 
     /**
      * Provide a handle to execute side effects. This is executed just after the new children have been inserted
@@ -293,12 +293,12 @@ export type RxChild<TDomain = unknown> = {
      * Mapping function between domain data and associated {@link VirtualDOM}.
      * @param domainData domainData emitted by the `source$`.
      */
-    vdomMap: (domainData: TDomain) => VirtualDOM
+    vdomMap: (domainData: TDomain) => AnyVirtualDOM
 
     /**
      * Virtual DOM displayed until a first data is emitted by `source$`.
      */
-    untilFirst?: VirtualDOM
+    untilFirst?: AnyVirtualDOM
 
     /**
      * If provided, apply a last transformation of the virtual DOM returned by `vdomMap` before being actually set as
@@ -306,7 +306,7 @@ export type RxChild<TDomain = unknown> = {
      *
      * @param domValue value of the attribute returned by `vdomMap`.
      */
-    wrapper?: (domValue: VirtualDOM) => VirtualDOM
+    wrapper?: (domValue: AnyVirtualDOM) => AnyVirtualDOM
 
     /**
      * Provide a handle to execute side effects. This is executed just after the new child has been updated
