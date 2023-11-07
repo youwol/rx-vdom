@@ -91,17 +91,20 @@ function extractRxStreams<Tag extends SupportedTags>(
     )
 
     const attributes = allAttributes.map(
-        (attribute: AttributeLike<unknown>) => {
+        ([k, attribute]: [string, AttributeLike<unknown>]) => {
             if (isInstanceOfObservable(attribute)) {
-                return new RxStream(attribute, (d) => d, {})
+                return [k, new RxStream(attribute, (d) => d, {})]
             }
             if (isInstanceOfRxAttribute(attribute)) {
-                return new RxStream(attribute.source$, attribute.vdomMap, {
-                    sideEffects: attribute.sideEffects,
-                    untilFirst: attribute.untilFirst,
-                })
+                return [
+                    k,
+                    new RxStream(attribute.source$, attribute.vdomMap, {
+                        sideEffects: attribute.sideEffects,
+                        untilFirst: attribute.untilFirst,
+                    }),
+                ]
             }
-            return attribute
+            return [k, attribute]
         },
     ) as [string, AttributeType | RxStream<unknown>][]
 
