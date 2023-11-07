@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs'
-import { VirtualDOM } from './virtual-dom'
+import { RxHTMLElement, VirtualDOM } from './virtual-dom'
 import { SupportedTags } from './factory'
 import { ReactiveTrait } from './core'
 
@@ -223,7 +223,10 @@ export type RenderingUpdate<TDomain> = {
  *
  * @template TDomain type of the domain data (conveys by the `source$` observable).
  */
-export type ResolvedHTMLElement<TDomain> = {
+export type ResolvedHTMLElement<
+    TDomain,
+    Tag extends SupportedTags = SupportedTags,
+> = {
     /**
      * Domain data. If the child has been defined using a straight HTMLElement, it is `undefined`.
      */
@@ -232,7 +235,7 @@ export type ResolvedHTMLElement<TDomain> = {
     /**
      * The actual DOM element with {@link RxElementTrait} trait.
      */
-    element: RxElementTrait
+    element: RxHTMLElement<Tag>
 }
 
 /**
