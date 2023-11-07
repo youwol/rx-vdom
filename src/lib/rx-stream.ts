@@ -8,7 +8,7 @@ import {
     RenderingUpdate,
     ResolvedHTMLElement,
     RxElementTrait,
-} from './types'
+} from './api'
 
 /**
  * A RxJs observable that represents a DOM's attribute or child. Also serves as base class for children.

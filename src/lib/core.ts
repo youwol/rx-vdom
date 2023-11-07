@@ -18,7 +18,7 @@ import {
     RxChild,
     RxChildren,
     RxElementTrait,
-} from './types'
+} from './api'
 import { setup } from '../auto-generated'
 
 const customElementPrefix = `${setup.name.split('/')[1]}-${setup.apiVersion}`

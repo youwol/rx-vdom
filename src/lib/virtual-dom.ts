@@ -3,7 +3,7 @@ import {
     ChildrenLike,
     ExposedMembers,
     RxElementTrait,
-} from './types'
+} from './api'
 import { SupportedTags } from './factory'
 
 /**
