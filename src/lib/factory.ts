@@ -4,12 +4,13 @@
  * See also [here](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
  *
  * Exceptions:
- * *  `dialog`: can not be instantiated in Mozilla
- * *  `search`: can not be instantiated in jest tests
+ * *  `dialog`: runtime error -> can not be instantiated in Mozilla
+ * *  `search`:  runtime error -> can not be instantiated in jest tests
+ * *  `form`: compile time error -> I do not understand
  * */
 export type SupportedTags = keyof Omit<
     HTMLElementTagNameMap,
-    'dialog' | 'search'
+    'dialog' | 'search' | 'form'
 >
 /**
  * Taken from lib.dom.ts (HTMLElementTagNameMap).
@@ -51,7 +52,7 @@ export const CustomElementsMap: Record<SupportedTags, typeof HTMLElement> = {
     figcaption: HTMLElement,
     figure: HTMLElement,
     footer: HTMLElement,
-    form: HTMLFormElement,
+    //form: HTMLFormElement,
     h1: HTMLHeadingElement,
     h2: HTMLHeadingElement,
     h3: HTMLHeadingElement,
