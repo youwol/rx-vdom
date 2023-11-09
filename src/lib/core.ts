@@ -79,12 +79,17 @@ type ConvertedAttributeLike =
     | SupportedHTMLAttributeType
     | RxStream<unknown, SupportedHTMLAttributeType>
 
+type ConvertedChildLike =
+    | AnyVirtualDOM
+    | HTMLElement
+    | RxStream<unknown, AnyVirtualDOM>
+
 function extractRxStreams<Tag extends SupportedTags>(
     vDom: Readonly<VirtualDOM<Tag>>,
 ): {
     attributes: [string, ConvertedAttributeLike][]
     children:
-        | (AnyVirtualDOM | HTMLElement | RxStream<unknown, AnyVirtualDOM>)[]
+        | ConvertedChildLike[]
         | RxStream<unknown, AnyVirtualDOM[]>
         | RxStreamAppend<unknown>
         | RxStreamSync<unknown>
@@ -277,9 +282,7 @@ export function ReactiveTrait<
         /**
          * @ignore
          */
-        renderChildren(
-            children: (AnyVirtualDOM | RxStream<AnyVirtualDOM> | HTMLElement)[],
-        ): Array<RxElementTrait> {
+        renderChildren(children: ConvertedChildLike[]): Array<RxElementTrait> {
             const rendered = []
             children
                 .filter((child) => child != undefined)
