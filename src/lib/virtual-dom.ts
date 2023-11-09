@@ -79,7 +79,7 @@ export type VirtualDOM<Tag extends SupportedTags> = {
     /**
      * The tag of the element, corresponds to the template parameter `Tag`.
      */
-    tag?: Tag
+    tag: Tag
 
     /**
      * The class associated to the element, equivalent of the `className` attribute of `HTMLElement`.
