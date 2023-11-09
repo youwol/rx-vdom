@@ -123,6 +123,7 @@ function extractRxStreams<Tag extends SupportedTags>(
                         attribute.source$,
                         attribute.vdomMap,
                         {
+                            wrapper: attribute.wrapper,
                             sideEffects: attribute.sideEffects,
                             untilFirst: attribute.untilFirst,
                         },
@@ -143,6 +144,7 @@ function extractRxStreams<Tag extends SupportedTags>(
                     child.source$,
                     child.vdomMap,
                     {
+                        wrapper: child.wrapper,
                         sideEffects: child.sideEffects,
                         untilFirst: child.untilFirst,
                     },
@@ -161,6 +163,7 @@ function extractRxStreams<Tag extends SupportedTags>(
             vDom.children.source$,
             vDom.children.vdomMap,
             {
+                wrapper: vDom.children.wrapper,
                 sideEffects: vDom.children.sideEffects,
                 untilFirst: vDom.children.untilFirst,
             },
