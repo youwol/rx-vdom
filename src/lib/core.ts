@@ -224,11 +224,9 @@ export function ReactiveTrait<
             if (Array.isArray(children)) {
                 this.renderChildren(children)
             }
-            if (
-                instanceOfStream<unknown, AnyVirtualDOM[]>(this.vDom.children)
-            ) {
+            if (instanceOfStream<unknown, AnyVirtualDOM[]>(children)) {
                 this.subscriptions.push(
-                    this.vDom.children.subscribe((children) => {
+                    children.subscribe((children) => {
                         this.replaceChildren()
                         this.renderChildren(children)
                         return this as unknown as RxHTMLElement<Tag>
@@ -236,11 +234,9 @@ export function ReactiveTrait<
                 )
             }
 
-            if (instanceOfChildrenStream(this.vDom.children)) {
+            if (instanceOfChildrenStream(children)) {
                 this.subscriptions.push(
-                    this.vDom.children.subscribe(
-                        this as unknown as RxHTMLElement<Tag>,
-                    ),
+                    children.subscribe(this as unknown as RxHTMLElement<Tag>),
                 )
             }
             this.vDom?.connectedCallback?.(
