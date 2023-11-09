@@ -3,7 +3,6 @@
  *
  * @module
  */
-import { Observable } from 'rxjs'
 import { RxHTMLElement, VirtualDOM } from './virtual-dom'
 import { SupportedTags } from './factory'
 import { ReactiveTrait } from './core'
@@ -13,6 +12,20 @@ import { WritablePart } from './type-utils'
  * Common API of all {@link RxHTMLElement}.
  */
 export class RxElementTrait extends ReactiveTrait(HTMLElement) {}
+
+/**
+ * Required interface for Rx concept of 'Observable', as defined by RxJS.
+ */
+export interface Observable<_T> {
+    subscribe: (...p: unknown[]) => Subscription
+}
+
+/**
+ * Required interface for Rx concept of 'Subscription', as defined by RxJS.
+ */
+export interface Subscription {
+    unsubscribe: () => void
+}
 
 /**
  * Type union of all possible virtual DOM types (the {@link VirtualDOM} `tag` attribute).

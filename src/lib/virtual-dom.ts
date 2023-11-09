@@ -3,6 +3,10 @@ import {
     ChildrenLike,
     ExposedMembers,
     RxElementTrait,
+    // eslint-disable-next-line unused-imports/no-unused-imports -- used for documentation
+    Observable,
+    // eslint-disable-next-line unused-imports/no-unused-imports -- used for documentation
+    Subscription,
 } from './api'
 import { SupportedTags } from './factory'
 

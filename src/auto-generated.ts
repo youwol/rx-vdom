@@ -1,39 +1,16 @@
 
 const runTimeDependencies = {
-    "externals": {
-        "rxjs": "^7.5.6"
-    },
+    "externals": {},
     "includedInBundle": {
         "@ungap/custom-elements": "1.2.0"
     }
 }
-const externals = {
-    "rxjs": {
-        "commonjs": "rxjs",
-        "commonjs2": "rxjs",
-        "root": "rxjs_APIv7"
-    },
-    "rxjs/operators": {
-        "commonjs": "rxjs/operators",
-        "commonjs2": "rxjs/operators",
-        "root": [
-            "rxjs_APIv7",
-            "operators"
-        ]
-    }
-}
-const exportedSymbols = {
-    "rxjs": {
-        "apiKey": "7",
-        "exportedSymbol": "rxjs"
-    }
-}
+const externals = {}
+const exportedSymbols = {}
 
 const mainEntry : {entryFile: string,loadDependencies:string[]} = {
     "entryFile": "./index.ts",
-    "loadDependencies": [
-        "rxjs"
-    ]
+    "loadDependencies": []
 }
 
 const secondaryEntries : {[k:string]:{entryFile: string, name: string, loadDependencies:string[]}}= {}

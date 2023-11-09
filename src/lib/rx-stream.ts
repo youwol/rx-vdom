@@ -1,10 +1,9 @@
-import { Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
 import { render } from './core'
 import {
     AnyVirtualDOM,
     ChildrenOptionsAppend,
     ChildrenOptionsSync,
+    Observable,
     RenderingUpdate,
     ResolvedHTMLElement,
     RxElementTrait,
@@ -63,14 +62,9 @@ export class RxStream<TDomain, TDom = TDomain> {
         realizeDom: (tDom: TDom, ...args) => RxElementTrait,
         ...withData
     ) {
-        const mappedSource$: Observable<[TDom, TDomain]> = this.source$.pipe(
-            map((d: TDomain) => [this.vDomMap(d, ...withData), d]),
-        )
-
         this.untilFirst && this.finalize(realizeDom, this.untilFirst, undefined)
-
-        return mappedSource$.subscribe(([v, d]: [TDom, TDomain]) => {
-            this.finalize(realizeDom, v, d)
+        return this.source$.subscribe((d: TDomain) => {
+            this.finalize(realizeDom, this.vDomMap(d, ...withData), d)
         })
     }
 
@@ -149,13 +143,10 @@ export abstract class RxStreamChildren<TDomain> {
      * Only for internal use (within {@link RxElementTrait}), should not actually be exposed.
      */
     subscribe(parentElement: RxElementTrait) {
-        return this.stream$
-            .pipe(
-                map((domains: TDomain[]) => {
-                    return this.update(parentElement, domains)
-                }),
-            )
-            .subscribe((updates) => this.sideEffects?.(parentElement, updates))
+        return this.stream$.subscribe((domains: TDomain[]) => {
+            const updates = this.update(parentElement, domains)
+            this.sideEffects?.(parentElement, updates)
+        })
     }
 
     protected addChildRef(

@@ -1,4 +1,3 @@
-import { Observable, Subscription } from 'rxjs'
 import { CustomElementsMap, SupportedTags } from './factory'
 import {
     AttributeType,
@@ -14,10 +13,12 @@ import {
     AttributeLike,
     ChildLike,
     ChildrenPolicy,
+    Observable,
     RxAttribute,
     RxChild,
     RxChildren,
     RxElementTrait,
+    Subscription,
 } from './api'
 import { setup } from '../auto-generated'
 
