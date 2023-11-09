@@ -20,6 +20,36 @@ import { SupportedTags } from './factory'
  *
  * Virtual DOMs can be transformed into actual HTML elements using the {@link render} function.
  *
+ * A typical example is as follows:
+ *
+ * <iframe id="iFrameExample_VirtualDOM" src="" width="100%" height="500px"></iframe>
+ * <script>
+ *  const src = `<!--<!DOCTYPE html>
+ * <html lang="en">
+ *   <head><script src="https://webpm.org/^2.1.2/cdn-client.js"></script></head>
+ *
+ *   <body id="content"></body>
+ *
+ *   <script type="module">
+ *      const cdnClient = window['@youwol/cdn-client']
+ *      const { rxDom, rxjs } = await cdnClient.install({
+ *          modules: ['@youwol/rx-vdom as rxDom', 'rxjs#^7.5.6'],
+ *          displayLoadingScreen: true
+ *      });
+ *      const vDOM = {
+ *          tag: 'div',
+ *          innerText: rxjs.timer(0, 1000).pipe(
+ *              rxjs.map(() => new Date().toLocaleString())
+ *          ),
+ *      };
+ *      document.getElementById('content').appendChild(rxDom.render(vDOM));
+ *   </script>
+ * </html>
+ * -->`
+ *     const url = '/applications/@youwol/js-playground/latest?content='+encodeURIComponent(src.substring(4,src.length-4))
+ *     document.getElementById('iFrameExample_VirtualDOM').setAttribute("src",url);
+ * </script>
+ *
  * The representation of Virtual DOMs is in the form of JavaScript objects that closely resemble the HTML format:
  * *  They exhibit a hierarchical structure.
  * *  Each element type is defined by its HTML tag.

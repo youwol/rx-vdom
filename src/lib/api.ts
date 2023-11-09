@@ -70,6 +70,51 @@ export type ChildrenLike =
 /**
  * API for the `append` policy of  {@link RxChildren}.
  *
+ * A typical example is as follows:
+ *
+ * <iframe id="iFrameExample_ChildrenOptionsAppend" src="" width="100%" height="850px"></iframe>
+ * <script>
+ *  const src = `<!--<!DOCTYPE html>
+ * <html lang="en">
+ *   <head><script src="https://webpm.org/^2.1.2/cdn-client.js"></script></head>
+ *
+ *   <body id="content"></body>
+ *
+ *   <script type="module">
+ *      const cdnClient = window['@youwol/cdn-client']
+ *      const { rxDom, rxjs } = await cdnClient.install({
+ *          modules: ['@youwol/rx-vdom as rxDom',  'rxjs#^7.5.6'],
+ *          displayLoadingScreen: true
+ *      });
+ *      const heroes = [
+ *          {name:'Einstein', wiki:'Albert_Einstein'}, {name:'Planck', wiki: 'Max_Planck'},
+ *          {name:'Schrödinger', wiki:'Erwin_Schrödinger'}, {name:'Feynman', wiki: 'Richard_Feynman'}
+ *      ]
+ *      const source$ = rxjs.timer(0, 1000).pipe(
+ *          rxjs.map(() => [heroes[Math.floor(Math.random() * heroes.length)]])
+ *      )
+ *      const vDOM = {
+ *          tag: 'div',
+ *          children: {
+ *              policy: 'append',
+ *              source$,
+ *              vdomMap: (hero) => ({
+ *                  tag: 'div',
+ *                  children:[
+ *                      { tag: 'span', innerText: hero.name + ', '},
+ *                      { tag: 'a', innerText: 'wikipedia', href: 'https://en.wikipedia.org/wiki'+hero.wiki }
+ *                  ]
+ *              })
+ *          }
+ *      };
+ *      document.getElementById('content').appendChild(rxDom.render(vDOM));
+ *   </script>
+ * </html>
+ * -->`
+ *     const url = '/applications/@youwol/js-playground/latest?content='+encodeURIComponent(src.substring(4,src.length-4))
+ *     document.getElementById('iFrameExample_ChildrenOptionsAppend').setAttribute("src",url);
+ * </script>
+ *
  * @template TDomain type of the domain data (conveys by the `source$` observable).
  */
 export type ChildrenOptionsAppend<TDomain> = {
@@ -110,6 +155,54 @@ export type ChildrenOptionsAppend<TDomain> = {
 /**
  * API for the `replace` policy of  {@link RxChildren}.
  *
+ * A typical example is as follows:
+ *
+ * <iframe id="iFrameExample_ChildrenOptionsReplace" src="" width="100%" height="850px"></iframe>
+ * <script>
+ *  const src = `<!--<!DOCTYPE html>
+ * <html lang="en">
+ *   <head><script src="https://webpm.org/^2.1.2/cdn-client.js"></script></head>
+ *
+ *   <body id="content"></body>
+ *
+ *   <script type="module">
+ *      const cdnClient = window['@youwol/cdn-client']
+ *      const { rxDom, rxjs } = await cdnClient.install({
+ *          modules: ['@youwol/rx-vdom as rxDom',  'rxjs#^7.5.6'],
+ *          displayLoadingScreen: true
+ *      });
+ *      const heroes = [
+ *          {name:'Einstein', wiki:'Albert_Einstein'}, {name:'Planck', wiki: 'Max_Planck'},
+ *          {name:'Schrödinger', wiki:'Erwin_Schrödinger'}, {name:'Feynman', wiki: 'Richard_Feynman'}
+ *      ]
+ *      const source$ = rxjs.timer(0, 1000).pipe(
+ *          rxjs.map(() => {
+ *              const indexes = new Set([1,2,3].map(()=>Math.floor(Math.random() * heroes.length)))
+ *              return [...indexes].map((i)=>heroes[i])
+ *          })
+ *      )
+ *      const vDOM = {
+ *          tag: 'div',
+ *          children: {
+ *              policy: 'replace',
+ *              source$,
+ *              vdomMap: (heroes) => heroes.map((hero) => ({
+ *                  tag: 'div',
+ *                  children:[
+ *                      { tag: 'span', innerText: hero.name + ', '},
+ *                      { tag: 'a', innerText: 'wikipedia', href: 'https://en.wikipedia.org/wiki'+hero.wiki }
+ *                  ]
+ *              }))
+ *          }
+ *      };
+ *      document.getElementById('content').appendChild(rxDom.render(vDOM));
+ *   </script>
+ * </html>
+ * -->`
+ *     const url = '/applications/@youwol/js-playground/latest?content='+encodeURIComponent(src.substring(4,src.length-4))
+ *     document.getElementById('iFrameExample_ChildrenOptionsReplace').setAttribute("src",url);
+ * </script>
+ *
  * @template TDomain type of the domain data (conveys by the `source$` observable).
  */
 export type ChildrenOptionsReplace<TDomain> = {
@@ -148,6 +241,54 @@ export type ChildrenOptionsReplace<TDomain> = {
 
 /**
  * API for the `sync` policy of  {@link RxChildren}.
+ *
+ * A typical example is as follows:
+ *
+ * <iframe id="iFrameExample_ChildrenOptionsSync" src="" width="100%" height="850px"></iframe>
+ * <script>
+ *  const src = `<!--<!DOCTYPE html>
+ * <html lang="en">
+ *   <head><script src="https://webpm.org/^2.1.2/cdn-client.js"></script></head>
+ *
+ *   <body id="content"></body>
+ *
+ *   <script type="module">
+ *      const cdnClient = window['@youwol/cdn-client']
+ *      const { rxDom, rxjs } = await cdnClient.install({
+ *          modules: ['@youwol/rx-vdom as rxDom',  'rxjs#^7.5.6'],
+ *          displayLoadingScreen: true
+ *      });
+ *      const heroes = [
+ *          {name:'Einstein', wiki:'Albert_Einstein'}, {name:'Planck', wiki: 'Max_Planck'},
+ *          {name:'Schrödinger', wiki:'Erwin_Schrödinger'}, {name:'Feynman', wiki: 'Richard_Feynman'}
+ *      ]
+ *      const source$ = rxjs.timer(0, 1000).pipe(
+ *          rxjs.map(() => {
+ *              const indexes = new Set([1,2,3].map(()=>Math.floor(Math.random() * heroes.length)))
+ *              return [...indexes].map((i)=>heroes[i])
+ *          })
+ *      )
+ *      const vDOM = {
+ *          tag: 'div',
+ *          children: {
+ *              policy: 'sync',
+ *              source$,
+ *              vdomMap: (hero) => ({
+ *                  tag: 'div',
+ *                  children:[
+ *                      { tag: 'span', innerText: hero.name + ', '},
+ *                      { tag: 'a', innerText: 'wikipedia', href: 'https://en.wikipedia.org/wiki'+hero.wiki }
+ *                  ]
+ *              })
+ *          }
+ *      };
+ *      document.getElementById('content').appendChild(rxDom.render(vDOM));
+ *   </script>
+ * </html>
+ * -->`
+ *     const url = '/applications/@youwol/js-playground/latest?content='+encodeURIComponent(src.substring(4,src.length-4))
+ *     document.getElementById('iFrameExample_ChildrenOptionsSync').setAttribute("src",url);
+ * </script>
  *
  * @template TDomain type of the domain data (conveys by the `source$` observable).
  */
@@ -259,6 +400,37 @@ export type ResolvedHTMLElement<
 
 /**
  * Full specification of a reactive attribute.
+ *
+ * A typical example is as follows:
+ *
+ * <iframe id="iFrameExample_RxAttribute" src="" width="100%" height="550px"></iframe>
+ * <script>
+ *  const src = `<!--<!DOCTYPE html>
+ * <html lang="en">
+ *   <head><script src="https://webpm.org/^2.1.2/cdn-client.js"></script></head>
+ *
+ *   <body id="content"></body>
+ *
+ *   <script type="module">
+ *      const cdnClient = window['@youwol/cdn-client']
+ *      const { rxDom, rxjs } = await cdnClient.install({
+ *          modules: ['@youwol/rx-vdom as rxDom', 'rxjs#^7.5.6'],
+ *          displayLoadingScreen: true
+ *      });
+ *      const vDOM = {
+ *          tag: 'div',
+ *          innerText: {
+ *              source$: rxjs.timer(0, 1000),
+ *              vdomMap: (_) => 'It is : ' + new Date().toLocaleString()
+ *          }
+ *      };
+ *      document.getElementById('content').appendChild(rxDom.render(vDOM));
+ *   </script>
+ * </html>
+ * -->`
+ *     const url = '/applications/@youwol/js-playground/latest?content='+encodeURIComponent(src.substring(4,src.length-4))
+ *     document.getElementById('iFrameExample_RxAttribute').setAttribute("src",url);
+ * </script>
  *
  * @template Target the type of the target attribute, e.g.:
  * * `string` for attributes `id`, `class`, `src`, *etc*.
