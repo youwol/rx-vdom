@@ -73,6 +73,28 @@ import { ResolvedHTMLElement, RxChild } from '../../lib/api'
     const _: VirtualDOM<'div'> = {
         tag: 'div',
         children: [
+            // @ts-expect-error -- no tag
+            {
+                source$: of('https://foo.com'),
+                vdomMap: (href) => {
+                    type _ = Assert<IsExact<typeof href, string>>
+                    return {
+                        // can not catch this error like that
+                        href,
+                        // and this one neither
+                        foo: 5,
+                    }
+                },
+            } as RxChild<string, VirtualDOM<'a'>>,
+        ],
+    }
+}
+
+{
+    // RxChild, RxChild type hints KO: tag mismatch
+    const _: VirtualDOM<'div'> = {
+        tag: 'div',
+        children: [
             // @ts-expect-error -- 'b' is not 'a'
             {
                 source$: of('https://foo.com'),

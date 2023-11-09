@@ -1,6 +1,29 @@
-import { VirtualDOM } from '../../lib'
+import { SupportedTags, VirtualDOM } from '../../lib'
 import { of } from 'rxjs'
-import { AssertFalse, AssertTrue as Assert, Has } from 'conditional-type-checks'
+import { AssertTrue as Assert, Has, IsExact } from 'conditional-type-checks'
+import { AnyVirtualDOM, AttributeLike } from '../../lib/api'
+
+{
+    // virtualDOM OK
+    const _: VirtualDOM<'div'> = {
+        tag: 'div',
+        children: [
+            {
+                tag: 'a',
+                href: of('https://foo.com'),
+                onclick: (ev) => {
+                    type _ = Assert<IsExact<typeof ev, MouseEvent>>
+                },
+                children: [
+                    {
+                        tag: 'blockquote',
+                        cite: 'author',
+                    },
+                ],
+            },
+        ],
+    }
+}
 
 {
     // Wrong tag check
@@ -96,13 +119,19 @@ import { AssertFalse, AssertTrue as Assert, Has } from 'conditional-type-checks'
 }
 
 {
-    // connectedCallback KO
-    const _: VirtualDOM<'b'> = {
-        tag: 'b',
+    // retrieving attributes
+    const _: VirtualDOM<'a'> = {
+        tag: 'a',
         innerText: 'foo',
-        connectedCallback: (elem) => {
-            // href is not available on 'b'
-            type _ = AssertFalse<Has<typeof elem, { href: string }>>
-        },
+        href: 'https://foo.com',
     }
+    type _0 = Assert<IsExact<typeof _.innerText, AttributeLike<string>>>
+    type _1 = Assert<IsExact<typeof _.href, AttributeLike<string>>>
+    type _2 = Assert<IsExact<typeof _.tag, 'a'>>
+}
+
+{
+    // Tests on AnyVirtualDOM
+    type _0 = Assert<IsExact<AnyVirtualDOM['innerText'], AttributeLike<string>>>
+    type _1 = Assert<IsExact<AnyVirtualDOM['tag'], SupportedTags>>
 }
