@@ -480,7 +480,11 @@ export type RxAttribute<
  *
  * @template TDomain type of the domain data (conveys by the `source$` observable).
  */
-export type RxChild<TDomain = unknown> = {
+export type RxChild<
+    TDomain = unknown,
+    TVdomMap extends AnyVirtualDOM = AnyVirtualDOM,
+    TWrapped extends AnyVirtualDOM = TVdomMap,
+> = {
     /**
      * Source of domain data.
      */
@@ -490,7 +494,7 @@ export type RxChild<TDomain = unknown> = {
      * Mapping function between domain data and associated {@link VirtualDOM}.
      * @param domainData domainData emitted by the `source$`.
      */
-    vdomMap: (domainData: TDomain) => AnyVirtualDOM
+    vdomMap: (domainData: TDomain) => TVdomMap
 
     /**
      * Virtual DOM displayed until a first data is emitted by `source$`.
@@ -503,7 +507,7 @@ export type RxChild<TDomain = unknown> = {
      *
      * @param domValue value of the attribute returned by `vdomMap`.
      */
-    wrapper?: (domValue: AnyVirtualDOM) => AnyVirtualDOM
+    wrapper?: (domValue: TVdomMap) => TWrapped
 
     /**
      * Provide a handle to execute side effects. This is executed just after the new child has been updated
@@ -511,7 +515,9 @@ export type RxChild<TDomain = unknown> = {
      * @param element the inserted child along with the domain data that was originally
      * emitted by `source$`.
      */
-    sideEffects?: (element: ResolvedHTMLElement<TDomain>) => void
+    sideEffects?: (
+        element: ResolvedHTMLElement<TDomain, TWrapped['tag']>,
+    ) => void
 }
 
 /**
