@@ -483,7 +483,7 @@ export type RxAttribute<
 export type RxChild<
     TDomain = unknown,
     TVdomMap extends AnyVirtualDOM = AnyVirtualDOM,
-    TWrapped extends AnyVirtualDOM = TVdomMap,
+    TVdomFinal extends AnyVirtualDOM = TVdomMap,
 > = {
     /**
      * Source of domain data.
@@ -507,7 +507,7 @@ export type RxChild<
      *
      * @param domValue value of the attribute returned by `vdomMap`.
      */
-    wrapper?: (domValue: TVdomMap) => TWrapped
+    wrapper?: (domValue: TVdomMap) => TVdomFinal
 
     /**
      * Provide a handle to execute side effects. This is executed just after the new child has been updated
@@ -516,7 +516,7 @@ export type RxChild<
      * emitted by `source$`.
      */
     sideEffects?: (
-        element: ResolvedHTMLElement<TDomain, TWrapped['tag']>,
+        element: ResolvedHTMLElement<TDomain, TVdomFinal['tag']>,
     ) => void
 }
 
