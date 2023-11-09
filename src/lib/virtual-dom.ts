@@ -11,12 +11,14 @@ import {
 import { SupportedTags } from './factory'
 
 /**
- * VirtualDOM mirrors the characteristics and structure of an HTML DOM element with the ability
- * for its attributes and children to be supplied through RxJS observables.
+ * # Introduction
  *
- * This introduction of observable-based values into the DOM opens up powerful opportunities for expressing reactivity.
- * Moreover, when compared to other frameworks like Angular and React, there is an efficiency advantage because updates
- * are explicit, eliminating the need for time-consuming calculations of differences and change detection.
+ * VirtualDOM mirrors the characteristics and structure of an HTML DOM element with the ability
+ * for its attributes and children to be supplied through the concept of **observable** (from reactive programing).
+ *
+ * > The library has been originally designed to be supported by the reactive programming primitives provided by
+ * [RxJS](https://rxjs.dev/). Others solutions can be used as long as the required {@link Observable} &
+ * {@link Subscription} interfaces' implementation are provided.
  *
  * Virtual DOMs can be transformed into actual HTML elements using the {@link render} function.
  *
@@ -58,8 +60,10 @@ import { SupportedTags } from './factory'
  * by {@link ExposedMembers}.
  * *  They introduce additional lifecycle hooks.
  *
- * > The definition of a virtual DOM doesn't mandate the use of the `@youwol/rx-vdom` library.
+ * > The definition of a virtual DOM doesn't require the `@youwol/rx-vdom` library.
  * Only libraries responsible for rendering virtual DOMs require the `@youwol/rx-vdom` dependency.
+ *
+ * # Type safety
  *
  * A significant focus has been placed on delivering comprehensive type checking for virtual DOM elements
  *  in alignment with their corresponding HTMLElements.

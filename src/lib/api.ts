@@ -325,10 +325,10 @@ export type ChildrenTypesOptionMap<TDomain> = {
 /**
  * Extract the attributes & methods of an HTMLElement of given tag that are exposed in {@link VirtualDOM}.
  * It includes:
- * *  most of the properties of primitive types (`string`, `number`, `boolean`), only a few restriction provided by
- * {@link FilterHTMLMembers} are used
+ * *  most of the writable properties of primitive types (`string`, `number`, `boolean`),
+ * only a few restriction (see {@link FilterHTMLMembers}) are used.
  * (essentially to provide a lighter API, see  `tag`/`tagName`, and `class`/`className`).
- * *  all the signal handlers: any methods starting with the prefix `on` (e.g. `onclick`, `onmousedown`, *etc*).
+ * *  all the signal handlers: any methods starting with the prefix `on` (e.g. `onclick`, `onmousedown`, *etc.*).
  *
  * @template Tag the `tag` of the DOM element.
  */
