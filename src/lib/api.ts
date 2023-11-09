@@ -7,7 +7,10 @@ import { RxHTMLElement, VirtualDOM } from './virtual-dom'
 import { SupportedTags } from './factory'
 import { ReactiveTrait } from './core'
 import { WritablePart } from './type-utils'
-
+import type {
+    Observable as ObservableRxjs,
+    Subscription as SubscriptionRxjs,
+} from 'rxjs'
 /**
  * Common API of all {@link RxHTMLElement}.
  */
@@ -16,16 +19,12 @@ export class RxElementTrait extends ReactiveTrait(HTMLElement) {}
 /**
  * Required interface for Rx concept of 'Observable', as defined by RxJS.
  */
-export interface Observable<_T> {
-    subscribe: (...p: unknown[]) => Subscription
-}
+export type Observable<T> = Pick<ObservableRxjs<T>, 'subscribe'>
 
 /**
  * Required interface for Rx concept of 'Subscription', as defined by RxJS.
  */
-export interface Subscription {
-    unsubscribe: () => void
-}
+export type Subscription = Pick<SubscriptionRxjs, 'unsubscribe'>
 
 /**
  * Type union of all possible virtual DOM types (the {@link VirtualDOM} `tag` attribute).
