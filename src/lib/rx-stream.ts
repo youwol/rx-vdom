@@ -14,7 +14,7 @@ import {
  *
  * @param TDomain the domain data type
  * @param TDom the DOM data type: either :
- *     - {@link AttributeType} for attributes
+ *     - {@link SupportedHTMLAttributeType} for attributes
  *     - {@link VirtualDOM} for child
  *     - list of {@link VirtualDOM}> for children
  *
@@ -291,14 +291,3 @@ export class RxStreamSync<TDomain> extends RxStreamChildren<TDomain> {
         )
     }
 }
-
-/**
- * Type alias for attributes in {@link VirtualDOM}.
- *
- * @category Reactive Attribute
- */
-export type AttributeType =
-    | number
-    | string
-    | boolean
-    | { [key: string]: number | string | boolean }

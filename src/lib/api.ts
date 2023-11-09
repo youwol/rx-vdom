@@ -38,10 +38,10 @@ export type AnyVirtualDOM = VirtualDOMTagNameMap[keyof VirtualDOMTagNameMap]
 /**
  * Union of the types allowed to define an attribute in a {@link VirtualDOM}.
  */
-export type AttributeLike<Target> =
+export type AttributeLike<Target extends SupportedHTMLAttributeType> =
     | Target
     | Observable<Target>
-    | RxAttribute<Target>
+    | RxAttribute<unknown, Target>
 
 /**
  * The attributes of any `HTMLElement` that should not be mapped into a {@link VirtualDOM} attribute
@@ -431,13 +431,17 @@ export type ResolvedHTMLElement<
  *     document.getElementById('iFrameExample_RxAttribute').setAttribute("src",url);
  * </script>
  *
- * @template Target the type of the target attribute, e.g.:
- * * `string` for attributes `id`, `class`, `src`, *etc*.
- * * `number` for attributes `width`, `height`, `min`, `max`, *etc*.
- * * `boolean` for attributes `disabled`, `checked`, `readonly`, *etc*.
  * @template TDomain type of the domain data (conveys by the `source$` observable)
+ * @template Target the type of the target attribute, e.g.:
+ * * `string` for attributes `id`, `class`, `src`, *etc.*.
+ * * `number` for attributes `width`, `height`, `min`, `max`, *etc.*.
+ * * `boolean` for attributes `disabled`, `checked`, `readonly`, *etc.*.
+ * * `{ [k: string]: string }` for e.g. style.
  */
-export type RxAttribute<Target, TDomain = unknown> = {
+export type RxAttribute<
+    TDomain = unknown,
+    Target extends SupportedHTMLAttributeType = SupportedHTMLAttributeType,
+> = {
     /**
      * Source of domain data.
      */
@@ -519,6 +523,15 @@ export type RxChild<TDomain = unknown> = {
 export type RxChildren<Policy extends ChildrenPolicy, TDomain = unknown> = {
     policy: Policy
 } & ChildrenTypesOptionMap<TDomain>[Policy]
+
+/**
+ * The supported attributes types of HTMLElement.
+ */
+export type SupportedHTMLAttributeType =
+    | string
+    | number
+    | boolean
+    | { [k: string]: string }
 
 /**
  * Mapping between the possible tag name as defined in `HTMLElementTagNameMap` and the associated {@link VirtualDOM}.

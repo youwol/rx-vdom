@@ -1,6 +1,5 @@
 import { CustomElementsMap, SupportedTags } from './factory'
 import {
-    AttributeType,
     instanceOfStream,
     RxStream,
     instanceOfChildrenStream,
@@ -11,6 +10,7 @@ import { VirtualDOM, RxHTMLElement } from './virtual-dom'
 import {
     AnyVirtualDOM,
     AttributeLike,
+    SupportedHTMLAttributeType,
     ChildLike,
     ChildrenPolicy,
     Observable,
@@ -63,8 +63,8 @@ const specialBindings = {
 function isInstanceOfObservable(d: unknown): d is Observable<unknown> {
     return d && (d as Observable<unknown>).subscribe !== undefined
 }
-function isInstanceOfRxAttribute(d: unknown): d is RxAttribute<unknown> {
-    return d && (d as RxAttribute<unknown>).source$ !== undefined
+function isInstanceOfRxAttribute(d: unknown): d is RxAttribute {
+    return d && (d as RxAttribute).source$ !== undefined
 }
 function isInstanceOfRxChild(d: unknown): d is RxChild {
     return d && (d as RxChild).source$ !== undefined
@@ -74,10 +74,15 @@ function isInstanceOfRxChildren(
 ): d is RxChildren<ChildrenPolicy, unknown> {
     return d && (d as RxChildren<ChildrenPolicy, unknown>).source$ !== undefined
 }
+
+type ConvertedAttributeLike =
+    | SupportedHTMLAttributeType
+    | RxStream<unknown, SupportedHTMLAttributeType>
+
 function extractRxStreams<Tag extends SupportedTags>(
     vDom: Readonly<VirtualDOM<Tag>>,
 ): {
-    attributes: [string, AttributeType | RxStream<unknown>][]
+    attributes: [string, ConvertedAttributeLike][]
     children:
         | (AnyVirtualDOM | HTMLElement | RxStream<unknown, AnyVirtualDOM>)[]
         | RxStream<unknown, AnyVirtualDOM[]>
@@ -92,23 +97,36 @@ function extractRxStreams<Tag extends SupportedTags>(
             k !== 'disconnectedCallback',
     )
 
-    const attributes = allAttributes.map(
-        ([k, attribute]: [string, AttributeLike<unknown>]) => {
+    const attributes: [string, ConvertedAttributeLike][] = allAttributes.map(
+        ([k, attribute]: [
+            string,
+            AttributeLike<SupportedHTMLAttributeType>,
+        ]) => {
             if (isInstanceOfObservable(attribute)) {
-                return [k, new RxStream(attribute, (d) => d, {})]
+                return [
+                    k,
+                    new RxStream<
+                        SupportedHTMLAttributeType,
+                        SupportedHTMLAttributeType
+                    >(attribute, (d) => d, {}),
+                ]
             }
             if (isInstanceOfRxAttribute(attribute)) {
                 return [
                     k,
-                    new RxStream(attribute.source$, attribute.vdomMap, {
-                        sideEffects: attribute.sideEffects,
-                        untilFirst: attribute.untilFirst,
-                    }),
+                    new RxStream<unknown, SupportedHTMLAttributeType>(
+                        attribute.source$,
+                        attribute.vdomMap,
+                        {
+                            sideEffects: attribute.sideEffects,
+                            untilFirst: attribute.untilFirst,
+                        },
+                    ),
                 ]
             }
             return [k, attribute]
         },
-    ) as [string, AttributeType | RxStream<unknown>][]
+    )
 
     if (!vDom.children) {
         return { attributes, children: [] }
@@ -202,19 +220,21 @@ export function ReactiveTrait<
 
             attributes
                 .filter(([_, v]) => !instanceOfStream(v))
-                .forEach(([k, v]: [k: string, v: AttributeType]) => {
-                    this.applyAttribute(k, v)
-                })
+                .forEach(
+                    ([k, v]: [k: string, v: SupportedHTMLAttributeType]) => {
+                        this.applyAttribute(k, v)
+                    },
+                )
 
             attributes
                 .filter(([_, v]) => instanceOfStream(v))
                 .forEach(
                     ([k, attr$]: [
                         k: string,
-                        attr$: RxStream<AttributeType>,
+                        attr$: RxStream<SupportedHTMLAttributeType>,
                     ]) => {
                         this.subscriptions.push(
-                            attr$.subscribe((v: AttributeType) => {
+                            attr$.subscribe((v: SupportedHTMLAttributeType) => {
                                 this.applyAttribute(k, v)
                                 return this as unknown as RxHTMLElement<Tag>
                             }, this),
@@ -284,7 +304,7 @@ export function ReactiveTrait<
         /**
          * @ignore
          */
-        applyAttribute(name: string, value: AttributeType) {
+        applyAttribute(name: string, value: SupportedHTMLAttributeType) {
             const binding = specialBindings[name]
                 ? () => specialBindings[name](this, value)
                 : () => (this[name] = value)
