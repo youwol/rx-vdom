@@ -27,7 +27,7 @@ const customElementPrefix = `${setup.name.split('/')[1]}-${setup.apiVersion}`
 class HTMLPlaceHolderElement extends HTMLElement {
     private currentElement: HTMLElement
 
-    initialize(stream$: RxStream<AnyVirtualDOM>): Subscription {
+    initialize(stream$: RxStream<unknown, AnyVirtualDOM>): Subscription {
         this.currentElement = this
 
         const apply = (vDom: AnyVirtualDOM): RxElementTrait => {
