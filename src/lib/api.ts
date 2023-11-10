@@ -57,9 +57,7 @@ export type AttributeLike<Target extends AnyHTMLAttribute> =
 
 /**
  * The attributes of any `HTMLElement` that should not be mapped into a {@link VirtualDOM} attribute
- * (see {@link ExposedMembers}).
- *
- * A property of any `HTMLElement` is considered an attribute if its type is in ``` string | boolean | number ```
+ * (see {@link FilterHTMLMembers}).
  *
  * */
 export type BlackListed = 'toString'
@@ -351,10 +349,10 @@ export type ChildrenTypesOptionMap<TDomain> = {
 export type CustomAttribute = { [key: string]: string | boolean | number }
 
 /**
- * Extract the attributes & methods of an HTMLElement of given tag that are exposed in {@link VirtualDOM}.
+ * Extract the attributes of an HTMLElement of given tag that are exposed in {@link VirtualDOM}.
  * It includes:
  * *  most of the writable properties of primitive types (`string`, `number`, `boolean`),
- * only a few restriction (see {@link FilterHTMLMembers}) are used.
+ * only a few restriction (see {@link FilterHTMLMembers}) are used
  * (essentially to provide a lighter API, see  `tag`/`tagName`, and `class`/`className`).
  * *  all the signal handlers: any methods starting with the prefix `on` (e.g. `onclick`, `onmousedown`, *etc.*).
  *
@@ -397,7 +395,7 @@ export type FilterHTMLMembers<Tag extends SupportedTags> = Omit<
 >
 
 /**
- * Describes an update when a DOM elements has been updated when using {@link RxChildren}
+ * Describes an update when DOM elements has been updated when using {@link RxChildren}
  * with policies `append` or `sync`.
  *
  */
@@ -550,6 +548,8 @@ export type RxAttribute<
  * </script>
  *
  * @template TDomain type of the domain data (conveys by the `source$` observable).
+ * @template TVdomMap type of the virtual DOM returned value of `vdomMap`.
+ * @template TVdomFinal type of the virtual DOM inserted in the DOM.
  */
 export type RxChild<
     TDomain = unknown,
@@ -593,6 +593,11 @@ export type RxChild<
 
 /**
  * Full specification of reactive children.
+ *
+ * Example regarding the different policies can be found in the following documentations:
+ * *  **replace**: {@link ChildrenOptionsReplace}
+ * *  **append**: {@link ChildrenOptionsAppend}
+ * *  **sync**: {@link ChildrenOptionsSync}
  *
  * @template Policy policy to be used, either `replace`, `append` or `sync`, see {@link ChildrenPolicy}.
  * @template TDomain type of the domain data (conveys by the `source$` observable).

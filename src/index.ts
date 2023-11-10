@@ -5,9 +5,10 @@
  * Key features of the library includes:
  * *  **Compact Size & Dependency Free**: The compressed bundle size is less than 4kB. Reactivity,
  * powered by reactive programming primitives, is opted into by the consumer
- * (usually through the use of [RxJS](https://rxjs.dev/).
- * *  **Simple & Consistent API**: The API surface essentially comes down to 4 data-structures:
+ * (usually with [RxJS](https://rxjs.dev/)).
+ * *  **Simple & Consistent API**: The API surface essentially comes down to 5 data-structures:
  *      *  {@link API.RxAttribute}: definition of a reactive attribute.
+ *      *  {@link API.RxChild}: definition of a reactive child.
  *      *  {@link API.ChildrenOptionsAppend}: definition of an append only reactive children list.
  *      *  {@link API.ChildrenOptionsReplace}: definition of a replacement only reactive children list.
  *      *  {@link API.ChildrenOptionsSync}: definition of a synchronized reactive children list.

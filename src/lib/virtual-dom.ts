@@ -71,18 +71,23 @@ import { factory, SupportedTags } from './factory'
  *  It results in an enhanced development environment when using typescript, e.g.:
  * * DOM's attributes awareness
  *
- * ![image](/api/assets-gateway/raw/package/QHlvdXdvbC9yeC12ZG9t/0.1.0-wip/assets/error-<b>-no-href.png)
+ * ![image](/api/assets-gateway/raw/package/QHlvdXdvbC9yeC12ZG9t/1.0.0-wip/assets/error-<b>-no-href.png)
  *
  * * DOM's attributes type checking & inlined help
  *
- * ![image](/api/assets-gateway/raw/package/QHlvdXdvbC9yeC12ZG9t/0.1.0-wip/assets/error-wrong-type.png)
+ * ![image](/api/assets-gateway/raw/package/QHlvdXdvbC9yeC12ZG9t/1.0.0-wip/assets/error-wrong-type.png)
+ *
+ *
+ * * style's attributes type checking & inlined help
+ *
+ * ![image](/api/assets-gateway/raw/package/QHlvdXdvbC9yeC12ZG9t/1.0.0-wip/assets/style-wrong-type.png)
  *
  *
  * @template Tag the `tag` of the DOM element.
  */
 export type VirtualDOM<Tag extends SupportedTags> = {
     /**
-     * The tag of the element, corresponds to the template parameter `Tag`.
+     * The tag of the element, equivalent of the `tagName` attribute of `HTMLElement`.
      */
     tag: Tag
 
@@ -148,7 +153,8 @@ export type VirtualDOM<Tag extends SupportedTags> = {
 
 /**
  * The actual HTMLElement rendered from a {@link VirtualDOM}.
- * It implements the regular HTMLElement API of corresponding tag on top of which reactive trait is added.
+ * It implements the regular HTMLElement API of corresponding tag on top of which
+ * {@link RxElementTrait | reactive trait} is added.
  *
  */
 export type RxHTMLElement<Tag extends SupportedTags> = RxElementTrait &
