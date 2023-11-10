@@ -3,6 +3,7 @@
  *
  * @module
  */
+import type * as CSS from 'csstype'
 import { RxHTMLElement, VirtualDOM } from './virtual-dom'
 import { SupportedTags } from './factory'
 import { ReactiveTrait } from './core'
@@ -537,7 +538,7 @@ export type SupportedHTMLAttributeType =
     | string
     | number
     | boolean
-    | { [k: string]: string }
+    | CSS.Properties
 
 /**
  * Mapping between the possible tag name as defined in `HTMLElementTagNameMap` and the associated {@link VirtualDOM}.

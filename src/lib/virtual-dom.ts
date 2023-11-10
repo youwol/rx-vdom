@@ -9,7 +9,7 @@ import {
     Subscription,
 } from './api'
 import { factory, SupportedTags } from './factory'
-
+import type * as CSS from 'csstype'
 /**
  * # Introduction
  *
@@ -93,7 +93,7 @@ export type VirtualDOM<Tag extends SupportedTags> = {
     /**
      * The style associated to the element.
      */
-    style?: AttributeLike<{ [k: string]: string }>
+    style?: AttributeLike<CSS.Properties>
 
     /**
      * Children of the element.
