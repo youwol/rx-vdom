@@ -186,6 +186,7 @@ function extractRxStreams<Tag extends SupportedTags>(
             vDom.children.source$,
             vDom.children.vdomMap,
             {
+                comparisonOperator: vDom.children.comparisonOperator,
                 sideEffects: vDom.children.sideEffects,
                 orderOperator: vDom.children.orderOperator,
             },
