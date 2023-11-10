@@ -1,4 +1,4 @@
-import { render } from './core'
+import { render } from './virtual-dom'
 import {
     AnyVirtualDOM,
     ChildrenOptionsAppend,

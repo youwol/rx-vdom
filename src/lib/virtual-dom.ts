@@ -8,7 +8,7 @@ import {
     // eslint-disable-next-line unused-imports/no-unused-imports -- used for documentation
     Subscription,
 } from './api'
-import { SupportedTags } from './factory'
+import { factory, SupportedTags } from './factory'
 
 /**
  * # Introduction
@@ -122,3 +122,27 @@ export type VirtualDOM<Tag extends SupportedTags> = {
  */
 export type RxHTMLElement<Tag extends SupportedTags> = RxElementTrait &
     HTMLElementTagNameMap[Tag]
+
+/**
+ * Transform a {@link VirtualDOM} into a {@link RxHTMLElement}.
+ *
+ * >  The HTML element returned is initialized **only when attached** to the document's DOM tree.
+ *
+ * @param vDom the virtual DOM
+ * @returns the corresponding DOM element
+ */
+export function render<Tag extends SupportedTags>(
+    vDom: VirtualDOM<Tag>,
+): RxHTMLElement<Tag> {
+    if (vDom == undefined) {
+        console.error('Got an undefined virtual DOM, return empty div')
+        return undefined
+    }
+    const element: RxHTMLElement<Tag> = factory<Tag>(vDom.tag)
+    // why 'never', could have been 'any' but my IDE suggest never is better :/
+    // The problem is that somehow the signature of the method 'initializeVirtualDom' is doubled:
+    //  {(vDom: VirtualDOM<Tag>): void, (vDom: VirtualDOM<SupportedTags>): void}
+    // I don't get why.
+    element.initializeVirtualDom(vDom as never)
+    return element
+}
