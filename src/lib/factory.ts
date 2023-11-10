@@ -14,10 +14,9 @@ export const customElementPrefix = `${setup.name.split('/')[1]}-${
  * *  `search`:  Causes a runtime error due to instantiation issues in Jest tests.
  * *  `form`: Triggers compile-time errors, the cause of which is not currently understood.
  * */
-export type SupportedTags = keyof Omit<
-    HTMLElementTagNameMap,
-    'dialog' | 'search' | 'form'
->
+export type SupportedTags = 'Prod' extends 'Prod'
+    ? keyof Omit<HTMLElementTagNameMap, 'dialog' | 'search' | 'form'>
+    : keyof Pick<HTMLElementTagNameMap, DevTags>
 
 export function factory<Tag extends SupportedTags>(
     tag: Tag,
@@ -36,7 +35,7 @@ export function factory<Tag extends SupportedTags>(
 /**
  * Taken from lib.dom.ts (HTMLElementTagNameMap).
  */
-export const CustomElementsMap: Record<SupportedTags, typeof HTMLElement> = {
+export const CustomElementsMap = {
     a: HTMLAnchorElement,
     abbr: HTMLElement,
     address: HTMLElement,
@@ -148,6 +147,50 @@ export const CustomElementsMap: Record<SupportedTags, typeof HTMLElement> = {
     video: HTMLVideoElement,
     wbr: HTMLElement,
 }
+
 if (HTMLDialogElement) {
     CustomElementsMap['dialog'] = HTMLDialogElement
 }
+
+type DevTags = 'a' | 'b' | 'div' | 'blockquote'
+/*
+    | 'button'
+    | 'canvas'
+    | 'code'
+    | 'figcaption'
+    | 'figure'
+    | 'footer'
+    | 'h1'
+    | 'h2'
+    | 'h3'
+    | 'h4'
+    | 'h5'
+    | 'h6'
+    | 'head'
+    | 'header'
+    | 'i'
+    | 'iframe'
+    | 'img'
+    | 'input'
+    | 'label'
+    | 'legend'
+    | 'li'
+    | 'link'
+    | 'p'
+    | 'picture'
+    | 'progress'
+    | 'script'
+    | 'section'
+    | 'select'
+    | 'span'
+    | 'strong'
+    | 'style'
+    | 'table'
+    | 'tbody'
+    | 'td'
+    | 'textarea'
+    | 'th'
+    | 'thead'
+    | 'u'
+    | 'ul'
+*/
