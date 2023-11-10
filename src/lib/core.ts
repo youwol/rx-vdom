@@ -222,9 +222,6 @@ export function ReactiveTrait<
          * @ignore
          */
         connectedCallback() {
-            if (!this.vDom) {
-                return
-            }
             const { attributes, children } = extractRxStreams<Tag>(this.vDom)
 
             attributes
