@@ -14,7 +14,7 @@ import { VirtualDOM, RxHTMLElement, render } from './virtual-dom'
 import {
     AnyVirtualDOM,
     AttributeLike,
-    SupportedHTMLAttributeType,
+    AnyHTMLAttribute,
     ChildLike,
     ChildrenPolicy,
     Observable,
@@ -78,8 +78,8 @@ function isInstanceOfRxChildren(
 }
 
 type ConvertedAttributeLike =
-    | SupportedHTMLAttributeType
-    | RxStream<unknown, SupportedHTMLAttributeType>
+    | AnyHTMLAttribute
+    | RxStream<unknown, AnyHTMLAttribute>
 
 type ConvertedChildLike =
     | AnyVirtualDOM
@@ -105,23 +105,21 @@ function extractRxStreams<Tag extends SupportedTags>(
     )
 
     const attributes: [string, ConvertedAttributeLike][] = allAttributes.map(
-        ([k, attribute]: [
-            string,
-            AttributeLike<SupportedHTMLAttributeType>,
-        ]) => {
+        ([k, attribute]: [string, AttributeLike<AnyHTMLAttribute>]) => {
             if (isInstanceOfObservable(attribute)) {
                 return [
                     k,
-                    new RxStream<
-                        SupportedHTMLAttributeType,
-                        SupportedHTMLAttributeType
-                    >(attribute, (d) => d, {}),
+                    new RxStream<AnyHTMLAttribute, AnyHTMLAttribute>(
+                        attribute,
+                        (d) => d,
+                        {},
+                    ),
                 ]
             }
             if (isInstanceOfRxAttribute(attribute)) {
                 return [
                     k,
-                    new RxStream<unknown, SupportedHTMLAttributeType>(
+                    new RxStream<unknown, AnyHTMLAttribute>(
                         attribute.source$,
                         attribute.vdomMap,
                         {
@@ -230,21 +228,19 @@ export function ReactiveTrait<
 
             attributes
                 .filter(([_, v]) => !instanceOfStream(v))
-                .forEach(
-                    ([k, v]: [k: string, v: SupportedHTMLAttributeType]) => {
-                        this.applyAttribute(k, v)
-                    },
-                )
+                .forEach(([k, v]: [k: string, v: AnyHTMLAttribute]) => {
+                    this.applyAttribute(k, v)
+                })
 
             attributes
                 .filter(([_, v]) => instanceOfStream(v))
                 .forEach(
                     ([k, attr$]: [
                         k: string,
-                        attr$: RxStream<SupportedHTMLAttributeType>,
+                        attr$: RxStream<AnyHTMLAttribute>,
                     ]) => {
                         this.subscriptions.push(
-                            attr$.subscribe((v: SupportedHTMLAttributeType) => {
+                            attr$.subscribe((v: AnyHTMLAttribute) => {
                                 this.applyAttribute(k, v)
                                 return this as unknown as RxHTMLElement<Tag>
                             }, this),
@@ -312,7 +308,7 @@ export function ReactiveTrait<
         /**
          * @ignore
          */
-        applyAttribute(name: string, value: SupportedHTMLAttributeType) {
+        applyAttribute(name: string, value: AnyHTMLAttribute) {
             const binding = specialBindings[name]
                 ? () => specialBindings[name](this, value)
                 : () => (this[name] = value)

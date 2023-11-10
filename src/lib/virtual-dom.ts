@@ -7,9 +7,10 @@ import {
     Observable,
     // eslint-disable-next-line unused-imports/no-unused-imports -- used for documentation
     Subscription,
+    CustomAttribute,
+    CSSAttribute,
 } from './api'
 import { factory, SupportedTags } from './factory'
-import type * as CSS from 'csstype'
 /**
  * # Introduction
  *
@@ -91,9 +92,18 @@ export type VirtualDOM<Tag extends SupportedTags> = {
     class?: AttributeLike<string>
 
     /**
-     * The style associated to the element.
+     * The style associated to the element, typically for a static value:
+     * ```
+     * {
+     *      tag: 'div',
+     *      style: {
+     *          backgroundColor: 'blue'
+     *      }
+     * }
+     * ```
+     * See comment regarding hyphen in properties name in {@link CSSAttribute}.
      */
-    style?: AttributeLike<CSS.Properties>
+    style?: AttributeLike<CSSAttribute>
 
     /**
      * Children of the element.

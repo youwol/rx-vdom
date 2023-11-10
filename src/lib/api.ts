@@ -28,6 +28,17 @@ export type Observable<T> = Pick<ObservableRxjs<T>, 'subscribe'>
 export type Subscription = Pick<SubscriptionRxjs, 'unsubscribe'>
 
 /**
+ * The union of all possible virtual DOM's **static** attribute types.
+ * Corresponding **reactive** attribute types are constructed on top of them, see {@link AttributeLike}.
+ */
+export type AnyHTMLAttribute =
+    | string
+    | number
+    | boolean
+    | CSSAttribute
+    | CustomAttribute
+
+/**
  * Type union of all possible virtual DOM types (the {@link VirtualDOM} `tag` attribute).
  * i.e.:
  * ```
@@ -39,7 +50,7 @@ export type AnyVirtualDOM = VirtualDOMTagNameMap[keyof VirtualDOMTagNameMap]
 /**
  * Union of the types allowed to define an attribute in a {@link VirtualDOM}.
  */
-export type AttributeLike<Target extends SupportedHTMLAttributeType> =
+export type AttributeLike<Target extends AnyHTMLAttribute> =
     | Target
     | Observable<Target>
     | RxAttribute<unknown, Target>
@@ -52,6 +63,14 @@ export type AttributeLike<Target extends SupportedHTMLAttributeType> =
  *
  * */
 export type BlackListed = 'toString'
+
+/**
+ * CSS attribute type, as defined by [csstype](https://github.com/frenic/csstype) library.
+ *
+ * > It is possible to substitute a target property name containing hyphens with uppercase letters in the virtual DOM.
+ * e.g. if `text-align='justify'` is expected in the real DOM, it can be provided as ```{textAlign: 'justify'}```
+ */
+export type CSSAttribute = CSS.Properties
 
 /**
  * Union of the types allowed to define a child in a {@link VirtualDOM}.
@@ -324,6 +343,14 @@ export type ChildrenTypesOptionMap<TDomain> = {
 }
 
 /**
+ * Custom attributes type.
+ *
+ * > It is possible to substitute a target property name containing hyphens with uppercase letters in the virtual DOM.
+ * e.g. if `aria-expanded='true'` is expected in the real DOM, it can be provided as ```{ariaExpanded: true}```.
+ */
+export type CustomAttribute = { [key: string]: string | boolean | number }
+
+/**
  * Extract the attributes & methods of an HTMLElement of given tag that are exposed in {@link VirtualDOM}.
  * It includes:
  * *  most of the writable properties of primitive types (`string`, `number`, `boolean`),
@@ -362,6 +389,8 @@ export type FilterHTMLMembers<Tag extends SupportedTags> = Omit<
     | 'tagName'
     | 'className'
     | 'children'
+    | 'style'
+    | 'customAttributes'
     | 'connectedCallback'
     | 'disconnectedCallback'
     | BlackListed
@@ -441,7 +470,7 @@ export type ResolvedHTMLElement<
  */
 export type RxAttribute<
     TDomain = unknown,
-    Target extends SupportedHTMLAttributeType = SupportedHTMLAttributeType,
+    Target extends AnyHTMLAttribute = AnyHTMLAttribute,
 > = {
     /**
      * Source of domain data.
@@ -530,15 +559,6 @@ export type RxChild<
 export type RxChildren<Policy extends ChildrenPolicy, TDomain = unknown> = {
     policy: Policy
 } & ChildrenTypesOptionMap<TDomain>[Policy]
-
-/**
- * The supported attributes types of HTMLElement.
- */
-export type SupportedHTMLAttributeType =
-    | string
-    | number
-    | boolean
-    | CSS.Properties
 
 /**
  * Mapping between the possible tag name as defined in `HTMLElementTagNameMap` and the associated {@link VirtualDOM}.

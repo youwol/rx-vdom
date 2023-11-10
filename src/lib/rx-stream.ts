@@ -14,7 +14,7 @@ import {
  *
  * @param TDomain the domain data type
  * @param TDom the DOM data type: either :
- *     - {@link SupportedHTMLAttributeType} for attributes
+ *     - {@link AnyHTMLAttribute} for attributes
  *     - {@link VirtualDOM} for child
  *     - list of {@link VirtualDOM}> for children
  *
