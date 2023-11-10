@@ -106,6 +106,27 @@ export type VirtualDOM<Tag extends SupportedTags> = {
     style?: AttributeLike<CSSAttribute>
 
     /**
+     * Definition of additional custom attributes.
+     * E.g. the attributes 'aria-label' & 'aria-expanded' in the following:
+     * ```
+     * <button aria-label="Close" aria-expanded="false"></button>
+     * ```
+     * would be represented in the (static) virtual DOM by:
+     * ```
+     * {
+     *      tag: 'button',
+     *      customAttributes: {
+     *          ariaLabel: 'Close',
+     *          ariaExpanded: false
+     *      }
+     * }
+     * ```
+     *
+     * See comment regarding hyphen in properties name in {@link CustomAttribute}.
+     */
+    customAttributes?: AttributeLike<CustomAttribute>
+
+    /**
      * Children of the element.
      */
     children?: ChildrenLike
