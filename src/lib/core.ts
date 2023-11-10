@@ -155,7 +155,7 @@ function extractRxStreams<Tag extends SupportedTags>(
         return { attributes, children }
     }
     if (!isInstanceOfRxChildren(vDom.children)) {
-        console.warn('Type of children unknown', vDom.children)
+        console.error('Type of children unknown', vDom.children)
         return { attributes, children: [] }
     }
     if (vDom.children.policy === 'replace') {
@@ -193,7 +193,7 @@ function extractRxStreams<Tag extends SupportedTags>(
         )
         return { attributes, children }
     }
-    console.warn('Unknown RxChildren policy', vDom.children)
+    console.error('Unknown RxChildren policy', vDom.children)
     return { attributes, children: [] }
 }
 
