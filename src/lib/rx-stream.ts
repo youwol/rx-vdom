@@ -171,7 +171,7 @@ export abstract class RxStreamChildren<TDomain> {
         const display = parentStyle.getPropertyValue('display')
         if (display !== 'flex' && display !== 'grid') {
             console.error(
-                'To enable dynamic re-ordering of elements in flux-view, parent element should have the css property ' +
+                'To enable dynamic re-ordering of elements in rx-vdom, parent element should have the css property ' +
                     "'display' set to 'flex' or 'grid'.",
                 parentElement,
             )
