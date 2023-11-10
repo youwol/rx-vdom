@@ -508,6 +508,47 @@ export type RxAttribute<
 /**
  * Full specification of a reactive child.
  *
+ * A typical example is as follows:
+ *
+ * <iframe id="iFrameExample_RxChild" src="" width="100%" height="550px"></iframe>
+ * <script>
+ *  const src = `<!--<!DOCTYPE html>
+ * <html lang="en">
+ *   <head><script src="https://webpm.org/^2.1.2/cdn-client.js"></script></head>
+ *
+ *   <body id="content"></body>
+ *
+ *   <script type="module">
+ *      const cdnClient = window['@youwol/cdn-client']
+ *      const { rxDom, rxjs } = await cdnClient.install({
+ *          modules: ['@youwol/rx-vdom as rxDom', 'rxjs#^7.5.6'],
+ *          displayLoadingScreen: true
+ *      });
+ *      const vDOM = {
+ *          tag: 'div',
+ *          children:[
+ *              {
+ *                  tag:'div',
+ *                  innerText: 'It is:'
+ *              },
+ *              // Following is the RxChild definition:
+ *              {
+ *                  source$: rxjs.timer(0, 1000),
+ *                  vdomMap: (_) => ({
+ *                      tag: 'span',
+ *                      innerText: new Date().toLocaleString()
+ *                  })
+ *              }
+ *          ]
+ *      };
+ *      document.getElementById('content').appendChild(rxDom.render(vDOM));
+ *   </script>
+ * </html>
+ * -->`
+ *     const url = '/applications/@youwol/js-playground/latest?content='+encodeURIComponent(src.substring(4,src.length-4))
+ *     document.getElementById('iFrameExample_RxChild').setAttribute("src",url);
+ * </script>
+ *
  * @template TDomain type of the domain data (conveys by the `source$` observable).
  */
 export type RxChild<
