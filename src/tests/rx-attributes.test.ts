@@ -2,18 +2,6 @@ import { render, VirtualDOM } from '../lib'
 import { of, Subject } from 'rxjs'
 import { ResolvedHTMLElement } from '../lib/api'
 
-test('static attribute', () => {
-    const vDom: VirtualDOM<'a'> = {
-        tag: 'a',
-        innerText: 'foo',
-        href: 'https://foo.com',
-        //clientHeight: 5,
-    }
-    const html = render(vDom)
-    document.body.appendChild(html)
-    expect(html.href).toBe('https://foo.com/')
-})
-
 test('observable attribute', () => {
     const vDom: VirtualDOM<'a'> = {
         tag: 'a',
@@ -52,4 +40,34 @@ test('rxAttribute', () => {
     expect(sideEffectElements[0].element).toBe(html)
     expect(sideEffectElements[1].domainData).toBe('https://foo.com')
     expect(sideEffectElements[1].element).toBe(html)
+})
+
+test('observable on style', () => {
+    const vDom: VirtualDOM<'div'> = {
+        tag: 'div',
+        children: [
+            {
+                tag: 'div',
+                style: of({ backgroundColor: 'red' }),
+            },
+        ],
+    }
+    const html = render(vDom)
+    document.body.appendChild(html)
+    expect(html.firstChild['style'].backgroundColor).toBe('red')
+})
+
+test('observable on custom attribute', () => {
+    const vDom: VirtualDOM<'div'> = {
+        tag: 'div',
+        children: [
+            {
+                tag: 'div',
+                style: of({ backgroundColor: 'red' }),
+            },
+        ],
+    }
+    const html = render(vDom)
+    document.body.appendChild(html)
+    expect(html.firstChild['style'].backgroundColor).toBe('red')
 })

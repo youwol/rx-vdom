@@ -7,6 +7,9 @@ import { AnyVirtualDOM, AttributeLike } from '../../lib/api'
     // virtualDOM OK
     const _: VirtualDOM<'div'> = {
         tag: 'div',
+        style: {
+            backgroundColor: 'red',
+        },
         children: [
             {
                 tag: 'a',
@@ -18,6 +21,9 @@ import { AnyVirtualDOM, AttributeLike } from '../../lib/api'
                     {
                         tag: 'blockquote',
                         cite: 'author',
+                        style: {
+                            color: 'black',
+                        },
                     },
                 ],
             },
@@ -36,11 +42,131 @@ import { AnyVirtualDOM, AttributeLike } from '../../lib/api'
 }
 
 {
+    // Missing tag check
+    // @ts-expect-error -- missing tag
+    const _: VirtualDOM<'b'> = {
+        innerText: 'foo',
+    }
+}
+
+{
+    // Missing tag nested check
+    const _: VirtualDOM<'div'> = {
+        tag: 'div',
+        innerText: 'foo',
+        children: [
+            // @ts-expect-error -- missing tag
+            {
+                innerText: 'foo',
+            },
+        ],
+    }
+}
+
+{
     // Wrong property's type
     const _: VirtualDOM<'div'> = {
         tag: 'div',
         // @ts-expect-error -- wrong type (should be string)
         innerText: 5,
+    }
+}
+
+{
+    // Wrong style's type
+    const _: VirtualDOM<'div'> = {
+        tag: 'div',
+        // @ts-expect-error -- wrong type (should be string)
+        style: 5,
+    }
+}
+
+{
+    // Wrong style's attribute key
+    const _: VirtualDOM<'div'> = {
+        tag: 'div',
+        children: [
+            {
+                tag: 'div',
+                style: {
+                    // @ts-expect-error -- property does not exist
+                    colour: 'white',
+                },
+            },
+        ],
+    }
+}
+
+{
+    // Wrong style's style with observable
+    const _: VirtualDOM<'div'> = {
+        tag: 'div',
+        children: [
+            {
+                tag: 'div',
+                // @ts-expect-error -- property does not exist
+                style: of({
+                    colour: 'white',
+                }),
+            },
+        ],
+    }
+}
+
+{
+    // Wrong custom attribue type
+    const _: VirtualDOM<'div'> = {
+        tag: 'div',
+        // @ts-expect-error -- wrong type
+        customAttributes: 5,
+    }
+}
+
+{
+    // Wrong custom attribute key
+    const _: VirtualDOM<'div'> = {
+        tag: 'div',
+        children: [
+            {
+                tag: 'div',
+                customAttributes: {
+                    // @ts-expect-error -- custom attribute can not be object
+                    foo: { bar: 'baz' },
+                },
+            },
+        ],
+    }
+}
+
+{
+    // Wrong custom attribute key using observable
+    const _: VirtualDOM<'div'> = {
+        tag: 'div',
+        children: [
+            {
+                tag: 'div',
+                customAttributes: {
+                    // @ts-expect-error -- custom attribute can not be object
+                    foo: of({ bar: 'baz' }),
+                },
+            },
+        ],
+    }
+}
+
+{
+    // Wrong style's attribute value
+    const _: VirtualDOM<'div'> = {
+        tag: 'div',
+        children: [
+            {
+                tag: 'div',
+                style: {
+                    // @ts-expect-error -- type error on value
+                    textAlign: 'middle',
+                },
+            },
+        ],
     }
 }
 
