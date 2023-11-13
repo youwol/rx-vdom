@@ -2,7 +2,8 @@
 const runTimeDependencies = {
     "externals": {},
     "includedInBundle": {
-        "@ungap/custom-elements": "1.2.0"
+        "@ungap/custom-elements": "1.2.0",
+        "csstype": "^2.6.0"
     }
 }
 const externals = {}
