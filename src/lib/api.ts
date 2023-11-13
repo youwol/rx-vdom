@@ -139,6 +139,9 @@ export type ChildrenLike =
  *     document.getElementById('iFrameExample_ChildrenOptionsAppend').setAttribute("src",url);
  * </script>
  *
+ * Additional examples can be found
+ * [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-children-append.test.ts).
+ *
  * @template TDomain type of the domain data (conveys by the `source$` observable).
  */
 export type ChildrenOptionsAppend<TDomain> = {
@@ -227,6 +230,9 @@ export type ChildrenOptionsAppend<TDomain> = {
  *     document.getElementById('iFrameExample_ChildrenOptionsReplace').setAttribute("src",url);
  * </script>
  *
+ * Additional examples can be found
+ * [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-children-replace.test.ts).
+ *
  * @template TDomain type of the domain data (conveys by the `source$` observable).
  */
 export type ChildrenOptionsReplace<TDomain> = {
@@ -313,6 +319,9 @@ export type ChildrenOptionsReplace<TDomain> = {
  *     const url = '/applications/@youwol/js-playground/latest?content='+encodeURIComponent(src.substring(4,src.length-4))
  *     document.getElementById('iFrameExample_ChildrenOptionsSync').setAttribute("src",url);
  * </script>
+ *
+ * Additional examples can be found
+ * [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-children-sync.test.ts).
  *
  * @template TDomain type of the domain data (conveys by the `source$` observable).
  */
@@ -497,6 +506,9 @@ export type ResolvedHTMLElement<
  *     document.getElementById('iFrameExample_RxAttribute').setAttribute("src",url);
  * </script>
  *
+ * Additional examples can be found
+ * [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-attributes.test.ts).
+ *
  * @template TDomain type of the domain data (conveys by the `source$` observable)
  * @template Target the type of the target attribute, e.g.:
  * * `string` for attributes `id`, `class`, `src`, *etc.*.
@@ -584,6 +596,8 @@ export type RxAttribute<
  *     const url = '/applications/@youwol/js-playground/latest?content='+encodeURIComponent(src.substring(4,src.length-4))
  *     document.getElementById('iFrameExample_RxChild').setAttribute("src",url);
  * </script>
+ *
+ * Additional examples can be found [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-child.test.ts).
  *
  * @template TDomain type of the domain data (conveys by the `source$` observable).
  * @template TVdomMap type of the virtual DOM returned value of `vdomMap`.
