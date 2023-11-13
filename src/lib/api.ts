@@ -359,14 +359,14 @@ export type CustomAttribute = { [key: string]: string | boolean | number }
  * @template Tag the `tag` of the DOM element.
  */
 export type ExposedMembers<Tag extends SupportedTags> = {
-    [Property in keyof FilterHTMLMembers<Tag>]: HTMLElementTagNameMap[Tag][Property] extends string
+    [Property in keyof FilterHTMLMembers<Tag>]: NativeHTMLElement<Tag>[Property] extends string
         ? AttributeLike<string>
-        : HTMLElementTagNameMap[Tag][Property] extends number
+        : NativeHTMLElement<Tag>[Property] extends number
         ? AttributeLike<number>
-        : HTMLElementTagNameMap[Tag][Property] extends boolean
+        : NativeHTMLElement<Tag>[Property] extends boolean
         ? AttributeLike<boolean>
         : Property extends `on${string}`
-        ? HTMLElementTagNameMap[Tag][Property]
+        ? NativeHTMLElement<Tag>[Property]
         : never
 }
 
@@ -382,7 +382,7 @@ export type ExposedMembers<Tag extends SupportedTags> = {
  * @template Tag the `tag` of the DOM element.
  */
 export type FilterHTMLMembers<Tag extends SupportedTags> = Omit<
-    WritablePart<HTMLElementTagNameMap[Tag]>,
+    WritablePart<NativeHTMLElement<Tag>>,
     | 'tag'
     | 'tagName'
     | 'className'
@@ -393,6 +393,15 @@ export type FilterHTMLMembers<Tag extends SupportedTags> = Omit<
     | 'disconnectedCallback'
     | BlackListed
 >
+
+/**
+ * Native HTMLElement per tag,
+ * e.g. `NativeHTMLElement<'div'>` is `HTMLDivElement`.
+ *
+ * @template Tag the `tag` of the DOM element.
+ */
+export type NativeHTMLElement<Tag extends SupportedTags> =
+    HTMLElementTagNameMap[Tag]
 
 /**
  * Describes an update when DOM elements has been updated when using {@link RxChildren}

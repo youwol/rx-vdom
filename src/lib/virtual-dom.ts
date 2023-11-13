@@ -9,6 +9,7 @@ import {
     Subscription,
     CustomAttribute,
     CSSAttribute,
+    NativeHTMLElement,
 } from './api'
 import { factory, SupportedTags } from './factory'
 /**
@@ -158,7 +159,7 @@ export type VirtualDOM<Tag extends SupportedTags> = {
  *
  */
 export type RxHTMLElement<Tag extends SupportedTags> = RxElementTrait &
-    HTMLElementTagNameMap[Tag]
+    NativeHTMLElement<Tag>
 
 /**
  * Transform a {@link VirtualDOM} into a {@link RxHTMLElement}.
