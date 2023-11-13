@@ -1,7 +1,7 @@
-import { SupportedTags, VirtualDOM } from '../../lib'
+import { SupportedTags, VirtualDOM, VirtualDOMTagNameMap } from '../../lib'
 import { of } from 'rxjs'
 import { AssertTrue as Assert, Has, IsExact } from 'conditional-type-checks'
-import { AnyVirtualDOM, AttributeLike } from '../../lib/api'
+import { AttributeLike } from '../../lib/api'
 
 {
     // virtualDOM OK
@@ -281,6 +281,10 @@ import { AnyVirtualDOM, AttributeLike } from '../../lib/api'
 
 {
     // Tests on AnyVirtualDOM
-    type _0 = Assert<IsExact<AnyVirtualDOM['innerText'], AttributeLike<string>>>
-    type _1 = Assert<IsExact<AnyVirtualDOM['tag'], SupportedTags>>
+    // It is not possible to use straight 'AnyVirtualDOM' because of 'FluxViewVirtualDOM'
+    type RXAnyVirtualDOM = VirtualDOMTagNameMap[keyof VirtualDOMTagNameMap]
+    type _0 = Assert<
+        IsExact<RXAnyVirtualDOM['innerText'], AttributeLike<string>>
+    >
+    type _1 = Assert<IsExact<RXAnyVirtualDOM['tag'], SupportedTags>>
 }
