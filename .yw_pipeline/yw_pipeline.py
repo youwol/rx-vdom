@@ -16,7 +16,7 @@ class PipelineFactory(IPipelineFactory):
         config = PipelineConfig(
             target=JsBundle(
                 links=[
-                    Link(name="doc", url="dist/docs/index.html"),
+                    Link(name="doc", url="dist/docs/modules.html"),
                     Link(name="coverage", url="coverage/lcov-report/index.html"),
                     Link(name="bundle-analysis", url="dist/bundle-analysis.html"),
                 ]
