@@ -34,11 +34,6 @@ class HTMLPlaceHolderElement extends HTMLElement {
         this.currentElement = this
 
         const apply = (vDom: AnyVirtualDOM): RxElementTrait => {
-            // if (vDom instanceof HTMLElement) {
-            //     this.currentElement.replaceWith(vDom)
-            //     this.currentElement = vDom
-            //     return vDom
-            // }
             const div = render(vDom)
             this.currentElement.replaceWith(div)
             this.currentElement = div
