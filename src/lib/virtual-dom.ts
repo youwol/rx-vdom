@@ -10,6 +10,7 @@ import {
     CustomAttribute,
     CSSAttribute,
     NativeHTMLElement,
+    FluxViewVirtualDOM,
 } from './api'
 import { factory, SupportedTags } from './factory'
 /**
@@ -170,13 +171,16 @@ export type RxHTMLElement<Tag extends SupportedTags> = RxElementTrait &
  * @returns the corresponding DOM element
  */
 export function render<Tag extends SupportedTags>(
-    vDom: VirtualDOM<Tag>,
+    vDom: VirtualDOM<Tag> | FluxViewVirtualDOM,
 ): RxHTMLElement<Tag> {
     if (vDom == undefined) {
         console.error('Got an undefined virtual DOM, return empty div')
         return undefined
     }
-    const element: RxHTMLElement<Tag> = factory<Tag>(vDom.tag)
+    // the next 2 type unsafe lines are to support FluxViewVirtualDOM
+    const tag = vDom['tag'] || ('div' as const)
+
+    const element: RxHTMLElement<Tag> = factory<Tag>(tag as unknown as Tag)
     // why 'never', could have been 'any' but my IDE suggest never is better :/
     // The problem is that somehow the signature of the method 'initializeVirtualDom' is doubled:
     //  {(vDom: VirtualDOM<Tag>): void, (vDom: VirtualDOM<SupportedTags>): void}

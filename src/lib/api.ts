@@ -39,13 +39,16 @@ export type AnyHTMLAttribute =
     | CustomAttribute
 
 /**
- * Type union of all possible virtual DOM types (the {@link VirtualDOM} `tag` attribute).
+ * Type union of all possible virtual DOM types (the {@link VirtualDOM} `tag` attribute)
+ * with the (at some point deprecated) {@link FluxViewVirtualDOM}.
  * i.e.:
  * ```
- * VirtualDOM<'a'> | VirtualDOM<'b'> | VirtualDOM<'br'> // etc
+ * FluxViewVirtualDOM | VirtualDOM<'a'> | VirtualDOM<'b'> | VirtualDOM<'br'> // etc
  * ```
  */
-export type AnyVirtualDOM = VirtualDOMTagNameMap[keyof VirtualDOMTagNameMap]
+export type AnyVirtualDOM =
+    | VirtualDOMTagNameMap[keyof VirtualDOMTagNameMap]
+    | FluxViewVirtualDOM
 
 /**
  * Union of the types allowed to define an attribute in a {@link VirtualDOM}.
@@ -73,7 +76,11 @@ export type CSSAttribute = CSS.Properties
 /**
  * Union of the types allowed to define a child in a {@link VirtualDOM}.
  */
-export type ChildLike = AnyVirtualDOM | HTMLElement | RxChild
+export type ChildLike =
+    | AnyVirtualDOM
+    | HTMLElement
+    | RxChild
+    | FluxViewVirtualDOM
 
 /**
  * Union of the types allowed to define children in a {@link VirtualDOM}.
@@ -393,6 +400,28 @@ export type FilterHTMLMembers<Tag extends SupportedTags> = Omit<
     | 'disconnectedCallback'
     | BlackListed
 >
+
+/**
+ * This type is introduced for backward compatibility to allow using VirtualDOM from the
+ * [@youwol/flux-view](https://github.com/youwol/flux-view) package.
+ *
+ * To introduce a child from `@youwol/flux-view` in the {@link VirtualDOM}, an explicit type casting
+ * to {@link FluxViewVirtualDOM} is required:
+ *
+ * ```
+ *  const vDom: VirtualDOM<'div'> = {
+ *      tag: 'div',
+ *      children: [
+ *          {
+ *              tag: 'a',
+ *              innerText: attr$(of('foo'), (text) => text)
+ *          } as FluxViewChild
+ *      ]
+ *  }
+ * ```
+ *
+ */
+export type FluxViewVirtualDOM = { tag?: SupportedTags }
 
 /**
  * Native HTMLElement per tag,
