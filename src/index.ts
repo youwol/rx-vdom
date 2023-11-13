@@ -7,11 +7,11 @@
  * powered by reactive programming primitives, is opted into by the consumer
  * (usually with [RxJS](https://rxjs.dev/)).
  * *  **Simple & Consistent API**: The API surface essentially comes down to 5 data-structures:
- *      *  {@link API.RxAttribute}: definition of a reactive attribute.
- *      *  {@link API.RxChild}: definition of a reactive child.
- *      *  {@link API.ChildrenOptionsAppend}: definition of an append only reactive children list.
- *      *  {@link API.ChildrenOptionsReplace}: definition of a replacement only reactive children list.
- *      *  {@link API.ChildrenOptionsSync}: definition of a synchronized reactive children list.
+ *      *  {@link RxAttribute}: definition of a reactive attribute.
+ *      *  {@link RxChild}: definition of a reactive child.
+ *      *  {@link ChildrenOptionsAppend}: definition of an append only reactive children list.
+ *      *  {@link ChildrenOptionsReplace}: definition of a replacement only reactive children list.
+ *      *  {@link ChildrenOptionsSync}: definition of a synchronized reactive children list.
  * *  **Type Safety**: the library is supported by the strongly-typed {@link VirtualDOM} structure.
  * It offers robust type checking and inline guidance within TypeScript environment.
  *
@@ -25,8 +25,3 @@
  */
 export * from './lib'
 export { setup as webpmSetup } from './auto-generated'
-// noinspection ES6UnusedImports -- used for the documentation
-import type {
-    // eslint-disable-next-line unused-imports/no-unused-imports -- used for documentation
-    API,
-} from './lib'
