@@ -194,6 +194,29 @@ import { AnyVirtualDOM, AttributeLike } from '../../lib/api'
 }
 
 {
+    // Some test using class definition for virtual dom
+    class Foo implements VirtualDOM<'a'> {
+        public readonly tag = 'a'
+        // We can add some property when using a class
+        public readonly someAdditionalProperty = 'https://foo.com'
+        // @ts-expect-error -- But we can not reassign an existing property with wrong type
+        public readonly href = 5
+
+        public readonly class = 'd-flex flex-column'
+        public readonly children: [VirtualDOM<'b'>] = [
+            {
+                tag: 'b' as const,
+                innerText: 'foo',
+                // @ts-expect-error -- again, href not available in 'b'
+                href: 'https://foo.com',
+            },
+        ]
+    }
+    const foo = new Foo()
+    type _ = Assert<IsExact<typeof foo.tag, 'a'>>
+}
+
+{
     // wrong property for tag, nested
     const _: VirtualDOM<'div'> = {
         tag: 'div',
