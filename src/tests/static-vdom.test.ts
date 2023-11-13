@@ -1,4 +1,6 @@
-import { render, VirtualDOM } from '../lib'
+import { render, RxHTMLElement, VirtualDOM } from '../lib'
+import { ChildLike, Observable, RxAttribute } from '../lib/api'
+import { of } from 'rxjs'
 
 test('static attribute', () => {
     const vDom: VirtualDOM<'a'> = {

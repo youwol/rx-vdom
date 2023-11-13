@@ -1,6 +1,5 @@
-import { render, VirtualDOM } from '../lib'
+import { render, VirtualDOM, ResolvedHTMLElement } from '../lib'
 import { Subject } from 'rxjs'
-import { ResolvedHTMLElement } from '../lib/api'
 
 test('simple scenario', () => {
     const source$ = new Subject<string>()
