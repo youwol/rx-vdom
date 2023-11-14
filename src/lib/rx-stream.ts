@@ -1,4 +1,4 @@
-import { render } from './virtual-dom'
+import { render, RxHTMLElement } from './virtual-dom'
 import {
     AnyVirtualDOM,
     ChildrenOptionsAppend,
@@ -8,6 +8,7 @@ import {
     ResolvedHTMLElement,
     RxElementTrait,
 } from './api'
+import { SupportedTags } from './factory'
 
 /**
  * A RxJs observable that represents a DOM's attribute or child. Also serves as base class for children.
@@ -58,8 +59,8 @@ export class RxStream<TDomain, TDom = TDomain> {
     /**
      * Implementation function that supposed to be called only by {@link RxElementTrait}.
      */
-    subscribe(
-        realizeDom: (tDom: TDom, ...args) => RxElementTrait,
+    subscribe<Tag extends SupportedTags>(
+        realizeDom: (tDom: TDom, ...args) => RxHTMLElement<Tag>,
         ...withData
     ) {
         this.untilFirst && this.finalize(realizeDom, this.untilFirst, undefined)
@@ -68,8 +69,8 @@ export class RxStream<TDomain, TDom = TDomain> {
         })
     }
 
-    private finalize(
-        realizeDom: (tDom: TDom, ...args) => RxElementTrait,
+    private finalize<Tag extends SupportedTags>(
+        realizeDom: (tDom: TDom, ...args) => RxHTMLElement<Tag>,
         value: TDom,
         d: TDomain,
     ) {
