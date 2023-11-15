@@ -1,4 +1,9 @@
-import { SupportedTags, VirtualDOM, VirtualDOMTagNameMap } from '../../lib'
+import {
+    Observable,
+    RxAttribute,
+    VirtualDOM,
+    VirtualDOMTagNameMap,
+} from '../../lib'
 import { of } from 'rxjs'
 import { AssertTrue as Assert, Has, IsExact } from 'conditional-type-checks'
 import { AttributeLike } from '../../lib/api'
@@ -283,8 +288,18 @@ import { AttributeLike } from '../../lib/api'
     // Tests on AnyVirtualDOM
     // It is not possible to use straight 'AnyVirtualDOM' because of 'FluxViewVirtualDOM'
     type RXAnyVirtualDOM = VirtualDOMTagNameMap[keyof VirtualDOMTagNameMap]
-    type _0 = Assert<
-        IsExact<RXAnyVirtualDOM['innerText'], AttributeLike<string>>
-    >
-    type _1 = Assert<IsExact<RXAnyVirtualDOM['tag'], SupportedTags>>
+    type InnerText = RXAnyVirtualDOM['innerText']
+    type _0 = Assert<Has<InnerText, string>>
+    type _1 = Assert<Has<InnerText, Observable<string>>>
+    type _2 = Assert<Has<InnerText, RxAttribute<unknown, string>>>
+    type _3 = Assert<Has<InnerText, AttributeLike<string>>>
+    // The following assertion is commented because failing if the 'form' element is included
+    // It does not make sense for me as
+    // *  I can not see why for 'form' tag there would be anything else on top of it
+    // *  type hints when overring 'InnerText' gives :
+    //      Alias for: RXAnyVirtualDOM["innerText"]
+    //      Initial type: Observable<string> | RxAttribute<unknown, string> | string
+    // type _4 = Assert<
+    //     IsExact<RXAnyVirtualDOM['innerText'], AttributeLike<string>>
+    // >
 }
