@@ -13,9 +13,12 @@ test('simple scenario', () => {
                 source$,
                 vdomMap: (innerText: string) => ({ tag: 'div', innerText }),
                 untilFirst: { tag: 'div', innerText: 'untilFirst', style: {} },
-                wrapper: (d) => ({
-                    ...d,
+                // The type VirtualDOM<'div'> below is required because of the 'form' tag (related to AnyVirtualDOM)
+                wrapper: (d: VirtualDOM<'div'>) => ({
+                    // ...d,
+                    tag: 'div',
                     class: 'wrapper',
+                    innerText: d.innerText,
                 }),
                 sideEffects: (elem: ResolvedHTMLElement<string, 'div'>) => {
                     sideEffectElements.push(elem)
