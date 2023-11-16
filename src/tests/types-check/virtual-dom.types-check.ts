@@ -199,6 +199,19 @@ import { AttributeLike } from '../../lib/api'
 }
 
 {
+    // Can not override method
+    const _: VirtualDOM<'a'> = {
+        tag: 'a',
+        innerText: 'foo',
+        href: 'https://foo.com',
+        // @ts-expect-error -- can not redefine method
+        appendChild<T extends Node>(_node: T): T {
+            return undefined
+        },
+    }
+}
+
+{
     // Some test using class definition for virtual dom
     class Foo implements VirtualDOM<'a'> {
         public readonly tag = 'a'

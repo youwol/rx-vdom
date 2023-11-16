@@ -157,7 +157,33 @@ import { AssertTrue as Assert, IsExact } from 'conditional-type-checks'
 }
 
 {
-    // RxChild, I expected this to work
+    // RxChild partially typed & vdomMap
+    const _: VirtualDOM<'div'> = {
+        tag: 'div',
+        children: [
+            {
+                source$: of('https://foo.com'),
+                vdomMap: (href): VirtualDOM<'b'> => {
+                    type _ = Assert<IsExact<typeof href, string>>
+                    return {
+                        // @ts-expect-error -- 'a' is not 'b'
+                        tag: 'a',
+                        href,
+                    }
+                },
+                sideEffects: (elem) => {
+                    const _0 = elem.element.innerText
+                    // @ts-expect-error -- href is not available on 'b'
+                    const _1 = elem.element.href
+                },
+            } as RxChild<string>,
+        ],
+    }
+}
+{
+    // RxChild, this scenario fails if we try to allow `VirtualDOM<never>` to map `HTMLElement`,
+    // as documented in `VirtualDOM` class.
+
     const _: VirtualDOM<'div'> = {
         tag: 'div',
         children: [
