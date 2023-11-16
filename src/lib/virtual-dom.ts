@@ -12,7 +12,7 @@ import {
     NativeHTMLElement,
     FluxViewVirtualDOM,
 } from './api'
-import { factory, SupportedHTMLTags } from './factory'
+import { factory, SupportedHTMLTags, TypeCheck } from './factory'
 /**
  * # Introduction
  *
@@ -175,7 +175,10 @@ export type VirtualDOM<Tag extends SupportedHTMLTags> = {
      * @param element reference on the HTML element detached
      */
     disconnectedCallback?: (element: RxHTMLElement<Tag>) => void
-} & Partial<ExposedMembers<NativeHTMLElement<Tag>>>
+} & (TypeCheck extends 'none'
+    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Index signature effectively optional if `TypeCheck` is disabled
+      { [k: string]: any }
+    : Partial<ExposedMembers<NativeHTMLElement<Tag>>>)
 
 /**
  * The actual HTMLElement rendered from a {@link VirtualDOM}.

@@ -1,6 +1,27 @@
 import { RxHTMLElement } from './virtual-dom'
-
+import { Configuration } from '@rxConfig'
 import { setup } from '../auto-generated'
+import { AssertTrue as Assert, Has, IsExact } from 'conditional-type-checks'
+
+/**
+ * Make sure that `Configuration.TypeCheck` is valid.
+ */
+type _ConfigTypeCheckOK = Assert<
+    Has<'strict' | 'none', Configuration['TypeCheck']>
+>
+
+/**
+ * Make sure that `Configuration.SupportedHTMLTagsOK` is valid.
+ */
+type _ConfigSupportedHTMLTagsOK = Assert<
+    IsExact<
+        Extract<
+            keyof HTMLElementTagNameMap,
+            Configuration['SupportedHTMLTags']
+        >,
+        Configuration['SupportedHTMLTags']
+    >
+>
 
 export const customElementPrefix = `${setup.name.split('/')[1]}-${
     setup.apiVersion
@@ -14,9 +35,8 @@ export const customElementPrefix = `${setup.name.split('/')[1]}-${
  * *  `search`:  Causes a runtime error due to instantiation issues in Jest tests.
  * *  `form`: Triggers compile-time errors, the cause of which is not currently understood.
  * */
-export type SupportedTags = 'Prod' extends 'Prod'
-    ? keyof Omit<HTMLElementTagNameMap, 'dialog' | 'search' | 'form'>
-    : keyof Pick<HTMLElementTagNameMap, DevTags>
+export type SupportedHTMLTags = Configuration['SupportedHTMLTags']
+export type TypeCheck = Configuration['TypeCheck']
 
 export function factory<Tag extends SupportedHTMLTags>(
     tag: Tag,

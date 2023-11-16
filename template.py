@@ -66,7 +66,7 @@ for file in [
     ".prettierignore",
     "LICENSE",
     "package.json",
-    "tsconfig.json",
+    # "tsconfig.json", This file needs to include reference to 'rx-vdom-config.ts'
     "jest.config.ts",
     "webpack.config.ts",
 ]:
