@@ -27,21 +27,22 @@ import {
 } from './api'
 import { setup } from '../auto-generated'
 
-class HTMLPlaceHolderElement<
-    Tag extends SupportedHTMLTags,
-> extends HTMLElement {
+class HTMLPlaceHolderElement extends HTMLElement {
     private currentElement: HTMLElement
 
     initialize(stream$: RxStream<unknown, AnyVirtualDOM>): Subscription {
         this.currentElement = this
 
-        const apply = (vDom: AnyVirtualDOM): RxHTMLElement<Tag> => {
-            const div = render<Tag>(vDom)
+        const apply = (vDom: AnyVirtualDOM): HTMLElement => {
+            const div = render(vDom)
             this.currentElement.replaceWith(div)
             this.currentElement = div
             return div
         }
-        return stream$.subscribe((vDom: AnyVirtualDOM) => apply(vDom))
+        return stream$.subscribe(
+            (vDom: AnyVirtualDOM) =>
+                apply(vDom) as RxElementTrait & HTMLElement,
+        )
     }
 }
 
@@ -308,7 +309,7 @@ export function ReactiveTrait<
                     if (instanceOfStream(child)) {
                         const placeHolder = document.createElement(
                             `${customElementPrefix}-placeholder`,
-                        ) as HTMLPlaceHolderElement<Tag>
+                        ) as HTMLPlaceHolderElement
                         this.appendChild(placeHolder)
                         this.subscriptions.push(placeHolder.initialize(child))
                         rendered.push(placeHolder)
