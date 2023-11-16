@@ -54,6 +54,11 @@ export function factory<Tag extends SupportedHTMLTags>(
 
 /**
  * Taken from lib.dom.ts (HTMLElementTagNameMap).
+ *
+ * Supported tags encompass all [HTML elements](https://developer.mozilla.org/en-US/docs/Web/HTML/Element),
+ * Instantiation of custom elements fails in some scenario and are removed from now:
+ * *  `dialog`: Results in a runtime error due to an inability to be instantiated in Mozilla.
+ * *  `search`:  Causes a runtime error due to instantiation issues in Jest tests.
  */
 export const CustomElementsMap = {
     a: HTMLAnchorElement,
@@ -84,6 +89,7 @@ export const CustomElementsMap = {
     details: HTMLDetailsElement,
     dfn: HTMLElement,
     div: HTMLDivElement,
+    //dialog: HTMLDialogElement;
     dl: HTMLDListElement,
     dt: HTMLElement,
     em: HTMLElement,
@@ -138,6 +144,7 @@ export const CustomElementsMap = {
     s: HTMLElement,
     samp: HTMLElement,
     script: HTMLScriptElement,
+    //search: HTMLElement,
     section: HTMLElement,
     select: HTMLSelectElement,
     slot: HTMLSlotElement,
