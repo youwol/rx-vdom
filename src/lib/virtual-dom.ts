@@ -83,6 +83,31 @@ import { factory, SupportedHTMLTags } from './factory'
  *
  * ![image](/api/assets-gateway/raw/package/QHlvdXdvbC9yeC12ZG9t/1.0.0-wip/assets/style-wrong-type.png)
  *
+ * # Considerations for developers
+ *
+ * It would be tempting to define the generic as `Tag extends SupportedHTMLTags | never` and use
+ * `Partial<ExposedMembers<HTMLElement>>` in case of `never` to retrieve the members:
+ * *  tag would be never (as it should)
+ * *  only the properties of `HTMLElement` would be available
+ *
+ * But doing so leads to an error I don't understand in the types tests, e.g. this scenario:
+ * ```
+ * const _: VirtualDOM<'div'> = {
+ *         tag: 'div',
+ *         children: [
+ *             {
+ *                 source$: of('https://foo.com'),
+ *                 vdomMap: (href): VirtualDOM<'a' | 'b'> => {
+ *                     return {
+ *                         tag: 'b',
+ *                         // the following line compile OK while it should not
+ *                         href,
+ *                     }
+ *                 },
+ *             } as RxChild<string>,
+ *         ],
+ *     }
+ * ```
  *
  * @template Tag the `tag` of the DOM element.
  */

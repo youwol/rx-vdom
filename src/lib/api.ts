@@ -45,6 +45,35 @@ export type AnyHTMLAttribute =
  * ```
  * FluxViewVirtualDOM | VirtualDOM<'a'> | VirtualDOM<'b'> | VirtualDOM<'br'> // etc
  * ```
+ *
+ * # Considerations for developers
+ *
+ * It can be tempting to speed up compilation to map this class to somehow the base class `HTMLElement` *e.g.*:
+ * ```
+ * export type AnyVirtualDOM = Pick<
+ *     VirtualDOM<any>,
+ *     | 'children'
+ *     | 'tag'
+ *     | 'connectedCallback'
+ *     | 'class'
+ *     | 'customAttributes'
+ *     | 'style'
+ * > &
+ *     Partial<ExposedMembers<HTMLElement>>
+ * ```
+ * But, this would cause troubles in type inference on scenario like this:
+ * ```
+ * const vDom: VirtualDOM<'div'> = {
+ *     tag: 'div',
+ *     children: [
+ *         {
+ *              tag: 'a',
+ *              href: 'https://foo.com',
+ *          },
+ *     ],
+ * }
+ * ```
+ * The child's type can not be inferred to VirtualDOM<'a'>.
  */
 export type AnyVirtualDOM =
     | VirtualDOMTagNameMap[keyof VirtualDOMTagNameMap]
