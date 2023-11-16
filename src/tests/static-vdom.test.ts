@@ -1,6 +1,7 @@
 import { render, RxHTMLElement, VirtualDOM } from '../lib'
 import { ChildLike, Observable, RxAttribute } from '../lib/api'
 import { of } from 'rxjs'
+import { orderedChildren } from './utils'
 
 test('static attribute', () => {
     const vDom: VirtualDOM<'a'> = {
@@ -35,6 +36,23 @@ test('static custom-attribute', () => {
     const html = render(vDom)
     document.body.appendChild(html)
     expect(html.getAttribute('has-custom-attributes')).toBeTruthy()
+})
+
+test('virtual dom child', () => {
+    const vDom: VirtualDOM<'div'> = {
+        tag: 'div',
+        children: [
+            {
+                tag: 'a',
+                href: 'https://foo.com',
+            },
+        ],
+    }
+    const html = render(vDom)
+    document.body.appendChild(html)
+    const children = orderedChildren(html)
+    expect(children).toHaveLength(1)
+    expect(children[0]['href']).toBe('https://foo.com/')
 })
 
 test('Raw HTMLElement child', () => {
