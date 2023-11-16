@@ -107,9 +107,9 @@ import { AttributeLike } from '../../lib/api'
     const _: VirtualDOM<'div'> = {
         tag: 'div',
         children: [
-            // @ts-expect-error -- property does not exist
             {
                 tag: 'div',
+                // @ts-expect-error -- property does not exist
                 style: of({
                     colour: 'white',
                 }),
@@ -132,10 +132,10 @@ import { AttributeLike } from '../../lib/api'
     const _: VirtualDOM<'div'> = {
         tag: 'div',
         children: [
-            // @ts-expect-error -- custom attribute can not be object
             {
                 tag: 'div',
                 customAttributes: {
+                    // @ts-expect-error -- custom attribute can not be object
                     foo: { bar: 'baz' },
                 },
             },
@@ -148,10 +148,10 @@ import { AttributeLike } from '../../lib/api'
     const _: VirtualDOM<'div'> = {
         tag: 'div',
         children: [
-            // @ts-expect-error -- custom attribute can not be object
             {
                 tag: 'div',
                 customAttributes: {
+                    // @ts-expect-error -- custom attribute can not be object
                     foo: of({ bar: 'baz' }),
                 },
             },
@@ -164,10 +164,10 @@ import { AttributeLike } from '../../lib/api'
     const _: VirtualDOM<'div'> = {
         tag: 'div',
         children: [
-            // @ts-expect-error -- type error on value
             {
                 tag: 'div',
                 style: {
+                    // @ts-expect-error -- type error on value
                     textAlign: 'middle',
                 },
             },
@@ -180,9 +180,9 @@ import { AttributeLike } from '../../lib/api'
     const _: VirtualDOM<'div'> = {
         tag: 'div',
         children: [
-            // @ts-expect-error -- wrong type (should be string)
             {
                 tag: 'div',
+                // @ts-expect-error -- wrong type (should be string)
                 innerText: 5,
             },
         ],
