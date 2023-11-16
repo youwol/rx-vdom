@@ -1,6 +1,6 @@
 import {
     CustomElementsMap,
-    SupportedTags,
+    SupportedHTMLTags,
     customElementPrefix,
 } from './factory'
 import {
@@ -27,7 +27,9 @@ import {
 } from './api'
 import { setup } from '../auto-generated'
 
-class HTMLPlaceHolderElement<Tag extends SupportedTags> extends HTMLElement {
+class HTMLPlaceHolderElement<
+    Tag extends SupportedHTMLTags,
+> extends HTMLElement {
     private currentElement: HTMLElement
 
     initialize(stream$: RxStream<unknown, AnyVirtualDOM>): Subscription {
@@ -82,7 +84,7 @@ type ConvertedChildLike =
     | HTMLElement
     | RxStream<unknown, AnyVirtualDOM>
 
-function extractRxStreams<Tag extends SupportedTags>(
+function extractRxStreams<Tag extends SupportedHTMLTags>(
     vDom: Readonly<VirtualDOM<Tag>>,
 ): {
     attributes: [string, ConvertedAttributeLike][]
@@ -216,7 +218,7 @@ function extractRxStreams<Tag extends SupportedTags>(
 
 export function ReactiveTrait<
     T extends Constructor<HTMLElement>,
-    Tag extends SupportedTags,
+    Tag extends SupportedHTMLTags,
 >(Base: T) {
     return class extends Base {
         /**
@@ -341,7 +343,7 @@ export function ReactiveTrait<
     }
 }
 
-function registerElement<Tag extends SupportedTags>(
+function registerElement<Tag extends SupportedHTMLTags>(
     tag: Tag,
     BaseClass: typeof HTMLElement,
 ) {
@@ -369,7 +371,10 @@ export function register() {
     )
 
     Object.entries(CustomElementsMap).forEach(
-        ([tag, HTMLElementClass]: [tag: SupportedTags, typeof HTMLElement]) => {
+        ([tag, HTMLElementClass]: [
+            tag: SupportedHTMLTags,
+            typeof HTMLElement,
+        ]) => {
             HTMLElementClass && registerElement(tag, HTMLElementClass)
         },
     )

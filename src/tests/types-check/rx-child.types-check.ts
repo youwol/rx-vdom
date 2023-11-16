@@ -1,7 +1,11 @@
-import { SupportedTags, VirtualDOM } from '../../lib'
+import {
+    SupportedHTMLTags,
+    VirtualDOM,
+    ResolvedHTMLElement,
+    RxChild,
+} from '../../lib'
 import { of } from 'rxjs'
 import { AssertTrue as Assert, IsExact } from 'conditional-type-checks'
-import { ResolvedHTMLElement, RxChild } from '../../lib/api'
 
 {
     // RxChild, no type hints
@@ -24,7 +28,7 @@ import { ResolvedHTMLElement, RxChild } from '../../lib/api'
                     type _ = Assert<
                         IsExact<
                             typeof elem,
-                            ResolvedHTMLElement<unknown, SupportedTags>
+                            ResolvedHTMLElement<unknown, SupportedHTMLTags>
                         >
                     >
                     // There is not type inference here: available are only the properties of HTMLElement

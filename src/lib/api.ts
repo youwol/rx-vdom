@@ -5,7 +5,7 @@
  */
 import type * as CSS from 'csstype'
 import { RxHTMLElement, VirtualDOM } from './virtual-dom'
-import { SupportedTags } from './factory'
+import { SupportedHTMLTags } from './factory'
 import { ReactiveTrait } from './core'
 import { WritablePart } from './type-utils'
 import type {
@@ -371,7 +371,7 @@ export type CustomAttribute = { [key: string]: string | boolean | number }
  *
  * @template Tag the `tag` of the DOM element.
  */
-export type ExposedMembers<Tag extends SupportedTags> = {
+export type ExposedMembers<Tag extends SupportedHTMLTags> = {
     [Property in keyof FilterHTMLMembers<Tag>]: NativeHTMLElement<Tag>[Property] extends string
         ? AttributeLike<string>
         : NativeHTMLElement<Tag>[Property] extends number
@@ -394,7 +394,7 @@ export type ExposedMembers<Tag extends SupportedTags> = {
  *
  * @template Tag the `tag` of the DOM element.
  */
-export type FilterHTMLMembers<Tag extends SupportedTags> = Omit<
+export type FilterHTMLMembers<Tag extends SupportedHTMLTags> = Omit<
     WritablePart<NativeHTMLElement<Tag>>,
     | 'tag'
     | 'tagName'
@@ -427,7 +427,7 @@ export type FilterHTMLMembers<Tag extends SupportedTags> = Omit<
  * ```
  *
  */
-export type FluxViewVirtualDOM = { tag?: SupportedTags }
+export type FluxViewVirtualDOM = { tag?: SupportedHTMLTags }
 
 /**
  * Native HTMLElement per tag,
@@ -435,7 +435,7 @@ export type FluxViewVirtualDOM = { tag?: SupportedTags }
  *
  * @template Tag the `tag` of the DOM element.
  */
-export type NativeHTMLElement<Tag extends SupportedTags> =
+export type NativeHTMLElement<Tag extends SupportedHTMLTags> =
     HTMLElementTagNameMap[Tag]
 
 /**
@@ -456,7 +456,7 @@ export type RenderingUpdate<TDomain> = {
  */
 export type ResolvedHTMLElement<
     TDomain,
-    Tag extends SupportedTags = SupportedTags,
+    Tag extends SupportedHTMLTags = SupportedHTMLTags,
 > = {
     /**
      * Domain data. If the child has been defined using a straight HTMLElement, it is `undefined`.
@@ -657,5 +657,5 @@ export type RxChildren<Policy extends ChildrenPolicy, TDomain = unknown> = {
  * Mapping between the possible tag name as defined in `HTMLElementTagNameMap` and the associated {@link VirtualDOM}.
  */
 export type VirtualDOMTagNameMap = {
-    [Property in SupportedTags]: VirtualDOM<Property>
+    [Property in SupportedHTMLTags]: VirtualDOM<Property>
 }

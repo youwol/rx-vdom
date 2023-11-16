@@ -18,7 +18,7 @@ export type SupportedTags = 'Prod' extends 'Prod'
     ? keyof Omit<HTMLElementTagNameMap, 'dialog' | 'search' | 'form'>
     : keyof Pick<HTMLElementTagNameMap, DevTags>
 
-export function factory<Tag extends SupportedTags>(
+export function factory<Tag extends SupportedHTMLTags>(
     tag: Tag,
 ): RxHTMLElement<Tag> {
     if (!CustomElementsMap[tag as string]) {

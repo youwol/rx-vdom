@@ -8,7 +8,7 @@ import {
     ResolvedHTMLElement,
     RxElementTrait,
 } from './api'
-import { SupportedTags } from './factory'
+import { SupportedHTMLTags } from './factory'
 
 /**
  * A RxJs observable that represents a DOM's attribute or child. Also serves as base class for children.
@@ -59,7 +59,7 @@ export class RxStream<TDomain, TDom = TDomain> {
     /**
      * Implementation function that supposed to be called only by {@link RxElementTrait}.
      */
-    subscribe<Tag extends SupportedTags>(
+    subscribe<Tag extends SupportedHTMLTags>(
         realizeDom: (tDom: TDom, ...args) => RxHTMLElement<Tag>,
         ...withData
     ) {
@@ -69,7 +69,7 @@ export class RxStream<TDomain, TDom = TDomain> {
         })
     }
 
-    private finalize<Tag extends SupportedTags>(
+    private finalize<Tag extends SupportedHTMLTags>(
         realizeDom: (tDom: TDom, ...args) => RxHTMLElement<Tag>,
         value: TDom,
         d: TDomain,

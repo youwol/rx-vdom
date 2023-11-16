@@ -12,7 +12,7 @@ import {
     NativeHTMLElement,
     FluxViewVirtualDOM,
 } from './api'
-import { factory, SupportedTags } from './factory'
+import { factory, SupportedHTMLTags } from './factory'
 /**
  * # Introduction
  *
@@ -86,7 +86,7 @@ import { factory, SupportedTags } from './factory'
  *
  * @template Tag the `tag` of the DOM element.
  */
-export type VirtualDOM<Tag extends SupportedTags> = {
+export type VirtualDOM<Tag extends SupportedHTMLTags> = {
     /**
      * The tag of the element, equivalent of the `tagName` attribute of `HTMLElement`.
      */
@@ -158,7 +158,7 @@ export type VirtualDOM<Tag extends SupportedTags> = {
  * {@link RxElementTrait | reactive trait} is added.
  *
  */
-export type RxHTMLElement<Tag extends SupportedTags> = RxElementTrait &
+export type RxHTMLElement<Tag extends SupportedHTMLTags> = RxElementTrait &
     NativeHTMLElement<Tag>
 
 /**
@@ -169,7 +169,7 @@ export type RxHTMLElement<Tag extends SupportedTags> = RxElementTrait &
  * @param vDom the virtual DOM
  * @returns the corresponding DOM element
  */
-export function render<Tag extends SupportedTags>(
+export function render<Tag extends SupportedHTMLTags>(
     vDom: VirtualDOM<Tag> | FluxViewVirtualDOM,
 ): RxHTMLElement<Tag> {
     if (vDom == undefined) {
