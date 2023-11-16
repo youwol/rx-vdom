@@ -404,12 +404,12 @@ export type ExposedMembers<TargetNativeHTMLElement extends HTMLElement> = {
     [Property in keyof FilterHTMLMembers<TargetNativeHTMLElement>]: TargetNativeHTMLElement[Property] extends string
         ? AttributeLike<string>
         : TargetNativeHTMLElement[Property] extends number
-        ? AttributeLike<number>
-        : TargetNativeHTMLElement[Property] extends boolean
-        ? AttributeLike<boolean>
-        : Property extends `on${string}`
-        ? TargetNativeHTMLElement[Property]
-        : never
+          ? AttributeLike<number>
+          : TargetNativeHTMLElement[Property] extends boolean
+            ? AttributeLike<boolean>
+            : Property extends `on${string}`
+              ? TargetNativeHTMLElement[Property]
+              : never
 }
 
 /**
