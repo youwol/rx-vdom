@@ -369,17 +369,17 @@ export type CustomAttribute = { [key: string]: string | boolean | number }
  * (essentially to provide a lighter API, see  `tag`/`tagName`, and `class`/`className`).
  * *  all the signal handlers: any methods starting with the prefix `on` (e.g. `onclick`, `onmousedown`, *etc.*).
  *
- * @template Tag the `tag` of the DOM element.
+ * @template TargetNativeHTMLElement the target native HTML element.
  */
-export type ExposedMembers<Tag extends SupportedHTMLTags> = {
-    [Property in keyof FilterHTMLMembers<Tag>]: NativeHTMLElement<Tag>[Property] extends string
+export type ExposedMembers<TargetNativeHTMLElement extends HTMLElement> = {
+    [Property in keyof FilterHTMLMembers<TargetNativeHTMLElement>]: TargetNativeHTMLElement[Property] extends string
         ? AttributeLike<string>
-        : NativeHTMLElement<Tag>[Property] extends number
+        : TargetNativeHTMLElement[Property] extends number
         ? AttributeLike<number>
-        : NativeHTMLElement<Tag>[Property] extends boolean
+        : TargetNativeHTMLElement[Property] extends boolean
         ? AttributeLike<boolean>
         : Property extends `on${string}`
-        ? NativeHTMLElement<Tag>[Property]
+        ? TargetNativeHTMLElement[Property]
         : never
 }
 
@@ -392,20 +392,21 @@ export type ExposedMembers<Tag extends SupportedHTMLTags> = {
  * *  a list of {@link BlackListed} members
  *
  *
- * @template Tag the `tag` of the DOM element.
+ * @template TargetNativeHTMLElement the target native HTML element.
  */
-export type FilterHTMLMembers<Tag extends SupportedHTMLTags> = Omit<
-    WritablePart<NativeHTMLElement<Tag>>,
-    | 'tag'
-    | 'tagName'
-    | 'className'
-    | 'children'
-    | 'style'
-    | 'customAttributes'
-    | 'connectedCallback'
-    | 'disconnectedCallback'
-    | BlackListed
->
+export type FilterHTMLMembers<TargetNativeHTMLElement extends HTMLElement> =
+    Omit<
+        WritablePart<TargetNativeHTMLElement>,
+        | 'tag'
+        | 'tagName'
+        | 'className'
+        | 'children'
+        | 'style'
+        | 'customAttributes'
+        | 'connectedCallback'
+        | 'disconnectedCallback'
+        | BlackListed
+    >
 
 /**
  * This type is introduced for backward compatibility to allow using VirtualDOM from the

@@ -150,7 +150,7 @@ export type VirtualDOM<Tag extends SupportedHTMLTags> = {
      * @param element reference on the HTML element detached
      */
     disconnectedCallback?: (element: RxHTMLElement<Tag>) => void
-} & Partial<ExposedMembers<Tag>>
+} & Partial<ExposedMembers<NativeHTMLElement<Tag>>>
 
 /**
  * The actual HTMLElement rendered from a {@link VirtualDOM}.
