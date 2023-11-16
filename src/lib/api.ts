@@ -5,7 +5,7 @@
  */
 import type * as CSS from 'csstype'
 import { RxHTMLElement, VirtualDOM } from './virtual-dom'
-import { SupportedHTMLTags } from './factory'
+import { SupportedHTMLTags, WithFluxView } from './factory'
 import { ReactiveTrait } from './core'
 import { WritablePart } from './type-utils'
 import type {
@@ -457,7 +457,9 @@ export type FilterHTMLMembers<TargetNativeHTMLElement extends HTMLElement> =
  * ```
  *
  */
-export type FluxViewVirtualDOM = { tag?: SupportedHTMLTags }
+export type FluxViewVirtualDOM = WithFluxView extends true
+    ? { tag?: SupportedHTMLTags }
+    : never
 
 /**
  * Native HTMLElement per tag,
