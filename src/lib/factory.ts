@@ -98,7 +98,7 @@ export const CustomElementsMap = {
     figcaption: HTMLElement,
     figure: HTMLElement,
     footer: HTMLElement,
-    //form: HTMLFormElement,
+    form: HTMLFormElement,
     h1: HTMLHeadingElement,
     h2: HTMLHeadingElement,
     h3: HTMLHeadingElement,
