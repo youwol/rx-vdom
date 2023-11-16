@@ -21,12 +21,13 @@ in_bundle_deps = {
     # polyfill for WebKt based browsers (e.g. Safari)
     # see https://github.com/WebKit/standards-positions/issues/97
     "@ungap/custom-elements": "1.2.0",
-    # csstype is only about types, it is not in dev dependencies as we want it to be downloaded by consuming packages.
-    "csstype": "^2.6.0"
+    # `csstype` is only about types, it is not in dev dependencies as we want it to be downloaded by consuming packages.
+    "csstype": "^2.6.0",
+    # `conditional-type-checks` is used to realize 'compile time' tests on type definitions
+    # it is not in dev dependencies as we want it to be downloaded by consuming packages.
+    "conditional-type-checks": "^1.0.6"
 }
 dev_deps = {
-    # `conditional-type-checks` is used to realize 'compile time' tests on type definitions
-    "conditional-type-checks": "^1.0.6",
     "typedoc-plugin-mdn-links": "^3.1.0",
     "rxjs": "^7.5.6",
     "rxjs-spy": "^8.0.2",
