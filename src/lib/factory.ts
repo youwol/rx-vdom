@@ -1,5 +1,5 @@
 import { RxHTMLElement } from './virtual-dom'
-import type { Configuration } from '@rxConfig'
+import type { Configuration } from '@rxVDomConfig'
 import { setup } from '../auto-generated'
 import { AssertTrue as Assert, Has, IsExact } from 'conditional-type-checks'
 
