@@ -41,7 +41,7 @@ class HTMLPlaceHolderElement extends HTMLElement {
         }
         return stream$.subscribe(
             (vDom: AnyVirtualDOM) =>
-                apply(vDom) as RxElementTrait & HTMLElement,
+                apply(vDom) as RxHTMLElement<SupportedHTMLTags>,
         )
     }
 }
