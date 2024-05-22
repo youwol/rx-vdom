@@ -1253,6 +1253,13 @@
     "@typescript-eslint/types" "7.6.0"
     eslint-visitor-keys "^3.4.3"
 
+"@typescript/vfs@^1.4.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@typescript/vfs/-/vfs-1.5.0.tgz#ed942922724f9ace8c07c80b006c47e5e3833218"
+  integrity sha512-AJS307bPgbsZZ9ggCT3wwpg3VbTKMFNHfaY/uF0ahSkYYrPF2dSSKDNIDIQAHm9qJqbLvCsSJH7yN4Vs/CsMMg==
+  dependencies:
+    debug "^4.1.1"
+
 "@ungap/custom-elements@1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@ungap/custom-elements/-/custom-elements-1.2.0.tgz#e211a25250af329b746eadc1a345b7df87e440ac"
@@ -1424,7 +1431,15 @@
     eslint-plugin-tsdoc "^0.2.17"
     eslint-plugin-unused-imports "^3.1.0"
 
-"@youwol/http-primitives@^0.2.4":
+"@youwol/http-clients@^3.0.0":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@youwol/http-clients/-/http-clients-3.0.1.tgz#b1ea113d7ce0c1addd9795b61c8c4b2c3ea81cb0"
+  integrity sha512-HyBhKE9lMDb5VweF9+jzA9F3Bnd+nNq9a970yJPwWAW28oM4Csebv0vlPhPIj4IgwXKzP5AZh4lTccAICIoDsQ==
+  dependencies:
+    "@youwol/http-primitives" "^0.2.0"
+    rxjs "^7.5.6"
+
+"@youwol/http-primitives@^0.2.0", "@youwol/http-primitives@^0.2.3", "@youwol/http-primitives@^0.2.4":
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/@youwol/http-primitives/-/http-primitives-0.2.4.tgz#4d41aab6d12f72f03d1982c3b93acadea2c700ae"
   integrity sha512-ZYHOUFHbW1cYOqLsXG9cIeIrZInNYtS8r6KS5FyMIEvtDl13Sdxumt0yctwPDOj4jMJWYPU1EVhoAFgoxhaw4w==
@@ -1443,6 +1458,51 @@
     jest-junit "^16.0.0"
     ts-jest "^29.1.2"
 
+"@youwol/logging@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@youwol/logging/-/logging-0.2.0.tgz#66df636482ef63773cb593b5d36c0f423312d54d"
+  integrity sha512-wXKcHnZPKQlxCUtIZzvZUn6JODbDJI1Eq4UO4f7h6sILtNb7HZrRbaUhSWUOVt/ncizb+4FUf3dDzOz1I0xsLQ==
+  dependencies:
+    "@youwol/rx-tree-views" "^0.3.1"
+    "@youwol/rx-vdom" "^1.0.1"
+    rxjs "^7.5.6"
+
+"@youwol/mkdocs-ts@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@youwol/mkdocs-ts/-/mkdocs-ts-0.4.1.tgz#a26295ee7075fef38bced320704bf40c1a33992d"
+  integrity sha512-0XWHpPAd4h8Wj5q55raBRCJQyGp5NGfPvGvNbuPDsO+bh1DlCYPeXDDGg3HtzTBbkam3y+Z0X0RkutITeJSEMg==
+  dependencies:
+    "@youwol/http-primitives" "^0.2.3"
+    "@youwol/os-top-banner" "^0.2.0"
+    "@youwol/rx-tree-views" "^0.3.3"
+    "@youwol/rx-vdom" "^1.0.1"
+    "@youwol/webpm-client" "^3.0.0"
+    codemirror "^5.52.0"
+    esprima "^4.0.1"
+    highlight.js "11.2.0"
+    marked "^4.2.3"
+    rxjs "^7.5.6"
+
+"@youwol/os-core@^0.2.0":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@youwol/os-core/-/os-core-0.2.1.tgz#dc54e0c8cf10df98c91178cdc0a86e6bc998a553"
+  integrity sha512-h7itWv/83XiZCfqB4Kz02SAbbHDe10ZpZADYEwXe7OEzfu/ALf9TcYdgcDClX1727/+CvyVZ9OjoZddpbph8pw==
+  dependencies:
+    "@youwol/http-clients" "^3.0.0"
+    "@youwol/http-primitives" "^0.2.0"
+    "@youwol/rx-vdom" "^1.0.1"
+    "@youwol/webpm-client" "^3.0.0"
+    rxjs "^7.5.6"
+    uuid "^8.3.2"
+
+"@youwol/os-top-banner@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@youwol/os-top-banner/-/os-top-banner-0.2.0.tgz#2423572cc271af3513655a368d02f2088afde175"
+  integrity sha512-avzrYY4pVEdPoBjpqbSc2imwDf5TOPltl1cbRObJTl6oBKfNFQGebNLHjrzBOvI1+K73UUtLcK3a/kemrebiQQ==
+  dependencies:
+    "@youwol/os-core" "^0.2.0"
+    "@youwol/rx-vdom" "^1.0.1"
+
 "@youwol/prettier-config@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@youwol/prettier-config/-/prettier-config-1.2.1.tgz#51abbb5a19860169718be749accfd3c32f5e5f3d"
@@ -1450,6 +1510,27 @@
   dependencies:
     prettier "^3.2.5"
     prettier-plugin-properties "^0.3.0"
+
+"@youwol/rx-code-mirror-editors@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@youwol/rx-code-mirror-editors/-/rx-code-mirror-editors-0.5.0.tgz#9435177a2caa4d4746131db579aef6bb46b8c6cd"
+  integrity sha512-64JpkgJy7JhSVwFCtX79FTgKSjuvntf/QDVadDdSh/mHJXFipBHEbquTxFfFKxbYiAph2Zz6my0z1oXBKCinIw==
+  dependencies:
+    "@typescript/vfs" "^1.4.0"
+    "@youwol/logging" "^0.2.0"
+    "@youwol/rx-vdom" "^1.0.1"
+    "@youwol/webpm-client" "^3.0.0"
+    codemirror "^5.52.0"
+    rxjs "^7.5.6"
+    typescript "5.3.3"
+
+"@youwol/rx-tree-views@^0.3.1", "@youwol/rx-tree-views@^0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@youwol/rx-tree-views/-/rx-tree-views-0.3.3.tgz#aedb384dd2f1aee5fe3c9d266beff90f1b86662c"
+  integrity sha512-bFNqrtRbnGpzQhhMuLceWgUt45pBnsMQaYIn5r/+Zw2n4UP73wei5WE47Aq68mCNk+9oyUezt9uT9C2fxImRMg==
+  dependencies:
+    "@youwol/rx-vdom" "^1.0.1"
+    rxjs "^7.5.6"
 
 "@youwol/rx-vdom@^1.0.1":
   version "1.0.1"
@@ -2037,6 +2118,11 @@ co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
   integrity sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==
+
+codemirror@^5.52.0:
+  version "5.65.16"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.65.16.tgz#efc0661be6bf4988a6a1c2fe6893294638cdb334"
+  integrity sha512-br21LjYmSlVL0vFCPWPfhzUCT34FM/pAdK7rRIZwa0rrtrIdotvP4Oh4GUHsu2E3IrQMCfRkL/fN3ytMNxVQvg==
 
 collect-v8-coverage@^1.0.0:
   version "1.0.2"
@@ -3426,6 +3512,11 @@ he@^1.2.0:
   resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
 
+highlight.js@11.2.0:
+  version "11.2.0"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-11.2.0.tgz#a7e3b8c1fdc4f0538b93b2dc2ddd53a40c6ab0f0"
+  integrity sha512-JOySjtOEcyG8s4MLR2MNbLUyaXqUunmSnL2kdV/KuGJOmHZuAR5xC54Ko7goAXBWNhf09Vy3B+U7vR62UZ/0iw==
+
 hosted-git-info@^4.0.1:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-4.1.0.tgz#827b82867e9ff1c8d0c4d9d53880397d2c86d224"
@@ -4578,7 +4669,7 @@ map-obj@^4.1.0:
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-4.3.0.tgz#9304f906e93faae70880da102a9f1df0ea8bb05a"
   integrity sha512-hdN1wVrZbb29eBGiGjJbeP8JbKjq1urkHJ/LIP/NY48MZ1QVXUsQBV1G1zvYFHn1XE06cwjBsOI2K3Ulnj1YXQ==
 
-marked@^4.3.0:
+marked@^4.2.3, marked@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/marked/-/marked-4.3.0.tgz#796362821b019f734054582038b116481b456cf3"
   integrity sha512-PRsaiG84bK+AMvxziE/lCFss8juXjNaWzVbN5tXAm4XjeaS9NAHhop+PjQxz2A9h8Q4M/xGmzP8vqNwy6JeK0A==

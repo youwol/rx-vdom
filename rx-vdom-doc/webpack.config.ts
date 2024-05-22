@@ -76,7 +76,7 @@ const webpackConfig: webpack.Configuration = {
             directory: path.join(__dirname, './'),
         },
         compress: true,
-        port: 3025,
+        port: 3027,
     },
 }
 export default webpackConfig

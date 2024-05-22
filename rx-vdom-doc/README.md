@@ -1,6 +1,6 @@
 # @youwol/rx-vdom-doc
 
-
+Documentation app for the library @youwol/rx-vdom
 
 This library is part of the hybrid cloud/local ecosystem
 [YouWol](https://platform.youwol.com/applications/@youwol/platform/latest).
@@ -77,7 +77,7 @@ Configuration(
             FlowSwitcherMiddleware(
                 name = 'front-end dev-servers',
                 oneOf = [
-                    WebpackDevServerSwitch(packageName="@youwol/rx-vdom-doc", port=3025),
+                    WebpackDevServerSwitch(packageName="@youwol/rx-vdom-doc", port=3027),
                 ]
             )
         ]
