@@ -53,6 +53,14 @@ template = Template(
         )
     ),
     userGuide=True,
+    inPackageJson={
+        "eslintConfig": {
+            "extends": [
+                "@youwol"
+            ],
+            "ignorePatterns": ["/dist/", "/coverage/","rx-vdom-doc"],
+        }
+    }
 )
 
 generate_template(template)
@@ -63,12 +71,12 @@ shutil.copyfile(
 for file in [
     "README.md",
     ".gitignore",
-    ".npmignore",
-    ".prettierignore",
+    # ".npmignore", added 'rx-vdom-doc'
+    # ".prettierignore", added 'rx-vdom-doc'
     "LICENSE",
     "package.json",
     # "tsconfig.json", This file needs to include reference to 'rx-vdom-config.ts'
-    "jest.config.ts",
+    # "jest.config.ts", added 'testPathIgnorePatterns: ['rx-vdom-doc']'
     "webpack.config.ts",
 ]:
     shutil.copyfile(src=folder_path / ".template" / file, dst=folder_path / file)

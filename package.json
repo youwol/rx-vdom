@@ -25,6 +25,11 @@
     "eslintConfig": {
         "extends": [
             "@youwol"
+        ],
+        "ignorePatterns": [
+            "/dist/",
+            "/coverage/",
+            "rx-vdom-doc"
         ]
     },
     "dependencies": {
