@@ -1541,6 +1541,15 @@
     conditional-type-checks "^1.0.6"
     csstype "^2.6.0"
 
+"@youwol/rx-vdom@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@youwol/rx-vdom/-/rx-vdom-1.0.2.tgz#4fd51f1dd78a9386e2080162a13da37e923548de"
+  integrity sha512-t6ASl/Rp3OXwjMWXYpwe+RTSPcQuW9QgxCr17qv+19DFLCQsO/dX/A/EbjP8P9NtBfQpXsFKO8F+/tMPXK03pA==
+  dependencies:
+    "@ungap/custom-elements" "1.2.0"
+    conditional-type-checks "^1.0.6"
+    csstype "^2.6.0"
+
 "@youwol/tsconfig@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@youwol/tsconfig/-/tsconfig-1.2.1.tgz#3de3218e398a099e2e5ae6996ed959713238b091"
