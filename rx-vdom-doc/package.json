@@ -1,7 +1,7 @@
 {
     "name": "@youwol/rx-vdom-doc",
     "description": "Documentation app for the library @youwol/rx-vdom",
-    "version": "1.0.2",
+    "version": "1.0.3-wip",
     "author": "greinisch@youwol.com",
     "homepage": "https://github.com/youwol/rx-vdom-doc#README.md",
     "main": "dist/index.html",
