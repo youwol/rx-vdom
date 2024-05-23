@@ -11,11 +11,10 @@
  * [distributive conditional types](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html#distributive-conditional-types).
  *
  */
-export type Equals<X, Y> = (<T>() => T extends X ? 1 : 2) extends <
-    T,
->() => T extends Y ? 1 : 2
-    ? true
-    : false
+export type Equals<X, Y> =
+    (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2
+        ? true
+        : false
 
 /**
  * Extract the writable keys of a type.

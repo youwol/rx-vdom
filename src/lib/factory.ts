@@ -36,11 +36,12 @@ export const customElementPrefix = `${setup.name.split('/')[1]}-${
 
 /**
  *
- * Supported tags encompass all [HTML elements](https://developer.mozilla.org/en-US/docs/Web/HTML/Element),
+ * Supported tags encompass all [HTML elements](https://developer.mozilla.org/en-US/docs/Web/HTML/Element) by default,
  * with the following exceptions:
  * *  `dialog`: Results in a runtime error due to an inability to be instantiated in Mozilla.
  * *  `search`:  Causes a runtime error due to instantiation issues in Jest tests.
- * *  `form`: Triggers compile-time errors, the cause of which is not currently understood.
+ *
+ * Customization of supported HTML tags can be defined in the `rx-vdom-config.ts` file.
  * */
 export type SupportedHTMLTags = Configuration['SupportedHTMLTags']
 export type TypeCheck = Configuration['TypeCheck']

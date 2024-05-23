@@ -1,35 +1,65 @@
 
 const runTimeDependencies = {
-    "externals": {},
-    "includedInBundle": {
-        "@ungap/custom-elements": "1.2.0",
-        "conditional-type-checks": "^1.0.6",
-        "csstype": "^2.6.0"
+    "externals": {
+        "@youwol/mkdocs-ts": "^0.4.1",
+        "@youwol/rx-vdom": "^1.0.2",
+        "@youwol/webpm-client": "^3.0.0",
+        "rxjs": "^7.5.6"
+    },
+    "includedInBundle": {}
+}
+const externals = {
+    "@youwol/mkdocs-ts": "window['@youwol/mkdocs-ts_APIv04']",
+    "@youwol/mkdocs-ts/src/lib": "window['@youwol/mkdocs-ts_APIv04']['src']['lib']",
+    "@youwol/mkdocs-ts/src/lib/code-api/models": "window['@youwol/mkdocs-ts_APIv04']['src']['lib']['code-api']['models']",
+    "@youwol/rx-vdom": "window['@youwol/rx-vdom_APIv1']",
+    "@youwol/webpm-client": "window['@youwol/webpm-client_APIv3']",
+    "rxjs": "window['rxjs_APIv7']"
+}
+const exportedSymbols = {
+    "@youwol/mkdocs-ts": {
+        "apiKey": "04",
+        "exportedSymbol": "@youwol/mkdocs-ts"
+    },
+    "@youwol/rx-vdom": {
+        "apiKey": "1",
+        "exportedSymbol": "@youwol/rx-vdom"
+    },
+    "@youwol/webpm-client": {
+        "apiKey": "3",
+        "exportedSymbol": "@youwol/webpm-client"
+    },
+    "rxjs": {
+        "apiKey": "7",
+        "exportedSymbol": "rxjs"
     }
 }
-const externals = {}
-const exportedSymbols = {}
 
 const mainEntry : {entryFile: string,loadDependencies:string[]} = {
-    "entryFile": "./index.ts",
-    "loadDependencies": []
+    "entryFile": "./main.ts",
+    "loadDependencies": [
+        "@youwol/mkdocs-ts",
+        "@youwol/rx-vdom",
+        "@youwol/webpm-client",
+        "rxjs"
+    ]
 }
 
 const secondaryEntries : {[k:string]:{entryFile: string, name: string, loadDependencies:string[]}}= {}
 
 const entries = {
-     '@youwol/rx-vdom': './index.ts',
-    ...Object.values(secondaryEntries).reduce( (acc,e) => ({...acc, [`@youwol/rx-vdom/${e.name}`]:e.entryFile}), {})
+     '@youwol/rx-vdom-doc': './main.ts',
+    ...Object.values(secondaryEntries).reduce( (acc,e) => ({...acc, [`@youwol/rx-vdom-doc/${e.name}`]:e.entryFile}), {})
 }
 export const setup = {
-    name:'@youwol/rx-vdom',
-        assetId:'QHlvdXdvbC9yeC12ZG9t',
+    name:'@youwol/rx-vdom-doc',
+        assetId:'QHlvdXdvbC9yeC12ZG9tLWRvYw==',
     version:'1.0.3-wip',
-    shortDescription:"Tiny library to render HTML documents using reactive programing primitives.",
-    developerDocumentation:'https://platform.youwol.com/applications/@youwol/cdn-explorer/latest?package=@youwol/rx-vdom&tab=doc',
-    npmPackage:'https://www.npmjs.com/package/@youwol/rx-vdom',
-    sourceGithub:'https://github.com/youwol/rx-vdom',
-    userGuide:'https://l.youwol.com/doc/@youwol/rx-vdom',
+    shortDescription:"Documentation app for the library @youwol/rx-vdom",
+    developerDocumentation:'https://platform.youwol.com/applications/@youwol/cdn-explorer/latest?package=@youwol/rx-vdom-doc&tab=doc',
+    npmPackage:'https://www.npmjs.com/package/@youwol/rx-vdom-doc',
+    sourceGithub:'https://github.com/youwol/rx-vdom-doc',
+    userGuide:'https://l.youwol.com/doc/@youwol/rx-vdom-doc',
     apiVersion:'1',
     runTimeDependencies,
     externals,
@@ -55,7 +85,7 @@ export const setup = {
             modules,
             scripts,
         }).then(() => {
-            return window[`@youwol/rx-vdom_APIv1`]
+            return window[`@youwol/rx-vdom-doc_APIv1`]
         })
     },
     installAuxiliaryModule: ({name, cdnClient, installParameters}:{
@@ -70,7 +100,7 @@ export const setup = {
         const parameters = installParameters || {}
         const scripts = [
             ...(parameters.scripts || []),
-            `@youwol/rx-vdom#1.0.3-wip~dist/@youwol/rx-vdom/${entry.name}.js`
+            `@youwol/rx-vdom-doc#1.0.3-wip~dist/@youwol/rx-vdom-doc/${entry.name}.js`
         ]
         const modules = [
             ...(parameters.modules || []),
@@ -81,7 +111,7 @@ export const setup = {
             modules,
             scripts,
         }).then(() => {
-            return window[`@youwol/rx-vdom/${entry.name}_APIv1`]
+            return window[`@youwol/rx-vdom-doc/${entry.name}_APIv1`]
         })
     },
     getCdnDependencies(name?: string){
