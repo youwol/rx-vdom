@@ -2,7 +2,7 @@
 const runTimeDependencies = {
     "externals": {
         "@youwol/mkdocs-ts": "^0.5.0",
-        "@youwol/rx-vdom": "^1.0.2",
+        "@youwol/rx-vdom": "^1.0.3",
         "@youwol/webpm-client": "^3.0.0",
         "rxjs": "^7.5.6"
     },
@@ -54,7 +54,7 @@ const entries = {
 export const setup = {
     name:'@youwol/rx-vdom-doc',
         assetId:'QHlvdXdvbC9yeC12ZG9tLWRvYw==',
-    version:'1.0.3-wip',
+    version:'1.0.3',
     shortDescription:"Documentation app for the library @youwol/rx-vdom",
     developerDocumentation:'https://platform.youwol.com/applications/@youwol/cdn-explorer/latest?package=@youwol/rx-vdom-doc&tab=doc',
     npmPackage:'https://www.npmjs.com/package/@youwol/rx-vdom-doc',
@@ -100,7 +100,7 @@ export const setup = {
         const parameters = installParameters || {}
         const scripts = [
             ...(parameters.scripts || []),
-            `@youwol/rx-vdom-doc#1.0.3-wip~dist/@youwol/rx-vdom-doc/${entry.name}.js`
+            `@youwol/rx-vdom-doc#1.0.3~dist/@youwol/rx-vdom-doc/${entry.name}.js`
         ]
         const modules = [
             ...(parameters.modules || []),
