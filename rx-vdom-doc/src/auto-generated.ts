@@ -1,7 +1,7 @@
 
 const runTimeDependencies = {
     "externals": {
-        "@youwol/mkdocs-ts": "^0.4.1",
+        "@youwol/mkdocs-ts": "^0.5.0",
         "@youwol/rx-vdom": "^1.0.2",
         "@youwol/webpm-client": "^3.0.0",
         "rxjs": "^7.5.6"
@@ -9,16 +9,16 @@ const runTimeDependencies = {
     "includedInBundle": {}
 }
 const externals = {
-    "@youwol/mkdocs-ts": "window['@youwol/mkdocs-ts_APIv04']",
-    "@youwol/mkdocs-ts/src/lib": "window['@youwol/mkdocs-ts_APIv04']['src']['lib']",
-    "@youwol/mkdocs-ts/src/lib/code-api/models": "window['@youwol/mkdocs-ts_APIv04']['src']['lib']['code-api']['models']",
+    "@youwol/mkdocs-ts": "window['@youwol/mkdocs-ts_APIv05']",
+    "@youwol/mkdocs-ts/src/lib": "window['@youwol/mkdocs-ts_APIv05']['src']['lib']",
+    "@youwol/mkdocs-ts/src/lib/code-api/models": "window['@youwol/mkdocs-ts_APIv05']['src']['lib']['code-api']['models']",
     "@youwol/rx-vdom": "window['@youwol/rx-vdom_APIv1']",
     "@youwol/webpm-client": "window['@youwol/webpm-client_APIv3']",
     "rxjs": "window['rxjs_APIv7']"
 }
 const exportedSymbols = {
     "@youwol/mkdocs-ts": {
-        "apiKey": "04",
+        "apiKey": "05",
         "exportedSymbol": "@youwol/mkdocs-ts"
     },
     "@youwol/rx-vdom": {
