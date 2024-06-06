@@ -375,7 +375,7 @@ Here, it is the responsibility of the caller to sort the items within the **`vdo
 There is no **`orderOperator`** attribute available.
 </note>
 
-Additional information can be found in the [ChildrenOptionsAppend](@nav/api.ChildrenOptionsReplace)
+Additional information can be found in the [ChildrenOptionsReplace](@nav/api.ChildrenOptionsReplace)
 API documentation.
 
 ### Sync Policy
@@ -446,7 +446,7 @@ the <a target="_blank" href="https://www.chartjs.org/">Chart.js</a> library:
 const { chartJs } = await webpm.install({
     modules:['chart.js#^3.9.1 as chartJs'],
 })
-chartJs.Chart.register(...chartJs.registerables)
+chartJs.registerables.forEach((plot)=>chartJs.Chart.register(plot))
 
 const rndPt = () => ({x:Math.random(), y:Math.random()})
 const data$ = rxjs.timer(0,1000).pipe(

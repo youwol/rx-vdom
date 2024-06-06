@@ -1,4 +1,5 @@
 import shutil
+import subprocess
 from pathlib import Path
 
 from youwol.pipelines.pipeline_typescript_weback_npm import Template, PackageType, Dependencies, \
@@ -12,8 +13,8 @@ pkg_json = parse_json(folder_path / 'package.json')
 pkg_json_rxvdom = parse_json(folder_path / '..' / 'package.json')
 # (cd ./node_modules/@youwol/mkdocs-ts/bin/ && node index.js --project ../../../../.. --nav /api --out ../../../../assets/api)
 externals_deps = {
-    "@youwol/mkdocs-ts": "^0.4.1",
-    "@youwol/rx-vdom": "^1.0.2",
+    "@youwol/mkdocs-ts": "^0.5.0",
+    "@youwol/rx-vdom": f"^{pkg_json_rxvdom['version'].replace('-wip', '')}",
     "@youwol/webpm-client": "^3.0.0",
     "rxjs": "^7.5.6"
 }
@@ -61,3 +62,17 @@ for file in ['README.md', '.gitignore', '.npmignore', '.prettierignore', 'LICENS
         src=folder_path / '.template' / file,
         dst=folder_path / file
     )
+
+
+# Generate TS API files
+print("Generate TS API files")
+shell_command = (
+    "cd ./node_modules/@youwol/mkdocs-ts && "
+    "node ./bin/index.js "
+    "--project ../../../.. "
+    "--nav /api "
+    "--out ../../assets/api"
+)
+# Execute the shell command
+subprocess.run(shell_command, shell=True)
+

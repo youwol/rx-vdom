@@ -217,6 +217,17 @@ function extractRxStreams<Tag extends SupportedHTMLTags>(
     return { attributes, children: [] }
 }
 
+/**
+ * Transforms a regular HTMLElement into a reactive one by augmenting it with reactive capabilities, including:
+ * - `vDom: Readonly<VirtualDOM<Tag>>`: Represents the associated Virtual DOM.
+ * - `ownSubscriptions(...subs: Subscription[]): void`: Allows providing subscriptions to the element, which will
+ *   be automatically unsubscribed when the element is removed from the page.
+ *
+ * @param Base The base constructor of the regular HTMLElement.
+ * @returns A class that extends the provided `Base` constructor and adds reactive functionality to it.
+ * @template T The type of the constructor of the regular HTMLElement.
+ * @template Tag The associated HTML tag.
+ */
 export function ReactiveTrait<
     T extends Constructor<HTMLElement>,
     Tag extends SupportedHTMLTags,

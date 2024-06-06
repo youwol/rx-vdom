@@ -71,7 +71,9 @@ class State {
         this.items$.pipe(
             skip(1),
             switchMap( (items) =>
-                storageClient.postData$({...storageKey, body:{ items }})
+                storageClient.postData$(
+                    Object.assign({}, storageKey, {body:{ items }})
+                )
             )).subscribe()
         
         // Defines the 'completed$' observable from '__items$', 'true' if all items are done.
@@ -94,19 +96,19 @@ class State {
     }		
     toggleAll() {
         const completed = this.__items$.value.find( i => !i.done) == undefined
-        const items = this.__items$.value.map(i => ({...i, done: !completed}))
+        const items = this.__items$.value.map(i => Object.assign({}, i, {done: !completed}))
         this.__items$.next(items)
     }
     addItem(name) {
         const item = { id: Date.now(), name, completed: false }
-        this.__items$.next([...this.__items$.value, item])
+        this.__items$.next(this.__items$.value.concat([item]))
     }
     deleteItem(id) {
         this.__items$.next(this.__items$.value.filter(item => item.id !== id))
     }		
     updateItem(id, properties){
         const items = this.__items$.value
-            .map(item => item.id === id ? { ...item, ...properties } : item)
+            .map(item => item.id === id ? Object.assign({}, item, properties) : item)
         this.__items$.next(items)
     }
     setFilter(filter) {
