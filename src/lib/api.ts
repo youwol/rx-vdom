@@ -12,7 +12,11 @@ import type {
     Subscription as SubscriptionRxjs,
 } from 'rxjs'
 /**
- * Common API of all {@link RxHTMLElement}.
+ * Trait for reactive (un-tagged) HTMLElement.
+ * It includes the properties available for HTMLElement on top of which are added those defined
+ * by {@link ReactiveTrait}.
+ *
+ * For tag-specific element, see {@link RxHTMLElement}.
  */
 export class RxElementTrait extends ReactiveTrait(HTMLElement) {}
 
