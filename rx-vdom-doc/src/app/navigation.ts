@@ -46,8 +46,14 @@ const notebookOptions = {
 await NotebookModule.SnippetEditorView.fetchCmDependencies$('javascript')
 
 export const navigation = {
-    name: 'Documentation',
+    name: 'Home',
     tableOfContent,
+    decoration: {
+        icon: {
+            tag: 'i',
+            class: 'fas fa-home mr-1',
+        },
+    },
     html: fromMd('index.md'),
     '/how-to': {
         name: 'How to',

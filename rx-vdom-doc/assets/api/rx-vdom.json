@@ -29,8 +29,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export class RxElementTrait extends ReactiveTrait(HTMLElement)",
                 "implementation": "export class RxElementTrait extends ReactiveTrait(HTMLElement) {}",
-                "startLine": 22,
-                "endLine": 23,
+                "startLine": 21,
+                "endLine": 22,
                 "references": {
                     "RxElementTrait": "@nav/api/.RxElementTrait",
                     "ReactiveTrait(HTMLElement).constructor": "-1",
@@ -260,12 +260,12 @@
                     "ReactiveTrait(HTMLElement).translate": "-1",
                     "VirtualDOM": "@nav/api/.VirtualDOM",
                     "ReactiveTrait(HTMLElement).vDom": "-1",
-                    "K": "@nav/api/MainModule.setup.apiKey",
+                    "K": "167",
                     "ReactiveTrait(HTMLElement).addEventListener": "-1",
                     "ReactiveTrait(HTMLElement).after": "-1",
                     "ReactiveTrait(HTMLElement).animate": "-1",
                     "ReactiveTrait(HTMLElement).append": "-1",
-                    "T": "@nav/api/MainModule/Views.SourcesLink.target",
+                    "T": "432",
                     "ReactiveTrait(HTMLElement).appendChild": "-1",
                     "ReactiveTrait(HTMLElement).attachInternals": "-1",
                     "ReactiveTrait(HTMLElement).attachShadow": "-1",
@@ -275,7 +275,7 @@
                     "ReactiveTrait(HTMLElement).click": "-1",
                     "ReactiveTrait(HTMLElement).cloneNode": "-1",
                     "ReactiveTrait(HTMLElement).closest": "-1",
-                    "E": "@nav/api/MainModule/Views.ModalNavChildrenView.tag",
+                    "E": "555",
                     "ReactiveTrait(HTMLElement).compareDocumentPosition": "-1",
                     "ReactiveTrait(HTMLElement).computedStyleMap": "-1",
                     "ReactiveTrait(HTMLElement).contains": "-1",
@@ -340,7 +340,7 @@
                     "ReactiveTrait(HTMLElement).toggleAttribute": "-1",
                     "ReactiveTrait(HTMLElement).togglePopover": "-1",
                     "ReactiveTrait(HTMLElement).webkitMatchesSelector": "-1",
-                    "__class": "@nav/api/Notebook.NotebookOptions.defaultCellAttributes"
+                    "__class": "1194"
                 }
             },
             "semantic": {
@@ -373,8 +373,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type AnyHTMLAttribute =\n    | string\n    | number\n    | boolean\n    | CSSAttribute\n    | CustomAttribute",
                 "implementation": "",
-                "startLine": 38,
-                "endLine": 39,
+                "startLine": 37,
+                "endLine": 38,
                 "references": {
                     "AnyHTMLAttribute": "@nav/api/.AnyHTMLAttribute",
                     "CSSAttribute": "@nav/api/.CSSAttribute",
@@ -411,8 +411,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type AnyVirtualDOM =\n    | VirtualDOMTagNameMap[keyof VirtualDOMTagNameMap]\n    | FluxViewVirtualDOM",
                 "implementation": "",
-                "startLine": 54,
-                "endLine": 55,
+                "startLine": 53,
+                "endLine": 54,
                 "references": {
                     "AnyVirtualDOM": "@nav/api/.AnyVirtualDOM",
                     "VirtualDOMTagNameMap": "@nav/api/.VirtualDOMTagNameMap",
@@ -449,8 +449,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type AttributeLike<Target extends AnyHTMLAttribute> =\n    | Target\n    | Observable<Target>\n    | RxAttribute<unknown, Target>",
                 "implementation": "",
-                "startLine": 61,
-                "endLine": 62,
+                "startLine": 60,
+                "endLine": 61,
                 "references": {
                     "AttributeLike": "@nav/api/.AttributeLike",
                     "AnyHTMLAttribute": "@nav/api/.AnyHTMLAttribute",
@@ -489,8 +489,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type BlackListed = 'toString'",
                 "implementation": "",
-                "startLine": 71,
-                "endLine": 72,
+                "startLine": 70,
+                "endLine": 71,
                 "references": {
                     "BlackListed": "@nav/api/.BlackListed"
                 }
@@ -525,8 +525,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type CSSAttribute = CSS.Properties",
                 "implementation": "",
-                "startLine": 79,
-                "endLine": 80,
+                "startLine": 78,
+                "endLine": 79,
                 "references": {
                     "CSSAttribute": "@nav/api/.CSSAttribute"
                 }
@@ -561,8 +561,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type ChildLike =\n    | AnyVirtualDOM\n    | HTMLElement\n    | RxChild\n    | FluxViewVirtualDOM",
                 "implementation": "",
-                "startLine": 84,
-                "endLine": 85,
+                "startLine": 83,
+                "endLine": 84,
                 "references": {
                     "ChildLike": "@nav/api/.ChildLike",
                     "AnyVirtualDOM": "@nav/api/.AnyVirtualDOM",
@@ -600,8 +600,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type ChildrenLike =\n    | ChildLike[]\n    | RxChildren<'replace'>\n    | RxChildren<'append'>\n    | RxChildren<'sync'>",
                 "implementation": "",
-                "startLine": 93,
-                "endLine": 94,
+                "startLine": 92,
+                "endLine": 93,
                 "references": {
                     "ChildrenLike": "@nav/api/.ChildrenLike",
                     "ChildLike": "@nav/api/.ChildLike",
@@ -649,11 +649,11 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type ChildrenOptionsAppend<TDomain> = {\n    /**\n     * Source of domain data.\n     */\n    source$: Observable<TDomain[]>\n    /**\n     * Mapping between one `TDomain` element over those emitted by `source$` and its corresponding view.\n     * @param domainData single element over those emitted by `source$`.\n     */\n    vdomMap: (domainData: TDomain) => AnyVirtualDOM\n\n    /**\n     * Execute side effects once the children have been updated.\n     *\n     * @param parent parent of the children.\n     * @param update description of the update.\n     */\n    sideEffects?: (\n        parent: RxElementTrait,\n        update: RenderingUpdate<TDomain>,\n    ) => void\n\n    /**\n     * Specifies how the children are ordered in the parent element.\n     * Order is defined using this callback.\n     *\n     * @param d1 Domain data associated to the first element for comparison\n     * @param d2 Domain data associated to the second element for comparison\n     * @return a value:\n     * -    if `>0`, sort `d1` after `d2`\n     * -    if `<0`, sort `d1` before `d2`\n     */\n    orderOperator?: (d1: TDomain, d2: TDomain) => number\n}",
                 "implementation": "",
-                "startLine": 107,
-                "endLine": 108,
+                "startLine": 106,
+                "endLine": 107,
                 "references": {
                     "ChildrenOptionsAppend": "@nav/api/.ChildrenOptionsAppend",
-                    "TDomain": "@nav/api/CodeApi.Type.callables",
+                    "TDomain": "1075",
                     "RxElementTrait": "@nav/api/.RxElementTrait",
                     "RenderingUpdate": "@nav/api/.RenderingUpdate",
                     "Observable": "@nav/api/.Observable",
@@ -701,12 +701,12 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type ChildrenOptionsReplace<TDomain> = {\n    /**\n     * Source of domain data.\n     */\n    source$: Observable<TDomain>\n    /**\n     *\n     * @param domainData domain data emitted by `source$`\n     * @return the list of children that replace the previous one.\n     */\n    vdomMap: (domainData: TDomain) => AnyVirtualDOM[]\n\n    /**\n     * Virtual DOMs displayed until a first data is emitted by `source$`.\n     */\n    untilFirst?: AnyVirtualDOM[]\n\n    /**\n     * If provided, apply a last transformation of the virtual DOMs returned by `vdomMap` before being actually set as\n     * children. Useful to factorize some transformations.\n     *\n     * @param domValue value of the attribute returned by `vdomMap`.\n     */\n    wrapper?: (domValue: AnyVirtualDOM[]) => AnyVirtualDOM[]\n\n    /**\n     * Provide a handle to execute side effects. This is executed just after the new children have been inserted\n     * in the (real) DOM.\n     * @param element the parent element of the children along with the domain data value that was originally\n     * emitted by `source$`.\n     */\n    sideEffects?: (element: ResolvedHTMLElement<TDomain>) => void\n}",
                 "implementation": "",
-                "startLine": 150,
-                "endLine": 151,
+                "startLine": 149,
+                "endLine": 150,
                 "references": {
                     "ChildrenOptionsReplace": "@nav/api/.ChildrenOptionsReplace",
                     "ResolvedHTMLElement": "@nav/api/.ResolvedHTMLElement",
-                    "TDomain": "@nav/api/CodeApi.Module.children",
+                    "TDomain": "1092",
                     "Observable": "@nav/api/.Observable",
                     "AnyVirtualDOM": "@nav/api/.AnyVirtualDOM"
                 }
@@ -752,12 +752,12 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type ChildrenOptionsSync<TDomain> = ChildrenOptionsAppend<TDomain> & {\n    /**\n     * Default is to use reference equality.\n     *\n     * @param d1 first domain data for comparison.\n     * @param d2 second domain data for comparison.\n     * @return `true` if the `d1` and `d2` represents the same element, `false` otherwise.\n     */\n    comparisonOperator?: (d1: TDomain, d2: TDomain) => boolean\n}",
                 "implementation": "",
-                "startLine": 192,
-                "endLine": 193,
+                "startLine": 191,
+                "endLine": 192,
                 "references": {
                     "ChildrenOptionsSync": "@nav/api/.ChildrenOptionsSync",
                     "ChildrenOptionsAppend": "@nav/api/.ChildrenOptionsAppend",
-                    "TDomain": "@nav/api/CodeApi.Project.docBasePath"
+                    "TDomain": "1100"
                 }
             },
             "semantic": {
@@ -790,8 +790,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type ChildrenPolicy = 'replace' | 'append' | 'sync'",
                 "implementation": "",
-                "startLine": 210,
-                "endLine": 211,
+                "startLine": 209,
+                "endLine": 210,
                 "references": {
                     "ChildrenPolicy": "@nav/api/.ChildrenPolicy"
                 }
@@ -837,12 +837,12 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type ChildrenTypesOptionMap<TDomain> = {\n    replace: ChildrenOptionsReplace<TDomain>\n    append: ChildrenOptionsAppend<TDomain>\n    sync: ChildrenOptionsSync<TDomain>\n}",
                 "implementation": "",
-                "startLine": 217,
-                "endLine": 218,
+                "startLine": 216,
+                "endLine": 217,
                 "references": {
                     "ChildrenTypesOptionMap": "@nav/api/.ChildrenTypesOptionMap",
                     "ChildrenOptionsAppend": "@nav/api/.ChildrenOptionsAppend",
-                    "TDomain": "@nav/api/CodeApi.ModuleView.router",
+                    "TDomain": "1107",
                     "ChildrenOptionsReplace": "@nav/api/.ChildrenOptionsReplace",
                     "ChildrenOptionsSync": "@nav/api/.ChildrenOptionsSync"
                 }
@@ -877,8 +877,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type CustomAttribute = { [key: string]: string | boolean | number }",
                 "implementation": "",
-                "startLine": 229,
-                "endLine": 230,
+                "startLine": 228,
+                "endLine": 229,
                 "references": {
                     "CustomAttribute": "@nav/api/.CustomAttribute"
                 }
@@ -919,7 +919,7 @@
                     "Equals": "@nav/api/.Equals",
                     "T": "1182",
                     "X": "1183",
-                    "Y": "@nav/api/Notebook.defaultDisplayFactory"
+                    "Y": "1184"
                 }
             },
             "semantic": {
@@ -963,12 +963,12 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type ExposedMembers<TargetNativeHTMLElement extends HTMLElement> = {\n    [Property in keyof FilterHTMLMembers<TargetNativeHTMLElement>]: TargetNativeHTMLElement[Property] extends string\n        ? AttributeLike<string>\n        : TargetNativeHTMLElement[Property] extends number\n          ? AttributeLike<number>\n          : TargetNativeHTMLElement[Property] extends boolean\n            ? AttributeLike<boolean>\n            : Property extends `on${string}`\n              ? TargetNativeHTMLElement[Property]\n              : never\n}",
                 "implementation": "",
-                "startLine": 241,
-                "endLine": 242,
+                "startLine": 240,
+                "endLine": 241,
                 "references": {
                     "ExposedMembers": "@nav/api/.ExposedMembers",
                     "FilterHTMLMembers": "@nav/api/.FilterHTMLMembers",
-                    "TargetNativeHTMLElement": "@nav/api/CodeApi.ModuleView.project",
+                    "TargetNativeHTMLElement": "1113",
                     "AttributeLike": "@nav/api/.AttributeLike"
                 }
             },
@@ -1013,12 +1013,12 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type FilterHTMLMembers<TargetNativeHTMLElement extends HTMLElement> =\n    Omit<\n        WritablePart<TargetNativeHTMLElement>,\n        | 'tag'\n        | 'tagName'\n        | 'className'\n        | 'children'\n        | 'style'\n        | 'customAttributes'\n        | 'connectedCallback'\n        | 'disconnectedCallback'\n        | BlackListed\n    >",
                 "implementation": "",
-                "startLine": 264,
-                "endLine": 265,
+                "startLine": 263,
+                "endLine": 264,
                 "references": {
                     "FilterHTMLMembers": "@nav/api/.FilterHTMLMembers",
                     "WritablePart": "@nav/api/.WritablePart",
-                    "TargetNativeHTMLElement": "@nav/api/CodeApi.ModuleView.class",
+                    "TargetNativeHTMLElement": "1115",
                     "BlackListed": "@nav/api/.BlackListed"
                 }
             },
@@ -1052,8 +1052,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type FluxViewVirtualDOM = WithFluxView extends true\n    ? { tag?: SupportedHTMLTags }\n    : never",
                 "implementation": "",
-                "startLine": 298,
-                "endLine": 299,
+                "startLine": 297,
+                "endLine": 298,
                 "references": {
                     "FluxViewVirtualDOM": "@nav/api/.FluxViewVirtualDOM",
                     "SupportedHTMLTags": "@nav/api/.SupportedHTMLTags"
@@ -1100,12 +1100,12 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type NativeHTMLElement<Tag extends SupportedHTMLTags> =\n    HTMLElementTagNameMap[Tag]",
                 "implementation": "",
-                "startLine": 308,
-                "endLine": 309,
+                "startLine": 307,
+                "endLine": 308,
                 "references": {
                     "NativeHTMLElement": "@nav/api/.NativeHTMLElement",
                     "SupportedHTMLTags": "@nav/api/.SupportedHTMLTags",
-                    "Tag": "@nav/api/Notebook/Views.mx1"
+                    "Tag": "1120"
                 }
             },
             "semantic": {
@@ -1138,11 +1138,11 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type Observable<T> = Pick<ObservableRxjs<T>, 'subscribe'>",
                 "implementation": "",
-                "startLine": 27,
-                "endLine": 28,
+                "startLine": 26,
+                "endLine": 27,
                 "references": {
                     "Observable": "@nav/api/.Observable",
-                    "T": "@nav/api/CodeApi.Code.filePath"
+                    "T": "1048"
                 }
             },
             "semantic": {
@@ -1175,12 +1175,12 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type RenderingUpdate<TDomain> = {\n    added: ResolvedHTMLElement<TDomain>[]\n    updated: ResolvedHTMLElement<TDomain>[]\n    removed: ResolvedHTMLElement<TDomain>[]\n}",
                 "implementation": "",
-                "startLine": 316,
-                "endLine": 317,
+                "startLine": 315,
+                "endLine": 316,
                 "references": {
                     "RenderingUpdate": "@nav/api/.RenderingUpdate",
                     "ResolvedHTMLElement": "@nav/api/.ResolvedHTMLElement",
-                    "TDomain": "@nav/api/Notebook/Views.mx2.tag"
+                    "TDomain": "1126"
                 }
             },
             "semantic": {
@@ -1224,14 +1224,14 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type ResolvedHTMLElement<\n    TDomain,\n    Tag extends SupportedHTMLTags = SupportedHTMLTags,\n> = {\n    /**\n     * Domain data. If the child has been defined using a straight HTMLElement, it is `undefined`.\n     */\n    domainData?: TDomain\n\n    /**\n     * The actual DOM element with {@link RxElementTrait} trait.\n     */\n    element: RxHTMLElement<Tag>\n}",
                 "implementation": "",
-                "startLine": 327,
-                "endLine": 328,
+                "startLine": 326,
+                "endLine": 327,
                 "references": {
                     "ResolvedHTMLElement": "@nav/api/.ResolvedHTMLElement",
                     "SupportedHTMLTags": "@nav/api/.SupportedHTMLTags",
-                    "TDomain": "@nav/api/Notebook/Views.mx3.class",
+                    "TDomain": "1131",
                     "RxHTMLElement": "@nav/api/.RxHTMLElement",
-                    "Tag": "@nav/api/Notebook/Views.mx4"
+                    "Tag": "1132"
                 }
             },
             "semantic": {
@@ -1275,15 +1275,15 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type RxAttribute<\n    TDomain = unknown,\n    Target extends AnyHTMLAttribute = AnyHTMLAttribute,\n> = {\n    /**\n     * Source of domain data.\n     */\n    source$: Observable<TDomain>\n\n    /**\n     * Mapping function between domain data and actual attribute type\n     * @param domainData domainData emitted by the `source$`.\n     */\n    vdomMap: (domainData: TDomain) => Target\n\n    /**\n     * Value of the attribute until a first data is emitted by `source$`.\n     */\n    untilFirst?: Target\n\n    /**\n     * If provided, apply a last transformation of the data returned by `vdomMap` before being actually set as\n     * attribute. Useful to factorize some transformations.\n     *\n     * @param domValue value of the attribute returned by `vdomMap`.\n     */\n    wrapper?: (domValue: Target) => Target\n\n    /**\n     * Provide a handle to execute side effects. This is executed just after the attribute value has been updated\n     * in the (real) DOM.\n     * @param element the updated element along with the domain data that was originally\n     * emitted by `source$`.\n     */\n    sideEffects?: (element: ResolvedHTMLElement<TDomain>) => void\n}",
                 "implementation": "",
-                "startLine": 355,
-                "endLine": 356,
+                "startLine": 354,
+                "endLine": 355,
                 "references": {
                     "RxAttribute": "@nav/api/.RxAttribute",
                     "AnyHTMLAttribute": "@nav/api/.AnyHTMLAttribute",
                     "ResolvedHTMLElement": "@nav/api/.ResolvedHTMLElement",
-                    "TDomain": "@nav/api/Notebook/Views.Range.value$",
+                    "TDomain": "1149",
                     "Observable": "@nav/api/.Observable",
-                    "Target": "@nav/api/Notebook/Views.Range.emitDrag"
+                    "Target": "1150"
                 }
             },
             "semantic": {
@@ -1327,14 +1327,14 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type RxChild<\n    TDomain = unknown,\n    TVdomMap extends AnyVirtualDOM = AnyVirtualDOM,\n    TVdomFinal extends AnyVirtualDOM = TVdomMap,\n> = {\n    /**\n     * Source of domain data.\n     */\n    source$: Observable<TDomain>\n\n    /**\n     * Mapping function between domain data and associated {@link VirtualDOM}.\n     * @param domainData domainData emitted by the `source$`.\n     */\n    vdomMap: (domainData: TDomain) => TVdomMap\n\n    /**\n     * Virtual DOM displayed until a first data is emitted by `source$`.\n     */\n    untilFirst?: AnyVirtualDOM\n\n    /**\n     * If provided, apply a last transformation of the virtual DOM returned by `vdomMap` before being actually set as\n     * child. Useful to factorize some transformations.\n     *\n     * @param domValue value of the attribute returned by `vdomMap`.\n     */\n    wrapper?: (domValue: TVdomMap) => TVdomFinal\n\n    /**\n     * Provide a handle to execute side effects. This is executed just after the new child has been updated\n     * in the (real) DOM.\n     * @param element the inserted child along with the domain data that was originally\n     * emitted by `source$`.\n     */\n    sideEffects?: (\n        element: ResolvedHTMLElement<TDomain, TVdomFinal['tag']>,\n    ) => void\n}",
                 "implementation": "",
-                "startLine": 401,
-                "endLine": 402,
+                "startLine": 400,
+                "endLine": 401,
                 "references": {
                     "RxChild": "@nav/api/.RxChild",
                     "AnyVirtualDOM": "@nav/api/.AnyVirtualDOM",
                     "TVdomMap": "1168",
                     "ResolvedHTMLElement": "@nav/api/.ResolvedHTMLElement",
-                    "TDomain": "@nav/api/Notebook/Views.Text.connectedCallback",
+                    "TDomain": "1167",
                     "TVdomFinal": "1169",
                     "Observable": "@nav/api/.Observable"
                 }
@@ -1380,14 +1380,14 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type RxChildren<Policy extends ChildrenPolicy, TDomain = unknown> = {\n    policy: Policy\n} & ChildrenTypesOptionMap<TDomain>[Policy]",
                 "implementation": "",
-                "startLine": 452,
-                "endLine": 453,
+                "startLine": 451,
+                "endLine": 452,
                 "references": {
                     "RxChildren": "@nav/api/.RxChildren",
                     "ChildrenPolicy": "@nav/api/.ChildrenPolicy",
                     "Policy": "1173",
                     "ChildrenTypesOptionMap": "@nav/api/.ChildrenTypesOptionMap",
-                    "TDomain": "@nav/api/Notebook.DisplayComponent.name"
+                    "TDomain": "1174"
                 }
             },
             "semantic": {
@@ -1427,7 +1427,7 @@
                     "SupportedHTMLTags": "@nav/api/.SupportedHTMLTags",
                     "RxElementTrait": "@nav/api/.RxElementTrait",
                     "NativeHTMLElement": "@nav/api/.NativeHTMLElement",
-                    "Tag": "@nav/api/MainModule.setup.@youwol/rx-tree-views"
+                    "Tag": "89"
                 }
             },
             "semantic": {
@@ -1460,8 +1460,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type Subscription = Pick<SubscriptionRxjs, 'unsubscribe'>",
                 "implementation": "",
-                "startLine": 32,
-                "endLine": 33,
+                "startLine": 31,
+                "endLine": 32,
                 "references": {
                     "Subscription": "@nav/api/.Subscription"
                 }
@@ -1551,7 +1551,7 @@
                     "ChildrenLike": "@nav/api/.ChildrenLike",
                     "AttributeLike": "@nav/api/.AttributeLike",
                     "RxHTMLElement": "@nav/api/.RxHTMLElement",
-                    "Tag": "@nav/api/MainModule.setup.commonjs2",
+                    "Tag": "87",
                     "CustomAttribute": "@nav/api/.CustomAttribute",
                     "CSSAttribute": "@nav/api/.CSSAttribute",
                     "ExposedMembers": "@nav/api/.ExposedMembers",
@@ -1588,8 +1588,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type VirtualDOMTagNameMap = {\n    [Property in SupportedHTMLTags]: VirtualDOM<Property>\n}",
                 "implementation": "",
-                "startLine": 459,
-                "endLine": 460,
+                "startLine": 458,
+                "endLine": 459,
                 "references": {
                     "VirtualDOMTagNameMap": "@nav/api/.VirtualDOMTagNameMap",
                     "SupportedHTMLTags": "@nav/api/.SupportedHTMLTags",
@@ -1630,7 +1630,7 @@
                 "endLine": 25,
                 "references": {
                     "WritableKeysOf": "@nav/api/.WritableKeysOf",
-                    "T": "@nav/api/Notebook.CellCommonAttributes",
+                    "T": "1186",
                     "Equals": "@nav/api/.Equals"
                 }
             },
@@ -1679,7 +1679,7 @@
                 "endLine": 39,
                 "references": {
                     "WritablePart": "@nav/api/.WritablePart",
-                    "T": "@nav/api/Notebook.CellCommonAttributes.lineNumbers",
+                    "T": "1188",
                     "WritableKeysOf": "@nav/api/.WritableKeysOf"
                 }
             },
@@ -1739,8 +1739,8 @@
                 "endLine": 357,
                 "references": {
                     "ReactiveTrait": "@nav/api/.ReactiveTrait",
-                    "T": "@nav/api/Notebook.NotebookOptions",
-                    "__class": "@nav/api/Notebook.NotebookOptions.defaultCellAttributes",
+                    "T": "1191",
+                    "__class": "1194",
                     "Tag": "1192"
                 }
             },
@@ -1799,7 +1799,7 @@
                 "references": {
                     "render": "@nav/api/.render",
                     "VirtualDOM": "@nav/api/.VirtualDOM",
-                    "Tag": "@nav/api/MainModule.setup.commonjs2",
+                    "Tag": "92",
                     "RxHTMLElement": "@nav/api/.RxHTMLElement"
                 }
             },
