@@ -80,11 +80,11 @@ const child = {
 }
 
 const parent : VirtualDOM<'div'> = {
-tag: 'div',
-children: [
-// Problem: { tag: 'string' } can not be converted to { tag: SupportedHTMLTags }
-child
-]
+    tag: 'div',
+    children: [
+        // Problem: { tag: 'string' } can not be converted to { tag: SupportedHTMLTags }
+        child
+    ]
 }
 </code-snippet>
 
@@ -103,10 +103,10 @@ const style = {
 }
 
 const div: VirtualDOM<'div'> = {
-tag: 'div',
-// Types of property 'textAlign' are incompatible.
-// Type 'string' is not assignable to type 'TextAlignProperty'.
-style,
+    tag: 'div',
+    // Types of property 'textAlign' are incompatible.
+    // Type 'string' is not assignable to type 'TextAlignProperty'.
+    style,
 }
 </code-snippet>
 
