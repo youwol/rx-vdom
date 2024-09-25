@@ -1,7 +1,7 @@
 {
     "name": "@youwol/rx-vdom-doc",
     "description": "Documentation app for the library @youwol/rx-vdom",
-    "version": "1.0.3",
+    "version": "1.0.4-wip",
     "author": "greinisch@youwol.com",
     "homepage": "https://github.com/youwol/rx-vdom-doc#README.md",
     "main": "dist/index.html",
@@ -63,7 +63,7 @@
     "webpm": {
         "dependencies": {
             "@youwol/mkdocs-ts": "^0.5.0",
-            "@youwol/rx-vdom": "^1.0.3",
+            "@youwol/rx-vdom": "^1.0.4",
             "@youwol/webpm-client": "^3.0.0",
             "rxjs": "^7.5.6"
         },
