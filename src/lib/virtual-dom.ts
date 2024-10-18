@@ -10,7 +10,6 @@ import {
     CustomAttribute,
     CSSAttribute,
     NativeHTMLElement,
-    FluxViewVirtualDOM,
 } from './api'
 import { factory, SupportedHTMLTags, TypeCheck } from './factory'
 /**
@@ -107,13 +106,12 @@ export type RxHTMLElement<Tag extends SupportedHTMLTags> = RxElementTrait &
  * @returns the corresponding DOM element
  */
 export function render<Tag extends SupportedHTMLTags>(
-    vDom: VirtualDOM<Tag> | FluxViewVirtualDOM,
+    vDom: VirtualDOM<Tag>,
 ): RxHTMLElement<Tag> {
     if (vDom == undefined) {
         console.error('Got an undefined virtual DOM, return empty div')
         return undefined
     }
-    // the next 2 type unsafe lines are to support FluxViewVirtualDOM
     const tag = vDom['tag'] || ('div' as const)
 
     const element: RxHTMLElement<Tag> = factory<Tag>(tag as unknown as Tag)

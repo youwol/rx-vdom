@@ -4,7 +4,7 @@
  */
 import type * as CSS from 'csstype'
 import { RxHTMLElement, VirtualDOM } from './virtual-dom'
-import { SupportedHTMLTags, WithFluxView } from './factory'
+import { SupportedHTMLTags } from './factory'
 import { ReactiveTrait } from './core'
 import { WritablePart } from './type-utils'
 import type {
@@ -42,17 +42,14 @@ export type AnyHTMLAttribute =
     | CustomAttribute
 
 /**
- * Type union of all possible virtual DOM types (the {@link VirtualDOM} `tag` attribute)
- * with the (at some point deprecated) {@link FluxViewVirtualDOM}.
+ * Type union of all possible virtual DOM types (the {@link VirtualDOM} `tag` attribute).
  * i.e.:
  * ```
- * FluxViewVirtualDOM | VirtualDOM<'a'> | VirtualDOM<'b'> | VirtualDOM<'br'> // etc
+ * VirtualDOM<'a'> | VirtualDOM<'b'> | VirtualDOM<'br'> // etc
  * ```
  *
  */
-export type AnyVirtualDOM =
-    | VirtualDOMTagNameMap[keyof VirtualDOMTagNameMap]
-    | FluxViewVirtualDOM
+export type AnyVirtualDOM = VirtualDOMTagNameMap[keyof VirtualDOMTagNameMap]
 
 /**
  * Union of the types allowed to define an attribute in a {@link VirtualDOM}.
@@ -80,11 +77,7 @@ export type CSSAttribute = CSS.Properties
 /**
  * Union of the types allowed to define a child in a {@link VirtualDOM}.
  */
-export type ChildLike =
-    | AnyVirtualDOM
-    | HTMLElement
-    | RxChild
-    | FluxViewVirtualDOM
+export type ChildLike = AnyVirtualDOM | HTMLElement | RxChild
 
 /**
  * Union of the types allowed to define children in a {@link VirtualDOM}.
@@ -273,30 +266,6 @@ export type FilterHTMLMembers<TargetNativeHTMLElement extends HTMLElement> =
         | 'disconnectedCallback'
         | BlackListed
     >
-
-/**
- * This type is introduced for backward compatibility to allow using VirtualDOM from the
- * [@youwol/flux-view](https://github.com/youwol/flux-view) package.
- *
- * To introduce a child from `@youwol/flux-view` in the {@link VirtualDOM}, an explicit type casting
- * to {@link FluxViewVirtualDOM} is required:
- *
- * ```
- *  const vDom: VirtualDOM<'div'> = {
- *      tag: 'div',
- *      children: [
- *          {
- *              tag: 'a',
- *              innerText: attr$(of('foo'), (text) => text)
- *          } as FluxViewChild
- *      ]
- *  }
- * ```
- *
- */
-export type FluxViewVirtualDOM = WithFluxView extends true
-    ? { tag?: SupportedHTMLTags }
-    : never
 
 /**
  * Native HTMLElement per tag,
