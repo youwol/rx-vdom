@@ -48,7 +48,12 @@ template = Template(
     userGuide=True,
     devServer=DevServer(
         port=3027
-    )
+    ),
+    inPackageJson={
+        "scripts" :{
+            "doc": "typedoc && python doc.py"
+        },
+    }
 )
 
 generate_template(template)
@@ -62,17 +67,3 @@ for file in ['README.md', '.gitignore', '.npmignore', '.prettierignore', 'LICENS
         src=folder_path / '.template' / file,
         dst=folder_path / file
     )
-
-
-# Generate TS API files
-print("Generate TS API files")
-shell_command = (
-    "cd ./node_modules/@youwol/mkdocs-ts && "
-    "node ./bin/index.js "
-    "--project ../../../.. "
-    "--nav /api "
-    "--out ../../assets/api"
-)
-# Execute the shell command
-subprocess.run(shell_command, shell=True)
-
