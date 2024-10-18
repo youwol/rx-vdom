@@ -2,13 +2,22 @@ import {
     Observable,
     RxAttribute,
     VirtualDOM,
-    VirtualDOMTagNameMap,
+    AnyVirtualDOM,
+    AttributeLike,
 } from '../../lib'
 import { of } from 'rxjs'
 import { AssertTrue as Assert, Has, IsExact } from 'conditional-type-checks'
-import { AttributeLike } from '../../lib/api'
 
-{
+// Define a no-op function to "use" types. It prevents linter errors.
+function useType<T>(_value: T | unknown) {
+    //no-op
+}
+// Define a no-op function to "use" variables. It prevents linter errors.
+function useVar<T>(_value: T): void {
+    //no-op
+}
+
+;(() => {
     // virtualDOM OK
     const _: VirtualDOM<'div'> = {
         tag: 'div',
@@ -20,7 +29,7 @@ import { AttributeLike } from '../../lib/api'
                 tag: 'a',
                 href: of('https://foo.com'),
                 onclick: (ev) => {
-                    type _ = Assert<IsExact<typeof ev, MouseEvent>>
+                    useType<Assert<IsExact<typeof ev, MouseEvent>>>(null)
                 },
                 children: [
                     {
@@ -34,9 +43,9 @@ import { AttributeLike } from '../../lib/api'
             },
         ],
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // Wrong tag check
     const _: VirtualDOM<'b'> = {
         // @ts-expect-error -- 'a' is not 'b'
@@ -44,17 +53,17 @@ import { AttributeLike } from '../../lib/api'
         innerText: 'foo',
         href: 'https://foo.com',
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // Missing tag check
     // @ts-expect-error -- missing tag
     const _: VirtualDOM<'b'> = {
         innerText: 'foo',
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // Missing tag nested check
     const _: VirtualDOM<'div'> = {
         tag: 'div',
@@ -66,27 +75,27 @@ import { AttributeLike } from '../../lib/api'
             },
         ],
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // Wrong property's type
     const _: VirtualDOM<'div'> = {
         tag: 'div',
         // @ts-expect-error -- wrong type (should be string)
         innerText: 5,
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // Wrong style's type
     const _: VirtualDOM<'div'> = {
         tag: 'div',
         // @ts-expect-error -- wrong type (should be string)
         style: 5,
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // Wrong style's attribute key
     const _: VirtualDOM<'div'> = {
         tag: 'div',
@@ -100,105 +109,105 @@ import { AttributeLike } from '../../lib/api'
             },
         ],
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // Wrong style's style with observable
     const _: VirtualDOM<'div'> = {
         tag: 'div',
         children: [
-            // @ts-expect-error -- property does not exist
             {
                 tag: 'div',
+                // @ts-expect-error -- property does not exist
                 style: of({
                     colour: 'white',
                 }),
             },
         ],
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // Wrong custom attribue type
     const _: VirtualDOM<'div'> = {
         tag: 'div',
         // @ts-expect-error -- wrong type
         customAttributes: 5,
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // Wrong custom attribute key
     const _: VirtualDOM<'div'> = {
         tag: 'div',
         children: [
-            // @ts-expect-error -- custom attribute can not be object
             {
                 tag: 'div',
                 customAttributes: {
+                    // @ts-expect-error -- custom attribute can not be an object
                     foo: { bar: 'baz' },
                 },
             },
         ],
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // Wrong custom attribute key using observable
     const _: VirtualDOM<'div'> = {
         tag: 'div',
         children: [
-            // @ts-expect-error -- custom attribute can not be object
             {
                 tag: 'div',
                 customAttributes: {
+                    // @ts-expect-error -- custom attribute can not be an observable
                     foo: of({ bar: 'baz' }),
                 },
             },
         ],
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // Wrong style's attribute value
     const _: VirtualDOM<'div'> = {
         tag: 'div',
         children: [
-            // @ts-expect-error -- type error on value
             {
                 tag: 'div',
                 style: {
+                    // @ts-expect-error -- type error on value
                     textAlign: 'middle',
                 },
             },
         ],
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // Wrong property's type nested
     const _: VirtualDOM<'div'> = {
         tag: 'div',
         children: [
-            // @ts-expect-error -- wrong type (should be string)
             {
                 tag: 'div',
+                // @ts-expect-error -- wrong type (should be string)
                 innerText: 5,
             },
         ],
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // wrong property for tag
     const _: VirtualDOM<'b'> = {
         tag: 'b',
         // @ts-expect-error -- href is not available on 'b'
         href: 'https://foo.com',
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // Can not override method
     const _: VirtualDOM<'a'> = {
         tag: 'a',
@@ -209,9 +218,9 @@ import { AttributeLike } from '../../lib/api'
             return undefined
         },
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // Some test using class definition for virtual dom
     class Foo implements VirtualDOM<'a'> {
         public readonly tag = 'a'
@@ -231,10 +240,10 @@ import { AttributeLike } from '../../lib/api'
         ]
     }
     const foo = new Foo()
-    type _ = Assert<IsExact<typeof foo.tag, 'a'>>
-}
-
-{
+    useVar(foo.someAdditionalProperty)
+    useType<Assert<IsExact<typeof foo.tag, 'a'>>>(null)
+})()
+;(() => {
     // wrong property for tag, nested
     const _: VirtualDOM<'div'> = {
         tag: 'div',
@@ -247,18 +256,18 @@ import { AttributeLike } from '../../lib/api'
             },
         ],
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // wrong property because readonly
     const _: VirtualDOM<'b'> = {
         tag: 'b',
         // @ts-expect-error -- clientHeight only has getter
         clientHeight: 5,
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // wrong property because readonly, nested
     const _: VirtualDOM<'div'> = {
         tag: 'div',
@@ -271,48 +280,50 @@ import { AttributeLike } from '../../lib/api'
             },
         ],
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // connectedCallback OK
     const _: VirtualDOM<'a'> = {
         tag: 'a',
         innerText: 'foo',
         href: 'https://foo.com',
         connectedCallback: (elem) => {
-            type _ = Assert<Has<typeof elem, HTMLAnchorElement>>
+            useType<Assert<Has<typeof elem, HTMLAnchorElement>>>(null)
         },
     }
-}
-
-{
+    useVar(_)
+})()
+;(() => {
     // retrieving attributes
     const _: VirtualDOM<'a'> = {
         tag: 'a',
         innerText: 'foo',
         href: 'https://foo.com',
     }
-    type _0 = Assert<IsExact<typeof _.innerText, AttributeLike<string>>>
-    type _1 = Assert<IsExact<typeof _.href, AttributeLike<string>>>
-    type _2 = Assert<IsExact<typeof _.tag, 'a'>>
-}
-
-{
+    useType<Assert<IsExact<typeof _.innerText, AttributeLike<string>>>>(null)
+    useType<Assert<IsExact<typeof _.href, AttributeLike<string>>>>(null)
+    useType<Assert<IsExact<typeof _.tag, 'a'>>>(null)
+    useVar(_)
+})()
+;(() => {
     // Tests on AnyVirtualDOM
-    // It is not possible to use straight 'AnyVirtualDOM' because of 'FluxViewVirtualDOM'
-    type RXAnyVirtualDOM = VirtualDOMTagNameMap[keyof VirtualDOMTagNameMap]
-    type InnerText = RXAnyVirtualDOM['innerText']
-    type _0 = Assert<Has<InnerText, string>>
-    type _1 = Assert<Has<InnerText, Observable<string>>>
-    type _2 = Assert<Has<InnerText, RxAttribute<unknown, string>>>
-    type _3 = Assert<Has<InnerText, AttributeLike<string>>>
-    // The following assertion is commented because failing if the 'form' element is included
+    // It is not possible to use straight 'AnyVirtualDOM' because of HTMLFormElement, see comment below.
+    type AnyVirtualDOMButForm = Exclude<AnyVirtualDOM, VirtualDOM<'form'>>
+    type InnerText = AnyVirtualDOMButForm['innerText']
+    useType<Assert<Has<InnerText, string>>>(null)
+    useType<Assert<Has<InnerText, Observable<string>>>>(null)
+    useType<Assert<Has<InnerText, RxAttribute<unknown, string>>>>(null)
+    useType<Assert<Has<InnerText, AttributeLike<string>>>>(null)
+    // The following assertion is failing when the 'HTMLFormElement' element is included.
     // It does not make sense for me as
     // *  I can not see why for 'form' tag there would be anything else on top of it
     // *  type hints when overring 'InnerText' gives :
     //      Alias for: RXAnyVirtualDOM["innerText"]
     //      Initial type: Observable<string> | RxAttribute<unknown, string> | string
-    // type _4 = Assert<
-    //     IsExact<RXAnyVirtualDOM['innerText'], AttributeLike<string>>
-    // >
-}
+    useType<
+        Assert<
+            IsExact<AnyVirtualDOMButForm['innerText'], AttributeLike<string>>
+        >
+    >(null)
+})()
