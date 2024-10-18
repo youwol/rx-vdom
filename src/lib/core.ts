@@ -33,8 +33,9 @@ class HTMLPlaceHolderElement extends HTMLElement {
     initialize(stream$: RxStream<unknown, AnyVirtualDOM>): Subscription {
         this.currentElement = this
 
-        const apply = (vDom: AnyVirtualDOM): HTMLElement => {
-            const div = render(vDom)
+        const apply = (vDom: AnyVirtualDOM | undefined): HTMLElement => {
+            const div = vDom && render(vDom)
+            // Replacing with 'undefined' will remove the child, which is what is expected.
             this.currentElement.replaceWith(div)
             this.currentElement = div
             return div

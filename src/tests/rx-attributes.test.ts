@@ -1,6 +1,5 @@
-import { render, VirtualDOM } from '../lib'
+import { render, RxAttribute, ResolvedHTMLElement, VirtualDOM } from '../lib'
 import { of, Subject } from 'rxjs'
-import { ResolvedHTMLElement } from '../lib/api'
 
 test('observable attribute', () => {
     const vDom: VirtualDOM<'a'> = {
@@ -70,4 +69,30 @@ test('observable on custom attribute', () => {
     const html = render(vDom)
     document.body.appendChild(html)
     expect(html.firstChild['style'].backgroundColor).toBe('red')
+})
+
+test('rxAttribute resolves to undefined', () => {
+    const source$ = new Subject<string>()
+    const sideEffectElements: ResolvedHTMLElement<string, 'a'>[] = []
+    const vDom: VirtualDOM<'div'> = {
+        tag: 'div',
+        innerText: {
+            source$: source$,
+            vdomMap: (d: string | undefined) => d,
+            untilFirst: 'foo',
+            wrapper: (d) => d && `${d}-wrapped`,
+            sideEffects: (elem: ResolvedHTMLElement<string, 'a'>) => {
+                sideEffectElements.push(elem)
+            },
+        } as RxAttribute<string, string>,
+    }
+    const html = render(vDom)
+    document.body.appendChild(html)
+    expect(html.innerText).toBe('foo-wrapped')
+
+    source$.next('bar')
+    expect(html.innerText).toBe('bar-wrapped')
+
+    source$.next(undefined)
+    expect(html.innerText).toBeUndefined()
 })
