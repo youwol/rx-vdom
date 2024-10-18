@@ -11,7 +11,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Trait for reactive (un-tagged) HTMLElement.\nIt includes the properties available for HTMLElement on top of which are added those defined\nby  [ReactiveTrait](@nav/api/.ReactiveTrait) .\n\nFor tag-specific element, see  [RxHTMLElement](@nav/api/.RxHTMLElement) .",
+                        "content": "Trait for a reactive (un-tagged) HTML element.\nThis class extends the standard HTMLElement with additional properties defined by  [ReactiveTrait](@nav/api/.ReactiveTrait) .\nFor tag-specific elements, refer to  [RxHTMLElement](@nav/api/.RxHTMLElement) .",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -29,8 +29,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export class RxElementTrait extends ReactiveTrait(HTMLElement)",
                 "implementation": "export class RxElementTrait extends ReactiveTrait(HTMLElement) {}",
-                "startLine": 21,
-                "endLine": 22,
+                "startLine": 19,
+                "endLine": 20,
                 "references": {
                     "RxElementTrait": "@nav/api/.RxElementTrait",
                     "ReactiveTrait(HTMLElement).constructor": "-1",
@@ -260,12 +260,12 @@
                     "ReactiveTrait(HTMLElement).translate": "-1",
                     "VirtualDOM": "@nav/api/.VirtualDOM",
                     "ReactiveTrait(HTMLElement).vDom": "-1",
-                    "K": "167",
+                    "K": "173",
                     "ReactiveTrait(HTMLElement).addEventListener": "-1",
                     "ReactiveTrait(HTMLElement).after": "-1",
                     "ReactiveTrait(HTMLElement).animate": "-1",
                     "ReactiveTrait(HTMLElement).append": "-1",
-                    "T": "432",
+                    "T": "438",
                     "ReactiveTrait(HTMLElement).appendChild": "-1",
                     "ReactiveTrait(HTMLElement).attachInternals": "-1",
                     "ReactiveTrait(HTMLElement).attachShadow": "-1",
@@ -275,7 +275,7 @@
                     "ReactiveTrait(HTMLElement).click": "-1",
                     "ReactiveTrait(HTMLElement).cloneNode": "-1",
                     "ReactiveTrait(HTMLElement).closest": "-1",
-                    "E": "555",
+                    "E": "561",
                     "ReactiveTrait(HTMLElement).compareDocumentPosition": "-1",
                     "ReactiveTrait(HTMLElement).computedStyleMap": "-1",
                     "ReactiveTrait(HTMLElement).contains": "-1",
@@ -299,6 +299,7 @@
                     "ReactiveTrait(HTMLElement).hasChildNodes": "-1",
                     "ReactiveTrait(HTMLElement).hasPointerCapture": "-1",
                     "ReactiveTrait(HTMLElement).hidePopover": "-1",
+                    "ReactiveTrait(HTMLElement).hookOnDisconnected": "-1",
                     "ReactiveTrait(HTMLElement).insertAdjacentElement": "-1",
                     "ReactiveTrait(HTMLElement).insertAdjacentHTML": "-1",
                     "ReactiveTrait(HTMLElement).insertAdjacentText": "-1",
@@ -340,7 +341,7 @@
                     "ReactiveTrait(HTMLElement).toggleAttribute": "-1",
                     "ReactiveTrait(HTMLElement).togglePopover": "-1",
                     "ReactiveTrait(HTMLElement).webkitMatchesSelector": "-1",
-                    "__class": "1194"
+                    "__class": "1197"
                 }
             },
             "semantic": {
@@ -355,7 +356,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "The union of all possible virtual DOM's **static** attribute types.\nCorresponding **reactive** attribute types are constructed on top of them, see  [AttributeLike](@nav/api/.AttributeLike) .",
+                        "content": "The union of all possible static attribute types for a virtual DOM.\nCorresponding reactive attribute types are constructed on top of these, see  [AttributeLike](@nav/api/.AttributeLike) .",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -373,8 +374,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type AnyHTMLAttribute =\n    | string\n    | number\n    | boolean\n    | CSSAttribute\n    | CustomAttribute",
                 "implementation": "",
-                "startLine": 37,
-                "endLine": 38,
+                "startLine": 38,
+                "endLine": 39,
                 "references": {
                     "AnyHTMLAttribute": "@nav/api/.AnyHTMLAttribute",
                     "CSSAttribute": "@nav/api/.CSSAttribute",
@@ -393,7 +394,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Type union of all possible virtual DOM types (the  [VirtualDOM](@nav/api/.VirtualDOM)   `tag`  attribute)\nwith the (at some point deprecated)  [FluxViewVirtualDOM](@nav/api/.FluxViewVirtualDOM) .\ni.e.:\n ```\nFluxViewVirtualDOM | VirtualDOM<'a'> | VirtualDOM<'b'> | VirtualDOM<'br'> // etc\n```",
+                        "content": "Type union of all possible virtual DOM types, defined by the  [VirtualDOM](@nav/api/.VirtualDOM)   `tag`  attribute.\nExample:\n ```\nVirtualDOM<'a'> | VirtualDOM<'b'> | VirtualDOM<'br'> // etc.\n```",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -409,14 +410,13 @@
             "callables": [],
             "code": {
                 "filePath": "src/lib/api.ts",
-                "declaration": "export type AnyVirtualDOM =\n    | VirtualDOMTagNameMap[keyof VirtualDOMTagNameMap]\n    | FluxViewVirtualDOM",
+                "declaration": "export type AnyVirtualDOM = VirtualDOMTagNameMap[keyof VirtualDOMTagNameMap]",
                 "implementation": "",
-                "startLine": 53,
-                "endLine": 54,
+                "startLine": 52,
+                "endLine": 53,
                 "references": {
                     "AnyVirtualDOM": "@nav/api/.AnyVirtualDOM",
-                    "VirtualDOMTagNameMap": "@nav/api/.VirtualDOMTagNameMap",
-                    "FluxViewVirtualDOM": "@nav/api/.FluxViewVirtualDOM"
+                    "VirtualDOMTagNameMap": "@nav/api/.VirtualDOMTagNameMap"
                 }
             },
             "semantic": {
@@ -431,10 +431,21 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Union of the types allowed to define an attribute in a  [VirtualDOM](@nav/api/.VirtualDOM) .",
+                        "content": "Union of the types allowed to define an attribute in a  [VirtualDOM](@nav/api/.VirtualDOM) .\nAn attribute can be a direct type, an observable of that type, or a reactive attribute.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
+                            "labels": [],
+                            "attributes": {},
+                            "relations": {}
+                        }
+                    },
+                    {
+                        "title": "Generics",
+                        "content": "\n*  **Target**: The type of the HTML attribute.",
+                        "contentType": "markdown",
+                        "semantic": {
+                            "role": "arguments",
                             "labels": [],
                             "attributes": {},
                             "relations": {}
@@ -454,7 +465,7 @@
                 "references": {
                     "AttributeLike": "@nav/api/.AttributeLike",
                     "AnyHTMLAttribute": "@nav/api/.AnyHTMLAttribute",
-                    "Target": "1053",
+                    "Target": "1059",
                     "Observable": "@nav/api/.Observable",
                     "RxAttribute": "@nav/api/.RxAttribute"
                 }
@@ -471,7 +482,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "The attributes of any  `HTMLElement`  that should not be mapped into a  [VirtualDOM](@nav/api/.VirtualDOM)  attribute\n(see  [FilterHTMLMembers](@nav/api/.FilterHTMLMembers) ).",
+                        "content": "The attributes of any  `HTMLElement`  that should not be mapped into a  [VirtualDOM](@nav/api/.VirtualDOM)  attribute.\nSee also  [FilterHTMLMembers](@nav/api/.FilterHTMLMembers) .",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -489,8 +500,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type BlackListed = 'toString'",
                 "implementation": "",
-                "startLine": 70,
-                "endLine": 71,
+                "startLine": 69,
+                "endLine": 70,
                 "references": {
                     "BlackListed": "@nav/api/.BlackListed"
                 }
@@ -507,7 +518,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "CSS attribute type, as defined by [csstype](https://github.com/frenic/csstype) library.\n\n> It is possible to substitute a target property name containing hyphens with uppercase letters in the virtual DOM.\ne.g. if  `text-align='justify'`  is expected in the real DOM, it can be provided as  ```{textAlign: 'justify'}```",
+                        "content": "CSS attribute type, as defined by the [csstype](https://github.com/frenic/csstype) library.\n\n> It is possible to substitute a target property name containing hyphens with uppercase letters in the virtual DOM.\nFor example, if  `text-align='justify'`  is expected in the real DOM, it can be provided as:\n ```typescript\n{ textAlign: 'justify' }\n```",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -525,8 +536,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type CSSAttribute = CSS.Properties",
                 "implementation": "",
-                "startLine": 78,
-                "endLine": 79,
+                "startLine": 80,
+                "endLine": 81,
                 "references": {
                     "CSSAttribute": "@nav/api/.CSSAttribute"
                 }
@@ -543,7 +554,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Union of the types allowed to define a child in a  [VirtualDOM](@nav/api/.VirtualDOM) .",
+                        "content": "Union of the types allowed to define a child in a  [VirtualDOM](@nav/api/.VirtualDOM) .\nThis includes virtual DOM elements, standard HTML elements, or reactive child elements.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -559,15 +570,14 @@
             "callables": [],
             "code": {
                 "filePath": "src/lib/api.ts",
-                "declaration": "export type ChildLike =\n    | AnyVirtualDOM\n    | HTMLElement\n    | RxChild\n    | FluxViewVirtualDOM",
+                "declaration": "export type ChildLike = AnyVirtualDOM | HTMLElement | RxChild",
                 "implementation": "",
-                "startLine": 83,
-                "endLine": 84,
+                "startLine": 86,
+                "endLine": 87,
                 "references": {
                     "ChildLike": "@nav/api/.ChildLike",
                     "AnyVirtualDOM": "@nav/api/.AnyVirtualDOM",
-                    "RxChild": "@nav/api/.RxChild",
-                    "FluxViewVirtualDOM": "@nav/api/.FluxViewVirtualDOM"
+                    "RxChild": "@nav/api/.RxChild"
                 }
             },
             "semantic": {
@@ -582,7 +592,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Union of the types allowed to define children in a  [VirtualDOM](@nav/api/.VirtualDOM) .",
+                        "content": "Union of the types allowed to define children in a  [VirtualDOM](@nav/api/.VirtualDOM) .\nThis includes arrays of children or reactive children with various policies.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -620,7 +630,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "API for the  `append`  policy of   [RxChildren](@nav/api/.RxChildren) .\n\nExamples can be found\n[here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-children-append.test.ts).",
+                        "content": "API for the  `append`  policy of  [RxChildren](@nav/api/.RxChildren) .\n\nThis type defines the options available for appending children when the  `append`  policy is used.\nExamples can be found [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-children-append.test.ts).",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -631,7 +641,7 @@
                     },
                     {
                         "title": "Generics",
-                        "content": "\n*  **TDomain**: type of the domain data (conveys by the  `source$`  observable).",
+                        "content": "\n*  **TDomain**: The type of the domain data conveyed by the  `source$`  observable.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "arguments",
@@ -647,13 +657,13 @@
             "callables": [],
             "code": {
                 "filePath": "src/lib/api.ts",
-                "declaration": "export type ChildrenOptionsAppend<TDomain> = {\n    /**\n     * Source of domain data.\n     */\n    source$: Observable<TDomain[]>\n    /**\n     * Mapping between one `TDomain` element over those emitted by `source$` and its corresponding view.\n     * @param domainData single element over those emitted by `source$`.\n     */\n    vdomMap: (domainData: TDomain) => AnyVirtualDOM\n\n    /**\n     * Execute side effects once the children have been updated.\n     *\n     * @param parent parent of the children.\n     * @param update description of the update.\n     */\n    sideEffects?: (\n        parent: RxElementTrait,\n        update: RenderingUpdate<TDomain>,\n    ) => void\n\n    /**\n     * Specifies how the children are ordered in the parent element.\n     * Order is defined using this callback.\n     *\n     * @param d1 Domain data associated to the first element for comparison\n     * @param d2 Domain data associated to the second element for comparison\n     * @return a value:\n     * -    if `>0`, sort `d1` after `d2`\n     * -    if `<0`, sort `d1` before `d2`\n     */\n    orderOperator?: (d1: TDomain, d2: TDomain) => number\n}",
+                "declaration": "export type ChildrenOptionsAppend<TDomain> = {\n    /**\n     * Observable source of domain data, expected to emit an array of domain data elements.\n     */\n    source$: Observable<TDomain[]>\n    /**\n     * Mapping function that transforms a single element of the emitted domain data into its corresponding\n     * virtual DOM representation.\n     *\n     * @param domainData A single element emitted by `source$`.\n     * @returns The virtual DOM representation of the given domain data.\n     */\n    vdomMap: (domainData: TDomain) => AnyVirtualDOM\n\n    /**\n     * A callback function for executing side effects after the children have been updated.\n     *\n     * @param parent The parent element containing the appended children.\n     * @param update An object describing the rendering update, including added, updated, and removed elements.\n     */\n    sideEffects?: (\n        parent: RxElementTrait,\n        update: RenderingUpdate<TDomain>,\n    ) => void\n\n    /**\n     * Optional function for specifying the order of children in the parent element.\n     * The order is determined by comparing two domain data elements.\n     *\n     * @param d1 The domain data associated with the first element for comparison.\n     * @param d2 The domain data associated with the second element for comparison.\n     * @returns A value indicating the relative order of the two elements:\n     * - A positive value (`> 0`) indicates `d1` should be sorted after `d2`.\n     * - A negative value (`< 0`) indicates `d1` should be sorted before `d2`.\n     */\n    orderOperator?: (d1: TDomain, d2: TDomain) => number\n}",
                 "implementation": "",
                 "startLine": 106,
                 "endLine": 107,
                 "references": {
                     "ChildrenOptionsAppend": "@nav/api/.ChildrenOptionsAppend",
-                    "TDomain": "1075",
+                    "TDomain": "1081",
                     "RxElementTrait": "@nav/api/.RxElementTrait",
                     "RenderingUpdate": "@nav/api/.RenderingUpdate",
                     "Observable": "@nav/api/.Observable",
@@ -672,7 +682,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "API for the  `replace`  policy of   [RxChildren](@nav/api/.RxChildren) .\n\nExamples can be found\n[here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-children-replace.test.ts).",
+                        "content": "API for the  `replace`  policy of  [RxChildren](@nav/api/.RxChildren) .\n\nThis type defines the options available for replacing children when the  `replace`  policy is used.\nExamples can be found [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-children-replace.test.ts).",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -683,7 +693,7 @@
                     },
                     {
                         "title": "Generics",
-                        "content": "\n*  **TDomain**: type of the domain data (conveys by the  `source$`  observable).",
+                        "content": "\n*  **TDomain**: The type of the domain data conveyed by the  `source$`  observable.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "arguments",
@@ -699,14 +709,14 @@
             "callables": [],
             "code": {
                 "filePath": "src/lib/api.ts",
-                "declaration": "export type ChildrenOptionsReplace<TDomain> = {\n    /**\n     * Source of domain data.\n     */\n    source$: Observable<TDomain>\n    /**\n     *\n     * @param domainData domain data emitted by `source$`\n     * @return the list of children that replace the previous one.\n     */\n    vdomMap: (domainData: TDomain) => AnyVirtualDOM[]\n\n    /**\n     * Virtual DOMs displayed until a first data is emitted by `source$`.\n     */\n    untilFirst?: AnyVirtualDOM[]\n\n    /**\n     * If provided, apply a last transformation of the virtual DOMs returned by `vdomMap` before being actually set as\n     * children. Useful to factorize some transformations.\n     *\n     * @param domValue value of the attribute returned by `vdomMap`.\n     */\n    wrapper?: (domValue: AnyVirtualDOM[]) => AnyVirtualDOM[]\n\n    /**\n     * Provide a handle to execute side effects. This is executed just after the new children have been inserted\n     * in the (real) DOM.\n     * @param element the parent element of the children along with the domain data value that was originally\n     * emitted by `source$`.\n     */\n    sideEffects?: (element: ResolvedHTMLElement<TDomain>) => void\n}",
+                "declaration": "export type ChildrenOptionsReplace<TDomain> = {\n    /**\n     * Observable source of domain data.\n     */\n    source$: Observable<TDomain>\n    /**\n     * Mapping function that transforms the emitted domain data into a list of virtual DOM elements.\n     *\n     * @param domainData The domain data emitted by `source$`.\n     * @returns A list of virtual DOM elements that will replace the previous children.\n     */\n    vdomMap: (domainData: TDomain) => AnyVirtualDOM[]\n\n    /**\n     * Virtual DOM elements displayed until the first data is emitted by `source$`.\n     */\n    untilFirst?: AnyVirtualDOM[]\n\n    /**\n     * Optional transformation function for the virtual DOM elements returned by `vdomMap`.\n     * This is useful for applying common transformations before setting the children.\n     *\n     * @param domValue The array of virtual DOM elements returned by `vdomMap`.\n     * @returns The transformed array of virtual DOM elements.\n     */\n    wrapper?: (domValue: AnyVirtualDOM[]) => AnyVirtualDOM[]\n\n    /**\n     * A callback function for executing side effects after the new children have been inserted\n     * into the real DOM.\n     *\n     * @param element The parent element of the newly inserted children, along with the domain\n     * data that was originally emitted by `source$`.\n     */\n    sideEffects?: (element: ResolvedHTMLElement<TDomain>) => void\n}",
                 "implementation": "",
-                "startLine": 149,
-                "endLine": 150,
+                "startLine": 152,
+                "endLine": 153,
                 "references": {
                     "ChildrenOptionsReplace": "@nav/api/.ChildrenOptionsReplace",
                     "ResolvedHTMLElement": "@nav/api/.ResolvedHTMLElement",
-                    "TDomain": "1092",
+                    "TDomain": "1098",
                     "Observable": "@nav/api/.Observable",
                     "AnyVirtualDOM": "@nav/api/.AnyVirtualDOM"
                 }
@@ -723,7 +733,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "API for the  `sync`  policy of   [RxChildren](@nav/api/.RxChildren) .\n\nExamples can be found\n[here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-children-sync.test.ts).",
+                        "content": "API for the  `sync`  policy of  [RxChildren](@nav/api/.RxChildren) .\n\nThis type defines the options available for synchronizing children when the  `sync`  policy is used.\nExamples can be found [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-children-sync.test.ts).",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -734,7 +744,7 @@
                     },
                     {
                         "title": "Generics",
-                        "content": "\n*  **TDomain**: type of the domain data (conveys by the  `source$`  observable).",
+                        "content": "\n*  **TDomain**: The type of the domain data conveyed by the  `source$`  observable.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "arguments",
@@ -750,14 +760,14 @@
             "callables": [],
             "code": {
                 "filePath": "src/lib/api.ts",
-                "declaration": "export type ChildrenOptionsSync<TDomain> = ChildrenOptionsAppend<TDomain> & {\n    /**\n     * Default is to use reference equality.\n     *\n     * @param d1 first domain data for comparison.\n     * @param d2 second domain data for comparison.\n     * @return `true` if the `d1` and `d2` represents the same element, `false` otherwise.\n     */\n    comparisonOperator?: (d1: TDomain, d2: TDomain) => boolean\n}",
+                "declaration": "export type ChildrenOptionsSync<TDomain> = ChildrenOptionsAppend<TDomain> & {\n    /**\n     * A function to compare two domain data instances for equality.\n     *\n     * By default, reference equality is used for comparisons.\n     *\n     * @param d1 The first domain data for comparison.\n     * @param d2 The second domain data for comparison.\n     * @returns `true` if `d1` and `d2` represent the same element; `false` otherwise.\n     */\n    comparisonOperator?: (d1: TDomain, d2: TDomain) => boolean\n}",
                 "implementation": "",
-                "startLine": 191,
-                "endLine": 192,
+                "startLine": 197,
+                "endLine": 198,
                 "references": {
                     "ChildrenOptionsSync": "@nav/api/.ChildrenOptionsSync",
                     "ChildrenOptionsAppend": "@nav/api/.ChildrenOptionsAppend",
-                    "TDomain": "1100"
+                    "TDomain": "1106"
                 }
             },
             "semantic": {
@@ -772,7 +782,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Various policies for  [RxChildren](@nav/api/.RxChildren)  are available:\n*  **replace**: All children are replaced each time a new item(s) is emitted by  `source$` .\n*  **append**: All children are appended at every emission of new item(s) from  `source$` .\n*  **sync**: Synchronize only the updated, new, or deleted children when  `source$`  emits a 'store' of DomainData,\nwhich typically consists of an immutable DomainData list.",
+                        "content": "Represents the various policies available for managing children in  [RxChildren](@nav/api/.RxChildren) .\n\nThe available policies are:\n- **replace**: All children are replaced each time new item(s) are emitted by  `source$` .\n- **append**: All children are appended with each emission of new item(s) from  `source$` .\n- **sync**: Only updated, new, or deleted children are synchronized when  `source$`  emits a 'store' of\n   `DomainData` , which typically consists of an immutable list of  `DomainData` .",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -790,8 +800,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type ChildrenPolicy = 'replace' | 'append' | 'sync'",
                 "implementation": "",
-                "startLine": 209,
-                "endLine": 210,
+                "startLine": 219,
+                "endLine": 220,
                 "references": {
                     "ChildrenPolicy": "@nav/api/.ChildrenPolicy"
                 }
@@ -808,7 +818,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Type helper to map individual  `ChildrenPolicy`  to its corresponding API.",
+                        "content": "A type helper that maps individual  `ChildrenPolicy`  values to their corresponding API options.\n\nThis type provides a structure for defining the available options for each\npolicy when managing child elements in the virtual DOM.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -819,7 +829,7 @@
                     },
                     {
                         "title": "Generics",
-                        "content": "\n*  **TDomain**: type of the domain data (conveys by the  `source$`  observable).",
+                        "content": "\n*  **TDomain**: The type of the domain data conveyed by the  `source$`  observable.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "arguments",
@@ -835,14 +845,14 @@
             "callables": [],
             "code": {
                 "filePath": "src/lib/api.ts",
-                "declaration": "export type ChildrenTypesOptionMap<TDomain> = {\n    replace: ChildrenOptionsReplace<TDomain>\n    append: ChildrenOptionsAppend<TDomain>\n    sync: ChildrenOptionsSync<TDomain>\n}",
+                "declaration": "export type ChildrenTypesOptionMap<TDomain> = {\n    /**\n     * Options for the `replace` policy, defining how child elements should be replaced.\n     */\n    replace: ChildrenOptionsReplace<TDomain>\n    /**\n     * Options for the `append` policy, defining how child elements should be appended.\n     */\n    append: ChildrenOptionsAppend<TDomain>\n    /**\n     * Options for the `sync` policy, defining how child elements should be synchronized.\n     */\n    sync: ChildrenOptionsSync<TDomain>\n}",
                 "implementation": "",
-                "startLine": 216,
-                "endLine": 217,
+                "startLine": 229,
+                "endLine": 230,
                 "references": {
                     "ChildrenTypesOptionMap": "@nav/api/.ChildrenTypesOptionMap",
                     "ChildrenOptionsAppend": "@nav/api/.ChildrenOptionsAppend",
-                    "TDomain": "1107",
+                    "TDomain": "1113",
                     "ChildrenOptionsReplace": "@nav/api/.ChildrenOptionsReplace",
                     "ChildrenOptionsSync": "@nav/api/.ChildrenOptionsSync"
                 }
@@ -859,7 +869,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Custom attributes type.\n\n> It is possible to substitute a target property name containing hyphens with uppercase letters in the virtual DOM.\ne.g. if  `aria-expanded='true'`  is expected in the real DOM, it can be provided as  ```{ariaExpanded: true}``` .",
+                        "content": "Represents custom attributes for HTML elements.\n\nCustom attributes can be defined using camelCase property names in the virtual DOM.\nFor example, if  `aria-expanded='true'`  is expected in the real DOM, it can be provided as:\n ```typescript\n{ ariaExpanded: true }\n```",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -877,8 +887,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type CustomAttribute = { [key: string]: string | boolean | number }",
                 "implementation": "",
-                "startLine": 228,
-                "endLine": 229,
+                "startLine": 253,
+                "endLine": 254,
                 "references": {
                     "CustomAttribute": "@nav/api/.CustomAttribute"
                 }
@@ -917,9 +927,9 @@
                 "endLine": 15,
                 "references": {
                     "Equals": "@nav/api/.Equals",
-                    "T": "1182",
-                    "X": "1183",
-                    "Y": "1184"
+                    "T": "1185",
+                    "X": "1186",
+                    "Y": "1187"
                 }
             },
             "semantic": {
@@ -934,7 +944,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Extract the attributes of an HTMLElement of given tag that are exposed in  [VirtualDOM](@nav/api/.VirtualDOM) .\nIt includes:\n*  most of the writable properties of primitive types ( `string` ,  `number` ,  `boolean` ),\nonly a few restriction (see  [FilterHTMLMembers](@nav/api/.FilterHTMLMembers) ) are used\n(essentially to provide a lighter API, see   `tag` / `tagName` , and  `class` / `className` ).\n*  all the signal handlers: any methods starting with the prefix  `on`  (e.g.  `onclick` ,  `onmousedown` , *etc.*).",
+                        "content": "Extracts the attributes of an  `HTMLElement`  of the given tag that are exposed in  [VirtualDOM](@nav/api/.VirtualDOM) .\n\nThis type includes:\n- Most writable properties of primitive types ( `string` ,  `number` ,  `boolean` ), with some restrictions\n  (see  [FilterHTMLMembers](@nav/api/.FilterHTMLMembers) ) to provide a lighter API. Notable transformations include:\n  -  `tag` / `tagName`  and  `class` / `className` .\n- All signal handlers, which are any methods starting with the prefix  `on`  (e.g.,  `onclick` ,  `onmousedown` , etc.).",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -945,7 +955,7 @@
                     },
                     {
                         "title": "Generics",
-                        "content": "\n*  **TargetNativeHTMLElement**: the target native HTML element.",
+                        "content": "\n*  **TargetNativeHTMLElement**: The target native HTML element, which extends  `HTMLElement` .",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "arguments",
@@ -963,12 +973,12 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type ExposedMembers<TargetNativeHTMLElement extends HTMLElement> = {\n    [Property in keyof FilterHTMLMembers<TargetNativeHTMLElement>]: TargetNativeHTMLElement[Property] extends string\n        ? AttributeLike<string>\n        : TargetNativeHTMLElement[Property] extends number\n          ? AttributeLike<number>\n          : TargetNativeHTMLElement[Property] extends boolean\n            ? AttributeLike<boolean>\n            : Property extends `on${string}`\n              ? TargetNativeHTMLElement[Property]\n              : never\n}",
                 "implementation": "",
-                "startLine": 240,
-                "endLine": 241,
+                "startLine": 266,
+                "endLine": 267,
                 "references": {
                     "ExposedMembers": "@nav/api/.ExposedMembers",
                     "FilterHTMLMembers": "@nav/api/.FilterHTMLMembers",
-                    "TargetNativeHTMLElement": "1113",
+                    "TargetNativeHTMLElement": "1119",
                     "AttributeLike": "@nav/api/.AttributeLike"
                 }
             },
@@ -984,7 +994,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Select writable HTML attributes for a given tag to be exposed in  [VirtualDOM](@nav/api/.VirtualDOM) .\n\nFrom the writable attributes it removes:\n*  the properties defined by a  [VirtualDOM](@nav/api/.VirtualDOM)  itself. Note that  `className`  and  `tagName`  are removed to\nexpose them as  `class`  and  `tag` .\n*  a list of  [BlackListed](@nav/api/.BlackListed)  members",
+                        "content": "Selects the writable HTML attributes for a given tag to be exposed in  [VirtualDOM](@nav/api/.VirtualDOM) .\n\nThis type filters out the following from the writable attributes:\n- Properties defined by a  [VirtualDOM](@nav/api/.VirtualDOM)  itself, including:\n  -  `className`  and  `tagName` , which are exposed as  `class`  and  `tag` , respectively.\n- Members listed in  [BlackListed](@nav/api/.BlackListed) .",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -995,7 +1005,7 @@
                     },
                     {
                         "title": "Generics",
-                        "content": "\n*  **TargetNativeHTMLElement**: the target native HTML element.",
+                        "content": "\n*  **TargetNativeHTMLElement**: The target native HTML element, which extends  `HTMLElement` .",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "arguments",
@@ -1013,50 +1023,13 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type FilterHTMLMembers<TargetNativeHTMLElement extends HTMLElement> =\n    Omit<\n        WritablePart<TargetNativeHTMLElement>,\n        | 'tag'\n        | 'tagName'\n        | 'className'\n        | 'children'\n        | 'style'\n        | 'customAttributes'\n        | 'connectedCallback'\n        | 'disconnectedCallback'\n        | BlackListed\n    >",
                 "implementation": "",
-                "startLine": 263,
-                "endLine": 264,
+                "startLine": 288,
+                "endLine": 289,
                 "references": {
                     "FilterHTMLMembers": "@nav/api/.FilterHTMLMembers",
                     "WritablePart": "@nav/api/.WritablePart",
-                    "TargetNativeHTMLElement": "1115",
+                    "TargetNativeHTMLElement": "1121",
                     "BlackListed": "@nav/api/.BlackListed"
-                }
-            },
-            "semantic": {
-                "role": "type-alias",
-                "labels": [],
-                "attributes": {},
-                "relations": {}
-            }
-        },
-        {
-            "name": "FluxViewVirtualDOM",
-            "documentation": {
-                "sections": [
-                    {
-                        "content": "This type is introduced for backward compatibility to allow using VirtualDOM from the\n[@youwol/flux-view](https://github.com/youwol/flux-view) package.\n\nTo introduce a child from  `@youwol/flux-view`  in the  [VirtualDOM](@nav/api/.VirtualDOM) , an explicit type casting\nto  [FluxViewVirtualDOM](@nav/api/.FluxViewVirtualDOM)  is required:\n\n ```\n const vDom: VirtualDOM<'div'> = {\n     tag: 'div',\n     children: [\n         {\n             tag: 'a',\n             innerText: attr$(of('foo'), (text) => text)\n         } as FluxViewChild\n     ]\n }\n```",
-                        "contentType": "markdown",
-                        "semantic": {
-                            "role": "",
-                            "labels": [],
-                            "attributes": {},
-                            "relations": {}
-                        }
-                    }
-                ]
-            },
-            "path": "FluxViewVirtualDOM",
-            "attributes": [],
-            "callables": [],
-            "code": {
-                "filePath": "src/lib/api.ts",
-                "declaration": "export type FluxViewVirtualDOM = WithFluxView extends true\n    ? { tag?: SupportedHTMLTags }\n    : never",
-                "implementation": "",
-                "startLine": 297,
-                "endLine": 298,
-                "references": {
-                    "FluxViewVirtualDOM": "@nav/api/.FluxViewVirtualDOM",
-                    "SupportedHTMLTags": "@nav/api/.SupportedHTMLTags"
                 }
             },
             "semantic": {
@@ -1071,7 +1044,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Native HTMLElement per tag,\ne.g.  `NativeHTMLElement<'div'>`  is  `HTMLDivElement` .",
+                        "content": "Represents the native HTML element type corresponding to a specific tag.\nFor example,  `NativeHTMLElement<'div'>`  resolves to  `HTMLDivElement` .",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -1082,7 +1055,7 @@
                     },
                     {
                         "title": "Generics",
-                        "content": "\n*  **Tag**: the  `tag`  of the DOM element.",
+                        "content": "\n*  **Tag**: The tag name of the DOM element, constrained to  `SupportedHTMLTags` .",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "arguments",
@@ -1100,12 +1073,12 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type NativeHTMLElement<Tag extends SupportedHTMLTags> =\n    HTMLElementTagNameMap[Tag]",
                 "implementation": "",
-                "startLine": 307,
-                "endLine": 308,
+                "startLine": 308,
+                "endLine": 309,
                 "references": {
                     "NativeHTMLElement": "@nav/api/.NativeHTMLElement",
                     "SupportedHTMLTags": "@nav/api/.SupportedHTMLTags",
-                    "Tag": "1120"
+                    "Tag": "1123"
                 }
             },
             "semantic": {
@@ -1120,10 +1093,21 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Required interface for Rx concept of 'Observable', as defined by RxJS.",
+                        "content": "Required interface representing the RxJS concept of an 'Observable'.\nThis interface includes only the  `subscribe`  method from the full RxJS Observable.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
+                            "labels": [],
+                            "attributes": {},
+                            "relations": {}
+                        }
+                    },
+                    {
+                        "title": "Generics",
+                        "content": "\n*  **T**: The type of values emitted by the observable.",
+                        "contentType": "markdown",
+                        "semantic": {
+                            "role": "arguments",
                             "labels": [],
                             "attributes": {},
                             "relations": {}
@@ -1138,11 +1122,11 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type Observable<T> = Pick<ObservableRxjs<T>, 'subscribe'>",
                 "implementation": "",
-                "startLine": 26,
-                "endLine": 27,
+                "startLine": 27,
+                "endLine": 28,
                 "references": {
                     "Observable": "@nav/api/.Observable",
-                    "T": "1048"
+                    "T": "1054"
                 }
             },
             "semantic": {
@@ -1157,10 +1141,21 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Describes an update when DOM elements has been updated when using  [RxChildren](@nav/api/.RxChildren) \nwith policies  `append`  or  `sync` .",
+                        "content": "Describes the changes made to DOM elements when using  [RxChildren](@nav/api/.RxChildren) \nwith the  `append`  or  `sync`  policies.\n\nThis type encapsulates the details of the rendering update, including\nelements that have been added, updated, or removed during the operation.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
+                            "labels": [],
+                            "attributes": {},
+                            "relations": {}
+                        }
+                    },
+                    {
+                        "title": "Generics",
+                        "content": "\n*  **TDomain**: The type of the domain data conveyed by the  `source$`  observable.",
+                        "contentType": "markdown",
+                        "semantic": {
+                            "role": "arguments",
                             "labels": [],
                             "attributes": {},
                             "relations": {}
@@ -1173,14 +1168,14 @@
             "callables": [],
             "code": {
                 "filePath": "src/lib/api.ts",
-                "declaration": "export type RenderingUpdate<TDomain> = {\n    added: ResolvedHTMLElement<TDomain>[]\n    updated: ResolvedHTMLElement<TDomain>[]\n    removed: ResolvedHTMLElement<TDomain>[]\n}",
+                "declaration": "export type RenderingUpdate<TDomain> = {\n    /**\n     * An array of elements that have been added to the DOM.\n     */\n    added: ResolvedHTMLElement<TDomain>[]\n    /**\n     * An array of elements that have been updated in the DOM.\n     */\n    updated: ResolvedHTMLElement<TDomain>[]\n    /**\n     * An array of elements that have been removed from the DOM.\n     */\n    removed: ResolvedHTMLElement<TDomain>[]\n}",
                 "implementation": "",
-                "startLine": 315,
-                "endLine": 316,
+                "startLine": 320,
+                "endLine": 321,
                 "references": {
                     "RenderingUpdate": "@nav/api/.RenderingUpdate",
                     "ResolvedHTMLElement": "@nav/api/.ResolvedHTMLElement",
-                    "TDomain": "1126"
+                    "TDomain": "1129"
                 }
             },
             "semantic": {
@@ -1195,7 +1190,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Encapsulates and HTML element along with the domain data that originally created it.",
+                        "content": "Encapsulates an HTML element along with the domain data that was used to create it.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -1206,7 +1201,7 @@
                     },
                     {
                         "title": "Generics",
-                        "content": "\n*  **TDomain**: type of the domain data (conveys by the  `source$`  observable).",
+                        "content": "\n*  **TDomain**: The type of the domain data conveyed by the  `source$`  observable.\n*  **Tag**: The type of the HTML tag, which extends  `SupportedHTMLTags` .",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "arguments",
@@ -1222,16 +1217,16 @@
             "callables": [],
             "code": {
                 "filePath": "src/lib/api.ts",
-                "declaration": "export type ResolvedHTMLElement<\n    TDomain,\n    Tag extends SupportedHTMLTags = SupportedHTMLTags,\n> = {\n    /**\n     * Domain data. If the child has been defined using a straight HTMLElement, it is `undefined`.\n     */\n    domainData?: TDomain\n\n    /**\n     * The actual DOM element with {@link RxElementTrait} trait.\n     */\n    element: RxHTMLElement<Tag>\n}",
+                "declaration": "export type ResolvedHTMLElement<\n    TDomain,\n    Tag extends SupportedHTMLTags = SupportedHTMLTags,\n> = {\n    /**\n     * The domain data associated with this element.\n     * This will be `undefined` if the child was defined using a plain HTMLElement\n     * rather than through a reactive construct.\n     */\n    domainData?: TDomain\n\n    /**\n     * The actual DOM element that also implements the {@link RxElementTrait} trait.\n     */\n    element: RxHTMLElement<Tag>\n}",
                 "implementation": "",
-                "startLine": 326,
-                "endLine": 327,
+                "startLine": 341,
+                "endLine": 342,
                 "references": {
                     "ResolvedHTMLElement": "@nav/api/.ResolvedHTMLElement",
                     "SupportedHTMLTags": "@nav/api/.SupportedHTMLTags",
-                    "TDomain": "1131",
+                    "TDomain": "1134",
                     "RxHTMLElement": "@nav/api/.RxHTMLElement",
-                    "Tag": "1132"
+                    "Tag": "1135"
                 }
             },
             "semantic": {
@@ -1246,7 +1241,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Full specification of a reactive attribute.\n\nExamples can be found\n[here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-attributes.test.ts).",
+                        "content": "Full specification of a reactive attribute in a virtual DOM context.\n\nExamples can be found in the test suite\n[here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-attributes.test.ts).",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -1257,7 +1252,7 @@
                     },
                     {
                         "title": "Generics",
-                        "content": "\n*  **TDomain**: type of the domain data (conveys by the  `source$`  observable)\n*  **Target**: the type of the target attribute, e.g.:\n*  `string`  for attributes  `id` ,  `class` ,  `src` , *etc.*.\n*  `number`  for attributes  `width` ,  `height` ,  `min` ,  `max` , *etc.*.\n*  `boolean`  for attributes  `disabled` ,  `checked` ,  `readonly` , *etc.*.\n*  `{ [k: string]: string }`  for e.g. style.",
+                        "content": "\n*  **TDomain**: The type of the domain data conveyed by the  `source$`  observable.\n*  **Target**: The type of the target attribute, which can be one of the following:\n-  `string`  for attributes like  `id` ,  `class` ,  `src` , etc.\n-  `number`  for attributes like  `width` ,  `height` ,  `min` ,  `max` , etc.\n-  `boolean`  for attributes like  `disabled` ,  `checked` ,  `readonly` , etc.\n-  `{ [k: string]: string }`  for style attributes, for example.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "arguments",
@@ -1273,17 +1268,17 @@
             "callables": [],
             "code": {
                 "filePath": "src/lib/api.ts",
-                "declaration": "export type RxAttribute<\n    TDomain = unknown,\n    Target extends AnyHTMLAttribute = AnyHTMLAttribute,\n> = {\n    /**\n     * Source of domain data.\n     */\n    source$: Observable<TDomain>\n\n    /**\n     * Mapping function between domain data and actual attribute type\n     * @param domainData domainData emitted by the `source$`.\n     */\n    vdomMap: (domainData: TDomain) => Target\n\n    /**\n     * Value of the attribute until a first data is emitted by `source$`.\n     */\n    untilFirst?: Target\n\n    /**\n     * If provided, apply a last transformation of the data returned by `vdomMap` before being actually set as\n     * attribute. Useful to factorize some transformations.\n     *\n     * @param domValue value of the attribute returned by `vdomMap`.\n     */\n    wrapper?: (domValue: Target) => Target\n\n    /**\n     * Provide a handle to execute side effects. This is executed just after the attribute value has been updated\n     * in the (real) DOM.\n     * @param element the updated element along with the domain data that was originally\n     * emitted by `source$`.\n     */\n    sideEffects?: (element: ResolvedHTMLElement<TDomain>) => void\n}",
+                "declaration": "export type RxAttribute<\n    TDomain = unknown,\n    Target extends AnyHTMLAttribute = AnyHTMLAttribute,\n> = {\n    /**\n     * The source observable that emits domain data.\n     */\n    source$: Observable<TDomain>\n\n    /**\n     * A mapping function that transforms the domain data into the actual attribute value.\n     *\n     * @param domainData The domain data emitted by the `source$`.\n     * @returns The attribute value corresponding to the given domain data.\n     */\n    vdomMap: (domainData: TDomain) => Target\n\n    /**\n     * The initial value of the attribute to be displayed until the first data is emitted by `source$`.\n     * This can be useful for providing a default state.\n     */\n    untilFirst?: Target\n\n    /**\n     * A transformation function applied to the value returned by `vdomMap`\n     * before it is set as the attribute. This is useful for applying common\n     * transformations to the attribute value.\n     *\n     * @param domValue The value of the attribute returned by `vdomMap`.\n     * @returns The transformed attribute value that will be set.\n     */\n    wrapper?: (domValue: Target) => Target\n\n    /**\n     * A callback function for executing side effects after the attribute value has been\n     * updated in the actual DOM. This can be useful for integrating with other libraries\n     * or performing actions that depend on the updated DOM state.\n     *\n     * @param element The updated element, along with the domain data\n     * that was originally emitted by `source$`.\n     */\n    sideEffects?: (element: ResolvedHTMLElement<TDomain>) => void\n}",
                 "implementation": "",
-                "startLine": 354,
-                "endLine": 355,
+                "startLine": 371,
+                "endLine": 372,
                 "references": {
                     "RxAttribute": "@nav/api/.RxAttribute",
                     "AnyHTMLAttribute": "@nav/api/.AnyHTMLAttribute",
                     "ResolvedHTMLElement": "@nav/api/.ResolvedHTMLElement",
-                    "TDomain": "1149",
+                    "TDomain": "1152",
                     "Observable": "@nav/api/.Observable",
-                    "Target": "1150"
+                    "Target": "1153"
                 }
             },
             "semantic": {
@@ -1298,7 +1293,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Full specification of a reactive child.\n\nExamples can be found [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-child.test.ts).",
+                        "content": "Full specification of a reactive child component.\n\n<note level=\"hint\">\nIf the  `vdomMap`  or  `wrapper`  attributes return  `undefined` , no  `HTMLElement`  will be produced.\n</note>\n\nFor examples, see [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-child.test.ts).",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -1309,7 +1304,7 @@
                     },
                     {
                         "title": "Generics",
-                        "content": "\n*  **TDomain**: type of the domain data (conveys by the  `source$`  observable).\n*  **TVdomMap**: type of the virtual DOM returned value of  `vdomMap` .\n*  **TVdomFinal**: type of the virtual DOM inserted in the DOM.",
+                        "content": "\n*  **TDomain**: The type of the domain data conveyed by the  `source$`  observable.\n*  **TVdomMap**: The type of the virtual DOM returned by the  `vdomMap`  function.\n*  **TVdomFinal**: The type of the final virtual DOM that will be inserted into the DOM.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "arguments",
@@ -1325,17 +1320,17 @@
             "callables": [],
             "code": {
                 "filePath": "src/lib/api.ts",
-                "declaration": "export type RxChild<\n    TDomain = unknown,\n    TVdomMap extends AnyVirtualDOM = AnyVirtualDOM,\n    TVdomFinal extends AnyVirtualDOM = TVdomMap,\n> = {\n    /**\n     * Source of domain data.\n     */\n    source$: Observable<TDomain>\n\n    /**\n     * Mapping function between domain data and associated {@link VirtualDOM}.\n     * @param domainData domainData emitted by the `source$`.\n     */\n    vdomMap: (domainData: TDomain) => TVdomMap\n\n    /**\n     * Virtual DOM displayed until a first data is emitted by `source$`.\n     */\n    untilFirst?: AnyVirtualDOM\n\n    /**\n     * If provided, apply a last transformation of the virtual DOM returned by `vdomMap` before being actually set as\n     * child. Useful to factorize some transformations.\n     *\n     * @param domValue value of the attribute returned by `vdomMap`.\n     */\n    wrapper?: (domValue: TVdomMap) => TVdomFinal\n\n    /**\n     * Provide a handle to execute side effects. This is executed just after the new child has been updated\n     * in the (real) DOM.\n     * @param element the inserted child along with the domain data that was originally\n     * emitted by `source$`.\n     */\n    sideEffects?: (\n        element: ResolvedHTMLElement<TDomain, TVdomFinal['tag']>,\n    ) => void\n}",
+                "declaration": "export type RxChild<\n    TDomain = unknown,\n    TVdomMap extends AnyVirtualDOM = AnyVirtualDOM,\n    TVdomFinal extends AnyVirtualDOM = TVdomMap,\n> = {\n    /**\n     * The source observable that emits domain data.\n     */\n    source$: Observable<TDomain>\n\n    /**\n     * A mapping function that transforms the domain data into the associated {@link VirtualDOM}.\n     *\n     * @param domainData The domain data emitted by the `source$`.\n     * @returns The virtual DOM representation based on the provided domain data.\n     */\n    vdomMap: (domainData: TDomain) => TVdomMap\n\n    /**\n     * The initial virtual DOM to be displayed until the first data is emitted by `source$`.\n     * This is useful for providing a placeholder or loading state.\n     */\n    untilFirst?: AnyVirtualDOM\n\n    /**\n     * A transformation function applied to the virtual DOM returned by `vdomMap`\n     * before it is set as a child. This is useful for applying common transformations\n     * to the virtual DOM.\n     *\n     * @param domValue The virtual DOM value returned by `vdomMap`.\n     * @returns The transformed virtual DOM that will be used as the final child.\n     */\n    wrapper?: (domValue: TVdomMap) => TVdomFinal\n\n    /**\n     * A callback function for executing side effects after the new child has been\n     * updated in the actual DOM. This can be useful for integrating with other\n     * libraries or performing actions that depend on the updated DOM state.\n     *\n     * @param element The newly inserted child element, along with the domain data\n     * that was originally emitted by `source$`.\n     */\n    sideEffects?: (\n        element: ResolvedHTMLElement<TDomain, TVdomFinal['tag']>,\n    ) => void\n}",
                 "implementation": "",
-                "startLine": 400,
-                "endLine": 401,
+                "startLine": 428,
+                "endLine": 429,
                 "references": {
                     "RxChild": "@nav/api/.RxChild",
                     "AnyVirtualDOM": "@nav/api/.AnyVirtualDOM",
-                    "TVdomMap": "1168",
+                    "TVdomMap": "1171",
                     "ResolvedHTMLElement": "@nav/api/.ResolvedHTMLElement",
-                    "TDomain": "1167",
-                    "TVdomFinal": "1169",
+                    "TDomain": "1170",
+                    "TVdomFinal": "1172",
                     "Observable": "@nav/api/.Observable"
                 }
             },
@@ -1351,7 +1346,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Full specification of reactive children.\n\nExample regarding the different policies can be found in the following documentations:\n*  **replace**:  [ChildrenOptionsReplace](@nav/api/.ChildrenOptionsReplace) \n*  **append**:  [ChildrenOptionsAppend](@nav/api/.ChildrenOptionsAppend) \n*  **sync**:  [ChildrenOptionsSync](@nav/api/.ChildrenOptionsSync)",
+                        "content": "Full specification of reactive children in a virtual DOM context.\n\nExample usage and policies can be found in the following documents:\n- **replace**:  [ChildrenOptionsReplace](@nav/api/.ChildrenOptionsReplace) \n- **append**:  [ChildrenOptionsAppend](@nav/api/.ChildrenOptionsAppend) \n- **sync**:  [ChildrenOptionsSync](@nav/api/.ChildrenOptionsSync)",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -1362,7 +1357,7 @@
                     },
                     {
                         "title": "Generics",
-                        "content": "\n*  **Policy**: policy to be used, either  `replace` ,  `append`  or  `sync` , see  [ChildrenPolicy](@nav/api/.ChildrenPolicy) .\n*  **TDomain**: type of the domain data (conveys by the  `source$`  observable).",
+                        "content": "\n*  **Policy**: The policy to be used for managing children, which can be one of the following:\n  -  `replace` : Replaces existing children with new ones.\n  -  `append` : Appends new children to the existing ones.\n  -  `sync` : Synchronizes the state of children based on the domain data.\n  Refer to  [ChildrenPolicy](@nav/api/.ChildrenPolicy)  for more details on available policies.\n*  **TDomain**: The type of the domain data conveyed by the  `source$`  observable.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "arguments",
@@ -1378,16 +1373,16 @@
             "callables": [],
             "code": {
                 "filePath": "src/lib/api.ts",
-                "declaration": "export type RxChildren<Policy extends ChildrenPolicy, TDomain = unknown> = {\n    policy: Policy\n} & ChildrenTypesOptionMap<TDomain>[Policy]",
+                "declaration": "export type RxChildren<Policy extends ChildrenPolicy, TDomain = unknown> = {\n    /**\n     * The policy defining how children should be managed.\n     */\n    policy: Policy\n} & ChildrenTypesOptionMap<TDomain>[Policy]",
                 "implementation": "",
-                "startLine": 451,
-                "endLine": 452,
+                "startLine": 490,
+                "endLine": 491,
                 "references": {
                     "RxChildren": "@nav/api/.RxChildren",
                     "ChildrenPolicy": "@nav/api/.ChildrenPolicy",
-                    "Policy": "1173",
+                    "Policy": "1176",
                     "ChildrenTypesOptionMap": "@nav/api/.ChildrenTypesOptionMap",
-                    "TDomain": "1174"
+                    "TDomain": "1177"
                 }
             },
             "semantic": {
@@ -1402,10 +1397,21 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "The actual HTMLElement rendered from a  [VirtualDOM](@nav/api/.VirtualDOM) .\nIt implements the regular HTMLElement API of corresponding tag on top of which\n [reactive trait](@nav/api/.RxElementTrait)  is added.",
+                        "content": "Represents the actual HTMLElement rendered from a  [VirtualDOM](@nav/api/.VirtualDOM) .\nIt implements the standard HTMLElement API for the corresponding tag,\nenhanced with the  [reactive trait](@nav/api/.RxElementTrait) .",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
+                            "labels": [],
+                            "attributes": {},
+                            "relations": {}
+                        }
+                    },
+                    {
+                        "title": "Generics",
+                        "content": "\n*  **Tag**: The tag name of the DOM element.",
+                        "contentType": "markdown",
+                        "semantic": {
+                            "role": "arguments",
                             "labels": [],
                             "attributes": {},
                             "relations": {}
@@ -1420,8 +1426,8 @@
                 "filePath": "src/lib/virtual-dom.ts",
                 "declaration": "export type RxHTMLElement<Tag extends SupportedHTMLTags> = RxElementTrait &\n    NativeHTMLElement<Tag>",
                 "implementation": "",
-                "startLine": 98,
-                "endLine": 99,
+                "startLine": 96,
+                "endLine": 97,
                 "references": {
                     "RxHTMLElement": "@nav/api/.RxHTMLElement",
                     "SupportedHTMLTags": "@nav/api/.SupportedHTMLTags",
@@ -1460,8 +1466,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type Subscription = Pick<SubscriptionRxjs, 'unsubscribe'>",
                 "implementation": "",
-                "startLine": 31,
-                "endLine": 32,
+                "startLine": 32,
+                "endLine": 33,
                 "references": {
                     "Subscription": "@nav/api/.Subscription"
                 }
@@ -1496,8 +1502,8 @@
                 "filePath": "src/lib/factory.ts",
                 "declaration": "export type SupportedHTMLTags = Configuration['SupportedHTMLTags']",
                 "implementation": "",
-                "startLine": 46,
-                "endLine": 47,
+                "startLine": 39,
+                "endLine": 40,
                 "references": {
                     "SupportedHTMLTags": "@nav/api/.SupportedHTMLTags"
                 }
@@ -1514,7 +1520,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "VirtualDOM mirrors the characteristics and structure of an HTML DOM element with the ability\nfor its attributes and children to be supplied through the concept of **observable** (from reactive programing).",
+                        "content": "Represents a Virtual DOM element that mirrors the structure and characteristics of an HTML DOM element.\nIt allows attributes and children to be supplied reactively via the concept of **observable** (from reactive programming).",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -1525,7 +1531,7 @@
                     },
                     {
                         "title": "Generics",
-                        "content": "\n*  **Tag**: the  `tag`  of the DOM element.",
+                        "content": "\n*  **Tag**: The tag name of the DOM element.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "arguments",
@@ -1541,10 +1547,10 @@
             "callables": [],
             "code": {
                 "filePath": "src/lib/virtual-dom.ts",
-                "declaration": "export type VirtualDOM<Tag extends SupportedHTMLTags> = {\n    /**\n     * The tag of the element, equivalent of the `tagName` attribute of `HTMLElement`.\n     */\n    tag: Tag\n\n    /**\n     * The class associated to the element, equivalent of the `className` attribute of `HTMLElement`.\n     */\n    class?: AttributeLike<string>\n\n    /**\n     * The style associated to the element, typically for a static value:\n     * ```\n     * {\n     *      tag: 'div',\n     *      style: {\n     *          backgroundColor: 'blue'\n     *      }\n     * }\n     * ```\n     * See comment regarding hyphen in properties name in {@link CSSAttribute}.\n     */\n    style?: AttributeLike<CSSAttribute>\n\n    /**\n     * Definition of additional custom attributes.\n     * E.g. the attributes 'aria-label' & 'aria-expanded' in the following:\n     * ```\n     * <button aria-label=\"Close\" aria-expanded=\"false\"></button>\n     * ```\n     * would be represented in the (static) virtual DOM by:\n     * ```\n     * {\n     *      tag: 'button',\n     *      customAttributes: {\n     *          ariaLabel: 'Close',\n     *          ariaExpanded: false\n     *      }\n     * }\n     * ```\n     *\n     * See comment regarding hyphen in properties name in {@link CustomAttribute}.\n     */\n    customAttributes?: AttributeLike<CustomAttribute>\n\n    /**\n     * Children of the element.\n     */\n    children?: ChildrenLike\n\n    /**\n     * Lifecycle hook called just after the element has been attached to the window's DOM.\n     *\n     * @param element reference on the HTML element attached\n     */\n    connectedCallback?: (element: RxHTMLElement<Tag>) => void\n\n    /**\n     * Lifecycle hook called just after the element has been detached to the window's DOM.\n     *\n     * @param element reference on the HTML element detached\n     */\n    disconnectedCallback?: (element: RxHTMLElement<Tag>) => void\n} & (TypeCheck extends 'none'\n    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Index signature effectively optional if `TypeCheck` is disabled\n      { [k: string]: any }\n    : Partial<ExposedMembers<NativeHTMLElement<Tag>>>)",
+                "declaration": "export type VirtualDOM<Tag extends SupportedHTMLTags> = {\n    /**\n     * The tag of the element, equivalent to the `tagName` property of `HTMLElement`.\n     */\n    tag: Tag\n\n    /**\n     * The class associated with the element, equivalent to the `className` property of `HTMLElement`.\n     */\n    class?: AttributeLike<string>\n\n    /**\n     * The style associated with the element. Typically for a static value:\n     * ```typescript\n     * {\n     *      tag: 'div',\n     *      style: {\n     *          backgroundColor: 'blue'\n     *      }\n     * }\n     * ```\n     * For more details on hyphenated properties, see {@link CSSAttribute}.\n     */\n    style?: AttributeLike<CSSAttribute>\n\n    /**\n     * Additional custom attributes for the element.\n     * For example, the attributes 'aria-label' and 'aria-expanded' in the following:\n     * ```html\n     * <button aria-label=\"Close\" aria-expanded=\"false\"></button>\n     * ```\n     * would be represented in the virtual DOM as:\n     * ```typescript\n     * {\n     *      tag: 'button',\n     *      customAttributes: {\n     *          ariaLabel: 'Close',\n     *          ariaExpanded: false\n     *      }\n     * }\n     * ```\n     * For more details on hyphenated properties, see {@link CustomAttribute}.\n     */\n    customAttributes?: AttributeLike<CustomAttribute>\n\n    /**\n     * Children of the element.\n     */\n    children?: ChildrenLike\n\n    /**\n     * Lifecycle hook called just after the element has been attached to the document's DOM.\n     *\n     * @param element A reference to the attached HTML element.\n     */\n    connectedCallback?: (element: RxHTMLElement<Tag>) => void\n\n    /**\n     * Lifecycle hook called just after the element has been detached from the document's DOM.\n     *\n     * @param element A reference to the detached HTML element.\n     */\n    disconnectedCallback?: (element: RxHTMLElement<Tag>) => void\n} & (TypeCheck extends 'none'\n    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Index signature effectively optional if `TypeCheck` is disabled\n      { [k: string]: any }\n    : Partial<ExposedMembers<NativeHTMLElement<Tag>>>)",
                 "implementation": "",
-                "startLine": 23,
-                "endLine": 24,
+                "startLine": 21,
+                "endLine": 22,
                 "references": {
                     "VirtualDOM": "@nav/api/.VirtualDOM",
                     "SupportedHTMLTags": "@nav/api/.SupportedHTMLTags",
@@ -1570,7 +1576,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Mapping between the possible tag name as defined in  `HTMLElementTagNameMap`  and the associated  [VirtualDOM](@nav/api/.VirtualDOM) .",
+                        "content": "A mapping between possible HTML tag names, as defined in  `HTMLElementTagNameMap` ,\nand their associated  [VirtualDOM](@nav/api/.VirtualDOM)  representations.\n\nThis type creates a dynamic mapping, where each key is a valid HTML tag from  `SupportedHTMLTags` ,\nand the corresponding value is a  [VirtualDOM](@nav/api/.VirtualDOM)  for that tag.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -1588,8 +1594,8 @@
                 "filePath": "src/lib/api.ts",
                 "declaration": "export type VirtualDOMTagNameMap = {\n    [Property in SupportedHTMLTags]: VirtualDOM<Property>\n}",
                 "implementation": "",
-                "startLine": 458,
-                "endLine": 459,
+                "startLine": 504,
+                "endLine": 505,
                 "references": {
                     "VirtualDOMTagNameMap": "@nav/api/.VirtualDOMTagNameMap",
                     "SupportedHTMLTags": "@nav/api/.SupportedHTMLTags",
@@ -1630,7 +1636,7 @@
                 "endLine": 25,
                 "references": {
                     "WritableKeysOf": "@nav/api/.WritableKeysOf",
-                    "T": "1186",
+                    "T": "1189",
                     "Equals": "@nav/api/.Equals"
                 }
             },
@@ -1679,7 +1685,7 @@
                 "endLine": 39,
                 "references": {
                     "WritablePart": "@nav/api/.WritablePart",
-                    "T": "1188",
+                    "T": "1191",
                     "WritableKeysOf": "@nav/api/.WritableKeysOf"
                 }
             },
@@ -1697,7 +1703,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Transforms a regular HTMLElement into a reactive one by augmenting it with reactive capabilities, including:\n-  `vDom: Readonly<VirtualDOM<Tag>>` : Represents the associated Virtual DOM.\n-  `ownSubscriptions(...subs: Subscription[]): void` : Allows providing subscriptions to the element, which will\n  be automatically unsubscribed when the element is removed from the page.",
+                        "content": "Transforms a regular  `HTMLElement`  into a reactive one by augmenting it with reactive capabilities.\nThis allows you to manage the lifecycle of subscriptions and provides additional hooks for DOM events,\nsuch as when the element is added or removed from the page.\n\nThe reactive enhancements include:\n-  `vDom: Readonly<VirtualDOM<Tag>>` : Represents the associated Virtual DOM.\n-  `ownSubscriptions(...subs: Subscription[]): void` : Enables you to attach RxJS subscriptions to the element.\nThese subscriptions will be automatically unsubscribed (last in, first out) when the element is removed from the page.\n-  `hookOnDisconnected(...callbacks: (() => void)[]): void` : Registers callback functions to be executed when the\nelement is removed from the DOM. Callbacks are executed in the reversed order of registration.\n\nThe returned class extends the provided base  `HTMLElement`  constructor and adds the reactive functionality\ndescribed above.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -1734,14 +1740,14 @@
             "code": {
                 "filePath": "src/lib/core.ts",
                 "declaration": "export function ReactiveTrait<\n    T extends Constructor<HTMLElement>,\n    Tag extends SupportedHTMLTags,\n>(Base: T)",
-                "implementation": "export function ReactiveTrait<\n    T extends Constructor<HTMLElement>,\n    Tag extends SupportedHTMLTags,\n>(Base: T) {\n    return class extends Base {\n        /**\n         * Virtual DOM\n         */\n        vDom: Readonly<VirtualDOM<Tag>>\n\n        /**\n         * @ignore\n         */\n        subscriptions = new Array<Subscription>()\n\n        /**\n         * @ignore\n         */\n        initializeVirtualDom(vDom: VirtualDOM<Tag>) {\n            this.vDom = vDom\n        }\n        /**\n         * @ignore\n         */\n        connectedCallback() {\n            const { attributes, children } = extractRxStreams<Tag>(this.vDom)\n\n            attributes\n                .filter(([_, v]) => !instanceOfStream(v))\n                .forEach(([k, v]: [k: string, v: AnyHTMLAttribute]) => {\n                    this.applyAttribute(k, v)\n                })\n\n            attributes\n                .filter(([_, v]) => instanceOfStream(v))\n                .forEach(\n                    ([k, attr$]: [\n                        k: string,\n                        attr$: RxStream<AnyHTMLAttribute>,\n                    ]) => {\n                        this.subscriptions.push(\n                            attr$.subscribe((v: AnyHTMLAttribute) => {\n                                this.applyAttribute(k, v)\n                                return this as unknown as RxHTMLElement<Tag>\n                            }, this),\n                        )\n                    },\n                )\n            if (Array.isArray(children)) {\n                this.renderChildren(children)\n            }\n            if (instanceOfStream<unknown, AnyVirtualDOM[]>(children)) {\n                this.subscriptions.push(\n                    children.subscribe((children) => {\n                        this.replaceChildren()\n                        this.renderChildren(children)\n                        return this as unknown as RxHTMLElement<Tag>\n                    }),\n                )\n            }\n\n            if (instanceOfChildrenStream(children)) {\n                this.subscriptions.push(\n                    children.subscribe(this as unknown as RxHTMLElement<Tag>),\n                )\n            }\n            this.vDom?.connectedCallback?.(\n                this as unknown as RxHTMLElement<Tag>,\n            )\n        }\n\n        /**\n         * @ignore\n         */\n        disconnectedCallback() {\n            this.subscriptions.forEach((s) => s.unsubscribe())\n            this.vDom?.disconnectedCallback?.(\n                this as unknown as RxHTMLElement<Tag>,\n            )\n        }\n\n        /**\n         * @ignore\n         */\n        renderChildren(children: ConvertedChildLike[]): Array<RxElementTrait> {\n            const rendered = []\n            children\n                .filter((child) => child != undefined)\n                .forEach((child) => {\n                    if (instanceOfStream(child)) {\n                        const placeHolder = document.createElement(\n                            `${customElementPrefix}-placeholder`,\n                        ) as HTMLPlaceHolderElement\n                        this.appendChild(placeHolder)\n                        this.subscriptions.push(placeHolder.initialize(child))\n                        rendered.push(placeHolder)\n                    } else if (child instanceof HTMLElement) {\n                        this.appendChild(child)\n                    } else {\n                        const div = render(child)\n                        this.appendChild(div)\n                        rendered.push(div)\n                    }\n                })\n            return rendered\n        }\n        /**\n         * @ignore\n         */\n        applyAttribute(name: string, value: AnyHTMLAttribute) {\n            const binding = specialBindings[name]\n                ? () => specialBindings[name](this, value)\n                : () => (this[name] = value)\n            binding()\n        }\n\n        /**\n         * The provided subscription get owned by the element:\n         * it will be unsubscribed when the element is removed from the DOM.\n         * @param subs subscriptions to own\n         */\n        ownSubscriptions(...subs: Subscription[]) {\n            this.subscriptions.push(...subs)\n        }\n    }\n}",
-                "startLine": 231,
-                "endLine": 357,
+                "implementation": "export function ReactiveTrait<\n    T extends Constructor<HTMLElement>,\n    Tag extends SupportedHTMLTags,\n>(Base: T) {\n    return class extends Base {\n        /**\n         * Virtual DOM\n         */\n        vDom: Readonly<VirtualDOM<Tag>>\n\n        /**\n         * @ignore\n         */\n        subscriptions = new Array<Subscription>()\n\n        /**\n         * @ignore\n         */\n        disconnectionHooks: (() => void)[] = []\n\n        /**\n         * @ignore\n         */\n        initializeVirtualDom(vDom: VirtualDOM<Tag>) {\n            this.vDom = vDom\n        }\n        /**\n         * @ignore\n         */\n        connectedCallback() {\n            const { attributes, children } = extractRxStreams<Tag>(this.vDom)\n\n            attributes\n                .filter(([_, v]) => !instanceOfStream(v))\n                .forEach(([k, v]: [k: string, v: AnyHTMLAttribute]) => {\n                    this.applyAttribute(k, v)\n                })\n\n            attributes\n                .filter(([_, v]) => instanceOfStream(v))\n                .forEach(\n                    ([k, attr$]: [\n                        k: string,\n                        attr$: RxStream<AnyHTMLAttribute>,\n                    ]) => {\n                        this.subscriptions.push(\n                            attr$.subscribe((v: AnyHTMLAttribute) => {\n                                this.applyAttribute(k, v)\n                                return this as unknown as RxHTMLElement<Tag>\n                            }, this),\n                        )\n                    },\n                )\n            if (Array.isArray(children)) {\n                this.renderChildren(children)\n            }\n            if (instanceOfStream<unknown, AnyVirtualDOM[]>(children)) {\n                this.subscriptions.push(\n                    children.subscribe((children) => {\n                        this.replaceChildren()\n                        this.renderChildren(children)\n                        return this as unknown as RxHTMLElement<Tag>\n                    }),\n                )\n            }\n\n            if (instanceOfChildrenStream(children)) {\n                this.subscriptions.push(\n                    children.subscribe(this as unknown as RxHTMLElement<Tag>),\n                )\n            }\n            this.vDom?.connectedCallback?.(\n                this as unknown as RxHTMLElement<Tag>,\n            )\n        }\n\n        /**\n         * @ignore\n         */\n        disconnectedCallback() {\n            this.subscriptions.reverse().forEach((s) => s.unsubscribe())\n            this.disconnectionHooks.reverse().forEach((cb) => cb())\n            this.vDom?.disconnectedCallback?.(\n                this as unknown as RxHTMLElement<Tag>,\n            )\n        }\n\n        /**\n         * @ignore\n         */\n        renderChildren(children: ConvertedChildLike[]): Array<RxElementTrait> {\n            const rendered = []\n            children\n                .filter((child) => child != undefined)\n                .forEach((child) => {\n                    if (instanceOfStream(child)) {\n                        const placeHolder = document.createElement(\n                            `${customElementPrefix}-placeholder`,\n                        ) as HTMLPlaceHolderElement\n                        this.appendChild(placeHolder)\n                        this.subscriptions.push(placeHolder.initialize(child))\n                        rendered.push(placeHolder)\n                    } else if (child instanceof HTMLElement) {\n                        this.appendChild(child)\n                    } else {\n                        const div = render(child)\n                        this.appendChild(div)\n                        rendered.push(div)\n                    }\n                })\n            return rendered\n        }\n        /**\n         * @ignore\n         */\n        applyAttribute(name: string, value: AnyHTMLAttribute) {\n            const binding = specialBindings[name]\n                ? () => specialBindings[name](this, value)\n                : () => (this[name] = value)\n            binding()\n        }\n\n        /**\n         * Adds subscriptions to the element, marking them as \"owned\" by it.\n         *\n         * When the element is removed from the DOM, all owned subscriptions are automatically unsubscribed.\n         *\n         * The resource cleanup process upon element disconnection follows these steps:\n         * 1. Unsubscribe all subscriptions registered via `ownSubscriptions`, in reverse order (LIFO).\n         * 2. Execute any hooks registered via `hookOnDisconnected`, in reverse order (LIFO).\n         * 3. Finally, invoke the optional `disconnectedCallback` defined in the associated {@link VirtualDOM},\n         * if present.\n         *\n         * @param subs - The subscriptions to be owned by this element. They will be unsubscribed upon disconnection.\n         */\n        ownSubscriptions(...subs: Subscription[]) {\n            this.subscriptions.push(...subs)\n        }\n\n        /**\n         * Registers callbacks to be invoked when the element is disconnected from the DOM.\n         *\n         * These callbacks are executed after the element's owned subscriptions (registered via `ownSubscriptions`)\n         * have been unsubscribed, but before invoking the optional `disconnectedCallback` provided in the\n         * {@link VirtualDOM}.\n         *\n         * The callbacks are executed in reverse order of registration (last in, first out), ensuring that\n         * any resources or actions dependent on the order of registration are cleaned up correctly.\n         *\n         * This method is useful for performing additional resource cleanup or other actions when the element is\n         * removed from the DOM.\n         *\n         * @param callbacks - The functions to be executed when the element is disconnected from the DOM.\n         */\n        hookOnDisconnected(...callbacks: (() => void)[]) {\n            this.disconnectionHooks.push(...callbacks)\n        }\n    }\n}",
+                "startLine": 241,
+                "endLine": 400,
                 "references": {
                     "ReactiveTrait": "@nav/api/.ReactiveTrait",
-                    "T": "1191",
-                    "__class": "1194",
-                    "Tag": "1192"
+                    "T": "1194",
+                    "__class": "1197",
+                    "Tag": "1195"
                 }
             },
             "semantic": {
@@ -1756,7 +1762,7 @@
             "documentation": {
                 "sections": [
                     {
-                        "content": "Transform a  [VirtualDOM](@nav/api/.VirtualDOM)  into a  [RxHTMLElement](@nav/api/.RxHTMLElement) .\n\n>  The HTML element returned is initialized **only when attached** to the document's DOM tree.",
+                        "content": "Transforms a  [VirtualDOM](@nav/api/.VirtualDOM)  into a corresponding  [RxHTMLElement](@nav/api/.RxHTMLElement) .\n\n> The HTML element returned is initialized **only when attached** to the document's DOM tree.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "",
@@ -1767,7 +1773,7 @@
                     },
                     {
                         "title": "Arguments",
-                        "content": "\n*  **vDom**: the virtual DOM",
+                        "content": "\n*  **vDom**: The virtual DOM to render.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "arguments",
@@ -1778,7 +1784,7 @@
                     },
                     {
                         "title": "Returns",
-                        "content": "the corresponding DOM element",
+                        "content": "The corresponding DOM element.",
                         "contentType": "markdown",
                         "semantic": {
                             "role": "returns",
@@ -1792,10 +1798,10 @@
             "path": "render",
             "code": {
                 "filePath": "src/lib/virtual-dom.ts",
-                "declaration": "export function render<Tag extends SupportedHTMLTags>(\n    vDom: VirtualDOM<Tag> | FluxViewVirtualDOM,\n): RxHTMLElement<Tag>",
-                "implementation": "export function render<Tag extends SupportedHTMLTags>(\n    vDom: VirtualDOM<Tag> | FluxViewVirtualDOM,\n): RxHTMLElement<Tag> {\n    if (vDom == undefined) {\n        console.error('Got an undefined virtual DOM, return empty div')\n        return undefined\n    }\n    // the next 2 type unsafe lines are to support FluxViewVirtualDOM\n    const tag = vDom['tag'] || ('div' as const)\n\n    const element: RxHTMLElement<Tag> = factory<Tag>(tag as unknown as Tag)\n    // why 'never', could have been 'any' but my IDE suggest never is better :/\n    // The problem is that somehow the signature of the method 'initializeVirtualDom' is doubled:\n    //  {(vDom: VirtualDOM<Tag>): void, (vDom: VirtualDOM<SupportedTags>): void}\n    // I don't get why.\n    element.initializeVirtualDom(vDom as never)\n    return element\n}",
-                "startLine": 109,
-                "endLine": 127,
+                "declaration": "export function render<Tag extends SupportedHTMLTags>(\n    vDom: VirtualDOM<Tag>,\n): RxHTMLElement<Tag>",
+                "implementation": "export function render<Tag extends SupportedHTMLTags>(\n    vDom: VirtualDOM<Tag>,\n): RxHTMLElement<Tag> {\n    if (vDom == undefined) {\n        console.error('Got an undefined virtual DOM, return empty div')\n        return undefined\n    }\n    const tag = vDom['tag'] || ('div' as const)\n\n    const element: RxHTMLElement<Tag> = factory<Tag>(tag as unknown as Tag)\n    // why 'never', could have been 'any' but my IDE suggest never is better :/\n    // The problem is that somehow the signature of the method 'initializeVirtualDom' is doubled:\n    //  {(vDom: VirtualDOM<Tag>): void, (vDom: VirtualDOM<SupportedTags>): void}\n    // I don't get why.\n    element.initializeVirtualDom(vDom as never)\n    return element\n}",
+                "startLine": 107,
+                "endLine": 124,
                 "references": {
                     "render": "@nav/api/.render",
                     "VirtualDOM": "@nav/api/.VirtualDOM",
