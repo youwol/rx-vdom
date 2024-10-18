@@ -431,16 +431,15 @@ HTMLElement is added to or removed from the page.
 For such scenario, virtual DOMs can define the functions:
 
 - **`connectedCallback`** : This function is executed when the HTMLElement is added to the page.
-  It takes an [RxHTMLElement](@nav/api.RxHTMLElement) as an argument. This type implements the regular HTMLElement API
-  for the corresponding tag and includes additional methods, such as **`ownSubscriptions`**, which allows you to
-  bind RxJS subscriptions to the element's lifecycle (subscriptions will be unsubscribed when the element is removed
-  from the page).
+  It takes an [RxHTMLElement](@nav/api.RxHTMLElement) as an argument, implementing the regular HTMLElement API
+  for the corresponding tag. Additionally, this type implements a [ReactiveTrait](@nav/api.ReactiveTrait) 
+  providing helper methods like `ownSubscriptions` and `hookOnDisconnected` to simplify lifecycle management.
 - **`disconnectedCallback`**: This function is executed when the HTMLElement is removed from the page.
   It also receives the associated element as an [RxHTMLElement](@nav/api.RxHTMLElement).
   This function is typically used to clean up resources.
 
-The next snippet illustrates their usage by creating a reactive chart using
-the <a target="_blank" href="https://www.chartjs.org/">Chart.js</a> library:
+The following example demonstrates the usage of `connectedCallback`, `disconnectedCallback`, and lifecycle management 
+methods by creating a reactive chart using <a target="_blank" href="https://www.chartjs.org/">Chart.js</a> library:
 
 <js-cell >
 const { chartJs } = await webpm.install({
@@ -453,12 +452,6 @@ const data$ = rxjs.timer(0,1000).pipe(
     rxjs.map(() => Array.from({length: 100}, rndPt))
 )
 
-// The 'plot' initialization requires the parent HTMLElement,
-// available within the 'connectedCallback' function. 
-// A reference is exposed here in order to execute resources cleaning  
-// in the 'disconnectedCallback'.
-let plot
-
 vDOM = { 
     tag: 'div',
     class:`d-flex flex-column border text-center rounded p-2 h-100 w-100`,
@@ -467,7 +460,7 @@ vDOM = {
             tag:'canvas',
             class:'mx-auto w-75',
             connectedCallback: (htmlElement) => {
-                plot = new chartJs.Chart(
+                const plot = new chartJs.Chart(
                     htmlElement, 
                     { 
                         type: 'scatter',
@@ -479,8 +472,11 @@ vDOM = {
                     plot.update()
                 })
                 htmlElement.ownSubscriptions(sub)
+                htmlElement.hookOnDisconnected(() => plot.clear())
             },
-            disconnectedCallback: (htmlElement) =>  plot.clear()
+            disconnectedCallback: (htmlElement) =>  {
+                console.log("Canvas element removed from the DOM")
+            }
         }
     ]
 }
