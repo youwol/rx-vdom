@@ -13,7 +13,7 @@ pkg_json = parse_json(folder_path / 'package.json')
 pkg_json_rxvdom = parse_json(folder_path / '..' / 'package.json')
 # (cd ./node_modules/@youwol/mkdocs-ts/bin/ && node index.js --project ../../../../.. --nav /api --out ../../../../assets/api)
 externals_deps = {
-    "@youwol/mkdocs-ts": "^0.5.0",
+    "@youwol/mkdocs-ts": "^0.6.4",
     "@youwol/rx-vdom": f"^{pkg_json_rxvdom['version'].replace('-wip', '')}",
     "@youwol/webpm-client": "^3.0.0",
     "rxjs": "^7.5.6"
