@@ -1,7 +1,7 @@
 {
     "name": "@youwol/rx-vdom-doc",
     "description": "Documentation app for the library @youwol/rx-vdom",
-    "version": "1.0.4-wip",
+    "version": "1.0.5-wip",
     "author": "greinisch@youwol.com",
     "homepage": "https://github.com/youwol/rx-vdom-doc#README.md",
     "main": "dist/index.html",
@@ -18,7 +18,7 @@
         "lint-eslint-check": "eslint ./src",
         "test": "jest -i",
         "test-coverage": "jest -i --collect-coverage",
-        "doc": "typedoc",
+        "doc": "typedoc && python doc.py",
         "publish-npm-public": "yarn build:prod && yarn test-coverage && yarn publish --access public",
         "start": "webpack serve"
     },
@@ -29,8 +29,8 @@
         ]
     },
     "dependencies": {
-        "@youwol/mkdocs-ts": "^0.5.0",
-        "@youwol/rx-vdom": "^1.0.3",
+        "@youwol/mkdocs-ts": "^0.6.4",
+        "@youwol/rx-vdom": "^1.0.5",
         "@youwol/webpm-client": "^3.0.0",
         "rxjs": "^7.5.6"
     },
@@ -62,8 +62,8 @@
     },
     "webpm": {
         "dependencies": {
-            "@youwol/mkdocs-ts": "^0.5.0",
-            "@youwol/rx-vdom": "^1.0.4",
+            "@youwol/mkdocs-ts": "^0.6.4",
+            "@youwol/rx-vdom": "^1.0.5",
             "@youwol/webpm-client": "^3.0.0",
             "rxjs": "^7.5.6"
         },

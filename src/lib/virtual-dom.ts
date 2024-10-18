@@ -10,30 +10,28 @@ import {
     CustomAttribute,
     CSSAttribute,
     NativeHTMLElement,
-    FluxViewVirtualDOM,
 } from './api'
 import { factory, SupportedHTMLTags, TypeCheck } from './factory'
 /**
- * VirtualDOM mirrors the characteristics and structure of an HTML DOM element with the ability
- * for its attributes and children to be supplied through the concept of **observable** (from reactive programing).
+ * Represents a Virtual DOM element that mirrors the structure and characteristics of an HTML DOM element.
+ * It allows attributes and children to be supplied reactively via the concept of **observable** (from reactive programming).
  *
- *
- * @template Tag the `tag` of the DOM element.
+ * @template Tag The tag name of the DOM element.
  */
 export type VirtualDOM<Tag extends SupportedHTMLTags> = {
     /**
-     * The tag of the element, equivalent of the `tagName` attribute of `HTMLElement`.
+     * The tag of the element, equivalent to the `tagName` property of `HTMLElement`.
      */
     tag: Tag
 
     /**
-     * The class associated to the element, equivalent of the `className` attribute of `HTMLElement`.
+     * The class associated with the element, equivalent to the `className` property of `HTMLElement`.
      */
     class?: AttributeLike<string>
 
     /**
-     * The style associated to the element, typically for a static value:
-     * ```
+     * The style associated with the element. Typically for a static value:
+     * ```typescript
      * {
      *      tag: 'div',
      *      style: {
@@ -41,18 +39,18 @@ export type VirtualDOM<Tag extends SupportedHTMLTags> = {
      *      }
      * }
      * ```
-     * See comment regarding hyphen in properties name in {@link CSSAttribute}.
+     * For more details on hyphenated properties, see {@link CSSAttribute}.
      */
     style?: AttributeLike<CSSAttribute>
 
     /**
-     * Definition of additional custom attributes.
-     * E.g. the attributes 'aria-label' & 'aria-expanded' in the following:
-     * ```
+     * Additional custom attributes for the element.
+     * For example, the attributes 'aria-label' and 'aria-expanded' in the following:
+     * ```html
      * <button aria-label="Close" aria-expanded="false"></button>
      * ```
-     * would be represented in the (static) virtual DOM by:
-     * ```
+     * would be represented in the virtual DOM as:
+     * ```typescript
      * {
      *      tag: 'button',
      *      customAttributes: {
@@ -61,8 +59,7 @@ export type VirtualDOM<Tag extends SupportedHTMLTags> = {
      *      }
      * }
      * ```
-     *
-     * See comment regarding hyphen in properties name in {@link CustomAttribute}.
+     * For more details on hyphenated properties, see {@link CustomAttribute}.
      */
     customAttributes?: AttributeLike<CustomAttribute>
 
@@ -72,16 +69,16 @@ export type VirtualDOM<Tag extends SupportedHTMLTags> = {
     children?: ChildrenLike
 
     /**
-     * Lifecycle hook called just after the element has been attached to the window's DOM.
+     * Lifecycle hook called just after the element has been attached to the document's DOM.
      *
-     * @param element reference on the HTML element attached
+     * @param element A reference to the attached HTML element.
      */
     connectedCallback?: (element: RxHTMLElement<Tag>) => void
 
     /**
-     * Lifecycle hook called just after the element has been detached to the window's DOM.
+     * Lifecycle hook called just after the element has been detached from the document's DOM.
      *
-     * @param element reference on the HTML element detached
+     * @param element A reference to the detached HTML element.
      */
     disconnectedCallback?: (element: RxHTMLElement<Tag>) => void
 } & (TypeCheck extends 'none'
@@ -90,30 +87,30 @@ export type VirtualDOM<Tag extends SupportedHTMLTags> = {
     : Partial<ExposedMembers<NativeHTMLElement<Tag>>>)
 
 /**
- * The actual HTMLElement rendered from a {@link VirtualDOM}.
- * It implements the regular HTMLElement API of corresponding tag on top of which
- * {@link RxElementTrait | reactive trait} is added.
+ * Represents the actual HTMLElement rendered from a {@link VirtualDOM}.
+ * It implements the standard HTMLElement API for the corresponding tag,
+ * enhanced with the {@link RxElementTrait | reactive trait}.
  *
+ * @template Tag The tag name of the DOM element.
  */
 export type RxHTMLElement<Tag extends SupportedHTMLTags> = RxElementTrait &
     NativeHTMLElement<Tag>
 
 /**
- * Transform a {@link VirtualDOM} into a {@link RxHTMLElement}.
+ * Transforms a {@link VirtualDOM} into a corresponding {@link RxHTMLElement}.
  *
- * >  The HTML element returned is initialized **only when attached** to the document's DOM tree.
+ * > The HTML element returned is initialized **only when attached** to the document's DOM tree.
  *
- * @param vDom the virtual DOM
- * @returns the corresponding DOM element
+ * @param vDom The virtual DOM to render.
+ * @returns The corresponding DOM element.
  */
 export function render<Tag extends SupportedHTMLTags>(
-    vDom: VirtualDOM<Tag> | FluxViewVirtualDOM,
+    vDom: VirtualDOM<Tag>,
 ): RxHTMLElement<Tag> {
     if (vDom == undefined) {
         console.error('Got an undefined virtual DOM, return empty div')
         return undefined
     }
-    // the next 2 type unsafe lines are to support FluxViewVirtualDOM
     const tag = vDom['tag'] || ('div' as const)
 
     const element: RxHTMLElement<Tag> = factory<Tag>(tag as unknown as Tag)

@@ -20,26 +20,28 @@ For a standalone example using a CDN, click <a href="{{URL-example-cdn}}" target
 
 # TypeScript Setup
 
-To use @youwol/rx-vdom in a TypeScript environment, create a `rx-vdom-config.ts` file at the root of your project
+To use **@youwol/rx-vdom** in a TypeScript environment, create a `rx-vdom-config.ts` file at the root of your project
 (next to `tsconfig.json`). Here’s a typical configuration:
 
 <code-snippet language="javascript">
 // For dev-mode change the following definition by anything else (e.g. type Mode = 'Dev')
 type Mode = 'Prod'
 
+// Union of all HTML tags
 type AllTags = keyof HTMLElementTagNameMap
+
 // If Mode is not 'Prod', the next type union should include the tags used by your project.
 // It speeds up compilation time (only used HTML tags are considered, not the whole list defined by AllTags).
 type DevTags = 'div' // | 'span' | 'i' | 'h1' | ...
 
 export type Configuration = {
-TypeCheck: 'strict'
-SupportedHTMLTags: Mode extends 'Prod' ? AllTags : DevTags
+    TypeCheck: 'strict'
+    SupportedHTMLTags: Mode extends 'Prod' ? AllTags : DevTags
 }
 
 </code-snippet>
 
-This file helps control TypeScript compilation time for regarding **rx-vdom** elements.
+This file helps control TypeScript compilation time regarding **rx-vdom** elements.
 
 You also need to reference the path of this file in your `tsconfig.json` file as follows:
 

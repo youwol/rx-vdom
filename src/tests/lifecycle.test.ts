@@ -21,6 +21,7 @@ test('connected/disconnected callback & subscriptions', () => {
         connectedCallback: (elem) => {
             events.push('connected')
             elem.ownSubscriptions(sub)
+            elem.hookOnDisconnected(() => events.push('disconnected hook'))
         },
         disconnectedCallback: () => {
             events.push('disconnected')
@@ -38,7 +39,8 @@ test('connected/disconnected callback & subscriptions', () => {
     expect(dataCustom).toHaveLength(2)
 
     document.body.innerHTML = ''
-    expect(events[1]).toBe('disconnected')
+    expect(events[1]).toBe('disconnected hook')
+    expect(events[2]).toBe('disconnected')
     expect(observersCount(obs$)).toBe(0)
     expect(observersCount(custom$)).toBe(0)
 

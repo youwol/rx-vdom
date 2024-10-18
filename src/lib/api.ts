@@ -4,7 +4,7 @@
  */
 import type * as CSS from 'csstype'
 import { RxHTMLElement, VirtualDOM } from './virtual-dom'
-import { SupportedHTMLTags, WithFluxView } from './factory'
+import { SupportedHTMLTags } from './factory'
 import { ReactiveTrait } from './core'
 import { WritablePart } from './type-utils'
 import type {
@@ -12,16 +12,17 @@ import type {
     Subscription as SubscriptionRxjs,
 } from 'rxjs'
 /**
- * Trait for reactive (un-tagged) HTMLElement.
- * It includes the properties available for HTMLElement on top of which are added those defined
- * by {@link ReactiveTrait}.
- *
- * For tag-specific element, see {@link RxHTMLElement}.
+ * Trait for a reactive (un-tagged) HTML element.
+ * This class extends the standard HTMLElement with additional properties defined by {@link ReactiveTrait}.
+ * For tag-specific elements, refer to {@link RxHTMLElement}.
  */
 export class RxElementTrait extends ReactiveTrait(HTMLElement) {}
 
 /**
- * Required interface for Rx concept of 'Observable', as defined by RxJS.
+ * Required interface representing the RxJS concept of an 'Observable'.
+ * This interface includes only the `subscribe` method from the full RxJS Observable.
+ *
+ * @template T The type of values emitted by the observable.
  */
 export type Observable<T> = Pick<ObservableRxjs<T>, 'subscribe'>
 
@@ -31,8 +32,8 @@ export type Observable<T> = Pick<ObservableRxjs<T>, 'subscribe'>
 export type Subscription = Pick<SubscriptionRxjs, 'unsubscribe'>
 
 /**
- * The union of all possible virtual DOM's **static** attribute types.
- * Corresponding **reactive** attribute types are constructed on top of them, see {@link AttributeLike}.
+ * The union of all possible static attribute types for a virtual DOM.
+ * Corresponding reactive attribute types are constructed on top of these, see {@link AttributeLike}.
  */
 export type AnyHTMLAttribute =
     | string
@@ -42,20 +43,19 @@ export type AnyHTMLAttribute =
     | CustomAttribute
 
 /**
- * Type union of all possible virtual DOM types (the {@link VirtualDOM} `tag` attribute)
- * with the (at some point deprecated) {@link FluxViewVirtualDOM}.
- * i.e.:
+ * Type union of all possible virtual DOM types, defined by the {@link VirtualDOM} `tag` attribute.
+ * Example:
  * ```
- * FluxViewVirtualDOM | VirtualDOM<'a'> | VirtualDOM<'b'> | VirtualDOM<'br'> // etc
+ * VirtualDOM<'a'> | VirtualDOM<'b'> | VirtualDOM<'br'> // etc.
  * ```
- *
  */
-export type AnyVirtualDOM =
-    | VirtualDOMTagNameMap[keyof VirtualDOMTagNameMap]
-    | FluxViewVirtualDOM
+export type AnyVirtualDOM = VirtualDOMTagNameMap[keyof VirtualDOMTagNameMap]
 
 /**
  * Union of the types allowed to define an attribute in a {@link VirtualDOM}.
+ * An attribute can be a direct type, an observable of that type, or a reactive attribute.
+ *
+ * @template Target The type of the HTML attribute.
  */
 export type AttributeLike<Target extends AnyHTMLAttribute> =
     | Target
@@ -63,31 +63,31 @@ export type AttributeLike<Target extends AnyHTMLAttribute> =
     | RxAttribute<unknown, Target>
 
 /**
- * The attributes of any `HTMLElement` that should not be mapped into a {@link VirtualDOM} attribute
- * (see {@link FilterHTMLMembers}).
- *
- * */
+ * The attributes of any `HTMLElement` that should not be mapped into a {@link VirtualDOM} attribute.
+ * See also {@link FilterHTMLMembers}.
+ */
 export type BlackListed = 'toString'
 
 /**
- * CSS attribute type, as defined by [csstype](https://github.com/frenic/csstype) library.
+ * CSS attribute type, as defined by the [csstype](https://github.com/frenic/csstype) library.
  *
  * > It is possible to substitute a target property name containing hyphens with uppercase letters in the virtual DOM.
- * e.g. if `text-align='justify'` is expected in the real DOM, it can be provided as ```{textAlign: 'justify'}```
+ * For example, if `text-align='justify'` is expected in the real DOM, it can be provided as:
+ * ```typescript
+ * { textAlign: 'justify' }
+ * ```
  */
 export type CSSAttribute = CSS.Properties
 
 /**
  * Union of the types allowed to define a child in a {@link VirtualDOM}.
+ * This includes virtual DOM elements, standard HTML elements, or reactive child elements.
  */
-export type ChildLike =
-    | AnyVirtualDOM
-    | HTMLElement
-    | RxChild
-    | FluxViewVirtualDOM
+export type ChildLike = AnyVirtualDOM | HTMLElement | RxChild
 
 /**
  * Union of the types allowed to define children in a {@link VirtualDOM}.
+ * This includes arrays of children or reactive children with various policies.
  */
 export type ChildrenLike =
     | ChildLike[]
@@ -96,29 +96,32 @@ export type ChildrenLike =
     | RxChildren<'sync'>
 
 /**
- * API for the `append` policy of  {@link RxChildren}.
+ * API for the `append` policy of {@link RxChildren}.
  *
- * Examples can be found
- * [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-children-append.test.ts).
+ * This type defines the options available for appending children when the `append` policy is used.
+ * Examples can be found [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-children-append.test.ts).
  *
- * @template TDomain type of the domain data (conveys by the `source$` observable).
+ * @template TDomain The type of the domain data conveyed by the `source$` observable.
  */
 export type ChildrenOptionsAppend<TDomain> = {
     /**
-     * Source of domain data.
+     * Observable source of domain data, expected to emit an array of domain data elements.
      */
     source$: Observable<TDomain[]>
     /**
-     * Mapping between one `TDomain` element over those emitted by `source$` and its corresponding view.
-     * @param domainData single element over those emitted by `source$`.
+     * Mapping function that transforms a single element of the emitted domain data into its corresponding
+     * virtual DOM representation.
+     *
+     * @param domainData A single element emitted by `source$`.
+     * @returns The virtual DOM representation of the given domain data.
      */
     vdomMap: (domainData: TDomain) => AnyVirtualDOM
 
     /**
-     * Execute side effects once the children have been updated.
+     * A callback function for executing side effects after the children have been updated.
      *
-     * @param parent parent of the children.
-     * @param update description of the update.
+     * @param parent The parent element containing the appended children.
+     * @param update An object describing the rendering update, including added, updated, and removed elements.
      */
     sideEffects?: (
         parent: RxElementTrait,
@@ -126,116 +129,139 @@ export type ChildrenOptionsAppend<TDomain> = {
     ) => void
 
     /**
-     * Specifies how the children are ordered in the parent element.
-     * Order is defined using this callback.
+     * Optional function for specifying the order of children in the parent element.
+     * The order is determined by comparing two domain data elements.
      *
-     * @param d1 Domain data associated to the first element for comparison
-     * @param d2 Domain data associated to the second element for comparison
-     * @return a value:
-     * -    if `>0`, sort `d1` after `d2`
-     * -    if `<0`, sort `d1` before `d2`
+     * @param d1 The domain data associated with the first element for comparison.
+     * @param d2 The domain data associated with the second element for comparison.
+     * @returns A value indicating the relative order of the two elements:
+     * - A positive value (`> 0`) indicates `d1` should be sorted after `d2`.
+     * - A negative value (`< 0`) indicates `d1` should be sorted before `d2`.
      */
     orderOperator?: (d1: TDomain, d2: TDomain) => number
 }
 
 /**
- * API for the `replace` policy of  {@link RxChildren}.
+ * API for the `replace` policy of {@link RxChildren}.
  *
- * Examples can be found
- * [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-children-replace.test.ts).
+ * This type defines the options available for replacing children when the `replace` policy is used.
+ * Examples can be found [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-children-replace.test.ts).
  *
- * @template TDomain type of the domain data (conveys by the `source$` observable).
+ * @template TDomain The type of the domain data conveyed by the `source$` observable.
  */
 export type ChildrenOptionsReplace<TDomain> = {
     /**
-     * Source of domain data.
+     * Observable source of domain data.
      */
     source$: Observable<TDomain>
     /**
+     * Mapping function that transforms the emitted domain data into a list of virtual DOM elements.
      *
-     * @param domainData domain data emitted by `source$`
-     * @return the list of children that replace the previous one.
+     * @param domainData The domain data emitted by `source$`.
+     * @returns A list of virtual DOM elements that will replace the previous children.
      */
     vdomMap: (domainData: TDomain) => AnyVirtualDOM[]
 
     /**
-     * Virtual DOMs displayed until a first data is emitted by `source$`.
+     * Virtual DOM elements displayed until the first data is emitted by `source$`.
      */
     untilFirst?: AnyVirtualDOM[]
 
     /**
-     * If provided, apply a last transformation of the virtual DOMs returned by `vdomMap` before being actually set as
-     * children. Useful to factorize some transformations.
+     * Optional transformation function for the virtual DOM elements returned by `vdomMap`.
+     * This is useful for applying common transformations before setting the children.
      *
-     * @param domValue value of the attribute returned by `vdomMap`.
+     * @param domValue The array of virtual DOM elements returned by `vdomMap`.
+     * @returns The transformed array of virtual DOM elements.
      */
     wrapper?: (domValue: AnyVirtualDOM[]) => AnyVirtualDOM[]
 
     /**
-     * Provide a handle to execute side effects. This is executed just after the new children have been inserted
-     * in the (real) DOM.
-     * @param element the parent element of the children along with the domain data value that was originally
-     * emitted by `source$`.
+     * A callback function for executing side effects after the new children have been inserted
+     * into the real DOM.
+     *
+     * @param element The parent element of the newly inserted children, along with the domain
+     * data that was originally emitted by `source$`.
      */
     sideEffects?: (element: ResolvedHTMLElement<TDomain>) => void
 }
 
 /**
- * API for the `sync` policy of  {@link RxChildren}.
+ * API for the `sync` policy of {@link RxChildren}.
  *
- * Examples can be found
- * [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-children-sync.test.ts).
+ * This type defines the options available for synchronizing children when the `sync` policy is used.
+ * Examples can be found [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-children-sync.test.ts).
  *
- * @template TDomain type of the domain data (conveys by the `source$` observable).
+ * @template TDomain The type of the domain data conveyed by the `source$` observable.
  */
 export type ChildrenOptionsSync<TDomain> = ChildrenOptionsAppend<TDomain> & {
     /**
-     * Default is to use reference equality.
+     * A function to compare two domain data instances for equality.
      *
-     * @param d1 first domain data for comparison.
-     * @param d2 second domain data for comparison.
-     * @return `true` if the `d1` and `d2` represents the same element, `false` otherwise.
+     * By default, reference equality is used for comparisons.
+     *
+     * @param d1 The first domain data for comparison.
+     * @param d2 The second domain data for comparison.
+     * @returns `true` if `d1` and `d2` represent the same element; `false` otherwise.
      */
     comparisonOperator?: (d1: TDomain, d2: TDomain) => boolean
 }
 
 /**
- * Various policies for {@link RxChildren} are available:
- * *  **replace**: All children are replaced each time a new item(s) is emitted by `source$`.
- * *  **append**: All children are appended at every emission of new item(s) from `source$`.
- * *  **sync**: Synchronize only the updated, new, or deleted children when `source$` emits a 'store' of DomainData,
- * which typically consists of an immutable DomainData list.
+ * Represents the various policies available for managing children in {@link RxChildren}.
+ *
+ * The available policies are:
+ * - **replace**: All children are replaced each time new item(s) are emitted by `source$`.
+ * - **append**: All children are appended with each emission of new item(s) from `source$`.
+ * - **sync**: Only updated, new, or deleted children are synchronized when `source$` emits a 'store' of
+ *   `DomainData`, which typically consists of an immutable list of `DomainData`.
  */
 export type ChildrenPolicy = 'replace' | 'append' | 'sync'
 
 /**
- * Type helper to map individual `ChildrenPolicy` to its corresponding API.
+ * A type helper that maps individual `ChildrenPolicy` values to their corresponding API options.
  *
- * @template TDomain type of the domain data (conveys by the `source$` observable).
+ * This type provides a structure for defining the available options for each
+ * policy when managing child elements in the virtual DOM.
+ *
+ * @template TDomain The type of the domain data conveyed by the `source$` observable.
  */
 export type ChildrenTypesOptionMap<TDomain> = {
+    /**
+     * Options for the `replace` policy, defining how child elements should be replaced.
+     */
     replace: ChildrenOptionsReplace<TDomain>
+    /**
+     * Options for the `append` policy, defining how child elements should be appended.
+     */
     append: ChildrenOptionsAppend<TDomain>
+    /**
+     * Options for the `sync` policy, defining how child elements should be synchronized.
+     */
     sync: ChildrenOptionsSync<TDomain>
 }
 
 /**
- * Custom attributes type.
+ * Represents custom attributes for HTML elements.
  *
- * > It is possible to substitute a target property name containing hyphens with uppercase letters in the virtual DOM.
- * e.g. if `aria-expanded='true'` is expected in the real DOM, it can be provided as ```{ariaExpanded: true}```.
+ * Custom attributes can be defined using camelCase property names in the virtual DOM.
+ * For example, if `aria-expanded='true'` is expected in the real DOM, it can be provided as:
+ * ```typescript
+ * { ariaExpanded: true }
+ * ```
  */
 export type CustomAttribute = { [key: string]: string | boolean | number }
 
 /**
- * Extract the attributes of an HTMLElement of given tag that are exposed in {@link VirtualDOM}.
- * It includes:
- * *  most of the writable properties of primitive types (`string`, `number`, `boolean`),
- * only a few restriction (see {@link FilterHTMLMembers}) are used
- * (essentially to provide a lighter API, see  `tag`/`tagName`, and `class`/`className`).
- * *  all the signal handlers: any methods starting with the prefix `on` (e.g. `onclick`, `onmousedown`, *etc.*).
+ * Extracts the attributes of an `HTMLElement` of the given tag that are exposed in {@link VirtualDOM}.
  *
- * @template TargetNativeHTMLElement the target native HTML element.
+ * This type includes:
+ * - Most writable properties of primitive types (`string`, `number`, `boolean`), with some restrictions
+ *   (see {@link FilterHTMLMembers}) to provide a lighter API. Notable transformations include:
+ *   - `tag`/`tagName` and `class`/`className`.
+ * - All signal handlers, which are any methods starting with the prefix `on` (e.g., `onclick`, `onmousedown`, etc.).
+ *
+ * @template TargetNativeHTMLElement The target native HTML element, which extends `HTMLElement`.
  */
 export type ExposedMembers<TargetNativeHTMLElement extends HTMLElement> = {
     [Property in keyof FilterHTMLMembers<TargetNativeHTMLElement>]: TargetNativeHTMLElement[Property] extends string
@@ -250,15 +276,14 @@ export type ExposedMembers<TargetNativeHTMLElement extends HTMLElement> = {
 }
 
 /**
- * Select writable HTML attributes for a given tag to be exposed in {@link VirtualDOM}.
+ * Selects the writable HTML attributes for a given tag to be exposed in {@link VirtualDOM}.
  *
- * From the writable attributes it removes:
- * *  the properties defined by a {@link VirtualDOM} itself. Note that `className` and `tagName` are removed to
- * expose them as `class` and `tag`.
- * *  a list of {@link BlackListed} members
+ * This type filters out the following from the writable attributes:
+ * - Properties defined by a {@link VirtualDOM} itself, including:
+ *   - `className` and `tagName`, which are exposed as `class` and `tag`, respectively.
+ * - Members listed in {@link BlackListed}.
  *
- *
- * @template TargetNativeHTMLElement the target native HTML element.
+ * @template TargetNativeHTMLElement The target native HTML element, which extends `HTMLElement`.
  */
 export type FilterHTMLMembers<TargetNativeHTMLElement extends HTMLElement> =
     Omit<
@@ -275,127 +300,130 @@ export type FilterHTMLMembers<TargetNativeHTMLElement extends HTMLElement> =
     >
 
 /**
- * This type is introduced for backward compatibility to allow using VirtualDOM from the
- * [@youwol/flux-view](https://github.com/youwol/flux-view) package.
+ * Represents the native HTML element type corresponding to a specific tag.
+ * For example, `NativeHTMLElement<'div'>` resolves to `HTMLDivElement`.
  *
- * To introduce a child from `@youwol/flux-view` in the {@link VirtualDOM}, an explicit type casting
- * to {@link FluxViewVirtualDOM} is required:
- *
- * ```
- *  const vDom: VirtualDOM<'div'> = {
- *      tag: 'div',
- *      children: [
- *          {
- *              tag: 'a',
- *              innerText: attr$(of('foo'), (text) => text)
- *          } as FluxViewChild
- *      ]
- *  }
- * ```
- *
- */
-export type FluxViewVirtualDOM = WithFluxView extends true
-    ? { tag?: SupportedHTMLTags }
-    : never
-
-/**
- * Native HTMLElement per tag,
- * e.g. `NativeHTMLElement<'div'>` is `HTMLDivElement`.
- *
- * @template Tag the `tag` of the DOM element.
+ * @template Tag The tag name of the DOM element, constrained to `SupportedHTMLTags`.
  */
 export type NativeHTMLElement<Tag extends SupportedHTMLTags> =
     HTMLElementTagNameMap[Tag]
 
 /**
- * Describes an update when DOM elements has been updated when using {@link RxChildren}
- * with policies `append` or `sync`.
+ * Describes the changes made to DOM elements when using {@link RxChildren}
+ * with the `append` or `sync` policies.
  *
+ * This type encapsulates the details of the rendering update, including
+ * elements that have been added, updated, or removed during the operation.
+ *
+ * @template TDomain The type of the domain data conveyed by the `source$` observable.
  */
 export type RenderingUpdate<TDomain> = {
+    /**
+     * An array of elements that have been added to the DOM.
+     */
     added: ResolvedHTMLElement<TDomain>[]
+    /**
+     * An array of elements that have been updated in the DOM.
+     */
     updated: ResolvedHTMLElement<TDomain>[]
+    /**
+     * An array of elements that have been removed from the DOM.
+     */
     removed: ResolvedHTMLElement<TDomain>[]
 }
 
 /**
- * Encapsulates and HTML element along with the domain data that originally created it.
+ * Encapsulates an HTML element along with the domain data that was used to create it.
  *
- * @template TDomain type of the domain data (conveys by the `source$` observable).
+ * @template TDomain The type of the domain data conveyed by the `source$` observable.
+ * @template Tag The type of the HTML tag, which extends `SupportedHTMLTags`.
  */
 export type ResolvedHTMLElement<
     TDomain,
     Tag extends SupportedHTMLTags = SupportedHTMLTags,
 > = {
     /**
-     * Domain data. If the child has been defined using a straight HTMLElement, it is `undefined`.
+     * The domain data associated with this element.
+     * This will be `undefined` if the child was defined using a plain HTMLElement
+     * rather than through a reactive construct.
      */
     domainData?: TDomain
 
     /**
-     * The actual DOM element with {@link RxElementTrait} trait.
+     * The actual DOM element that also implements the {@link RxElementTrait} trait.
      */
     element: RxHTMLElement<Tag>
 }
 
 /**
- * Full specification of a reactive attribute.
+ * Full specification of a reactive attribute in a virtual DOM context.
  *
- * Examples can be found
+ * Examples can be found in the test suite
  * [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-attributes.test.ts).
  *
- * @template TDomain type of the domain data (conveys by the `source$` observable)
- * @template Target the type of the target attribute, e.g.:
- * * `string` for attributes `id`, `class`, `src`, *etc.*.
- * * `number` for attributes `width`, `height`, `min`, `max`, *etc.*.
- * * `boolean` for attributes `disabled`, `checked`, `readonly`, *etc.*.
- * * `{ [k: string]: string }` for e.g. style.
+ * @template TDomain The type of the domain data conveyed by the `source$` observable.
+ * @template Target The type of the target attribute, which can be one of the following:
+ * - `string` for attributes like `id`, `class`, `src`, etc.
+ * - `number` for attributes like `width`, `height`, `min`, `max`, etc.
+ * - `boolean` for attributes like `disabled`, `checked`, `readonly`, etc.
+ * - `{ [k: string]: string }` for style attributes, for example.
  */
 export type RxAttribute<
     TDomain = unknown,
     Target extends AnyHTMLAttribute = AnyHTMLAttribute,
 > = {
     /**
-     * Source of domain data.
+     * The source observable that emits domain data.
      */
     source$: Observable<TDomain>
 
     /**
-     * Mapping function between domain data and actual attribute type
-     * @param domainData domainData emitted by the `source$`.
+     * A mapping function that transforms the domain data into the actual attribute value.
+     *
+     * @param domainData The domain data emitted by the `source$`.
+     * @returns The attribute value corresponding to the given domain data.
      */
     vdomMap: (domainData: TDomain) => Target
 
     /**
-     * Value of the attribute until a first data is emitted by `source$`.
+     * The initial value of the attribute to be displayed until the first data is emitted by `source$`.
+     * This can be useful for providing a default state.
      */
     untilFirst?: Target
 
     /**
-     * If provided, apply a last transformation of the data returned by `vdomMap` before being actually set as
-     * attribute. Useful to factorize some transformations.
+     * A transformation function applied to the value returned by `vdomMap`
+     * before it is set as the attribute. This is useful for applying common
+     * transformations to the attribute value.
      *
-     * @param domValue value of the attribute returned by `vdomMap`.
+     * @param domValue The value of the attribute returned by `vdomMap`.
+     * @returns The transformed attribute value that will be set.
      */
     wrapper?: (domValue: Target) => Target
 
     /**
-     * Provide a handle to execute side effects. This is executed just after the attribute value has been updated
-     * in the (real) DOM.
-     * @param element the updated element along with the domain data that was originally
-     * emitted by `source$`.
+     * A callback function for executing side effects after the attribute value has been
+     * updated in the actual DOM. This can be useful for integrating with other libraries
+     * or performing actions that depend on the updated DOM state.
+     *
+     * @param element The updated element, along with the domain data
+     * that was originally emitted by `source$`.
      */
     sideEffects?: (element: ResolvedHTMLElement<TDomain>) => void
 }
 
 /**
- * Full specification of a reactive child.
+ * Full specification of a reactive child component.
  *
- * Examples can be found [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-child.test.ts).
+ * <note level="hint">
+ * If the `vdomMap` or `wrapper` attributes return `undefined`, no `HTMLElement` will be produced.
+ * </note>
  *
- * @template TDomain type of the domain data (conveys by the `source$` observable).
- * @template TVdomMap type of the virtual DOM returned value of `vdomMap`.
- * @template TVdomFinal type of the virtual DOM inserted in the DOM.
+ * For examples, see [here](https://github.com/youwol/rx-vdom/blob/main/src/tests/rx-child.test.ts).
+ *
+ * @template TDomain The type of the domain data conveyed by the `source$` observable.
+ * @template TVdomMap The type of the virtual DOM returned by the `vdomMap` function.
+ * @template TVdomFinal The type of the final virtual DOM that will be inserted into the DOM.
  */
 export type RxChild<
     TDomain = unknown,
@@ -403,34 +431,41 @@ export type RxChild<
     TVdomFinal extends AnyVirtualDOM = TVdomMap,
 > = {
     /**
-     * Source of domain data.
+     * The source observable that emits domain data.
      */
     source$: Observable<TDomain>
 
     /**
-     * Mapping function between domain data and associated {@link VirtualDOM}.
-     * @param domainData domainData emitted by the `source$`.
+     * A mapping function that transforms the domain data into the associated {@link VirtualDOM}.
+     *
+     * @param domainData The domain data emitted by the `source$`.
+     * @returns The virtual DOM representation based on the provided domain data.
      */
     vdomMap: (domainData: TDomain) => TVdomMap
 
     /**
-     * Virtual DOM displayed until a first data is emitted by `source$`.
+     * The initial virtual DOM to be displayed until the first data is emitted by `source$`.
+     * This is useful for providing a placeholder or loading state.
      */
     untilFirst?: AnyVirtualDOM
 
     /**
-     * If provided, apply a last transformation of the virtual DOM returned by `vdomMap` before being actually set as
-     * child. Useful to factorize some transformations.
+     * A transformation function applied to the virtual DOM returned by `vdomMap`
+     * before it is set as a child. This is useful for applying common transformations
+     * to the virtual DOM.
      *
-     * @param domValue value of the attribute returned by `vdomMap`.
+     * @param domValue The virtual DOM value returned by `vdomMap`.
+     * @returns The transformed virtual DOM that will be used as the final child.
      */
     wrapper?: (domValue: TVdomMap) => TVdomFinal
 
     /**
-     * Provide a handle to execute side effects. This is executed just after the new child has been updated
-     * in the (real) DOM.
-     * @param element the inserted child along with the domain data that was originally
-     * emitted by `source$`.
+     * A callback function for executing side effects after the new child has been
+     * updated in the actual DOM. This can be useful for integrating with other
+     * libraries or performing actions that depend on the updated DOM state.
+     *
+     * @param element The newly inserted child element, along with the domain data
+     * that was originally emitted by `source$`.
      */
     sideEffects?: (
         element: ResolvedHTMLElement<TDomain, TVdomFinal['tag']>,
@@ -438,22 +473,33 @@ export type RxChild<
 }
 
 /**
- * Full specification of reactive children.
+ * Full specification of reactive children in a virtual DOM context.
  *
- * Example regarding the different policies can be found in the following documentations:
- * *  **replace**: {@link ChildrenOptionsReplace}
- * *  **append**: {@link ChildrenOptionsAppend}
- * *  **sync**: {@link ChildrenOptionsSync}
+ * Example usage and policies can be found in the following documents:
+ * - **replace**: {@link ChildrenOptionsReplace}
+ * - **append**: {@link ChildrenOptionsAppend}
+ * - **sync**: {@link ChildrenOptionsSync}
  *
- * @template Policy policy to be used, either `replace`, `append` or `sync`, see {@link ChildrenPolicy}.
- * @template TDomain type of the domain data (conveys by the `source$` observable).
+ * @template Policy The policy to be used for managing children, which can be one of the following:
+ *   - `replace`: Replaces existing children with new ones.
+ *   - `append`: Appends new children to the existing ones.
+ *   - `sync`: Synchronizes the state of children based on the domain data.
+ *   Refer to {@link ChildrenPolicy} for more details on available policies.
+ * @template TDomain The type of the domain data conveyed by the `source$` observable.
  */
 export type RxChildren<Policy extends ChildrenPolicy, TDomain = unknown> = {
+    /**
+     * The policy defining how children should be managed.
+     */
     policy: Policy
 } & ChildrenTypesOptionMap<TDomain>[Policy]
 
 /**
- * Mapping between the possible tag name as defined in `HTMLElementTagNameMap` and the associated {@link VirtualDOM}.
+ * A mapping between possible HTML tag names, as defined in `HTMLElementTagNameMap`,
+ * and their associated {@link VirtualDOM} representations.
+ *
+ * This type creates a dynamic mapping, where each key is a valid HTML tag from `SupportedHTMLTags`,
+ * and the corresponding value is a {@link VirtualDOM} for that tag.
  */
 export type VirtualDOMTagNameMap = {
     [Property in SupportedHTMLTags]: VirtualDOM<Property>

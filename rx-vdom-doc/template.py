@@ -13,7 +13,7 @@ pkg_json = parse_json(folder_path / 'package.json')
 pkg_json_rxvdom = parse_json(folder_path / '..' / 'package.json')
 # (cd ./node_modules/@youwol/mkdocs-ts/bin/ && node index.js --project ../../../../.. --nav /api --out ../../../../assets/api)
 externals_deps = {
-    "@youwol/mkdocs-ts": "^0.5.0",
+    "@youwol/mkdocs-ts": "^0.6.4",
     "@youwol/rx-vdom": f"^{pkg_json_rxvdom['version'].replace('-wip', '')}",
     "@youwol/webpm-client": "^3.0.0",
     "rxjs": "^7.5.6"
@@ -48,7 +48,12 @@ template = Template(
     userGuide=True,
     devServer=DevServer(
         port=3027
-    )
+    ),
+    inPackageJson={
+        "scripts" :{
+            "doc": "typedoc && python doc.py"
+        },
+    }
 )
 
 generate_template(template)
@@ -62,17 +67,3 @@ for file in ['README.md', '.gitignore', '.npmignore', '.prettierignore', 'LICENS
         src=folder_path / '.template' / file,
         dst=folder_path / file
     )
-
-
-# Generate TS API files
-print("Generate TS API files")
-shell_command = (
-    "cd ./node_modules/@youwol/mkdocs-ts && "
-    "node ./bin/index.js "
-    "--project ../../../.. "
-    "--nav /api "
-    "--out ../../assets/api"
-)
-# Execute the shell command
-subprocess.run(shell_command, shell=True)
-

@@ -3,25 +3,26 @@ import {
     Views,
     installCodeApiModule,
     installNotebookModule,
+    Navigation,
 } from '@youwol/mkdocs-ts'
 import { setup } from '../auto-generated'
 import { example1 } from './js-plaground-examples'
-import { Router } from '@youwol/mkdocs-ts/src/lib'
-import { map } from 'rxjs'
-import { Module } from '@youwol/mkdocs-ts/src/lib/code-api/models'
 
 const tableOfContent = Views.tocView
 
-const project = {
-    name: 'rx-vdom',
-    docBasePath: `/api/assets-gateway/raw/package/${setup.assetId}/${setup.version}/assets/api`,
+function decoration(icon: string) {
+    return {
+        icon: {
+            tag: 'i' as const,
+            class: `fas ${icon} me-2`,
+        },
+    }
 }
 
-const url = (restOfPath: string) =>
-    `/api/assets-gateway/raw/package/${setup.assetId}/${setup.version}/assets/${restOfPath}`
+const url = (restOfPath: string) => `../assets/${restOfPath}`
 
 const placeholders = {
-    '{{project}}': project.name,
+    '{{project}}': 'rx-vdom',
     '{{rxvdom-version}}': setup.version,
     '{{URL-example-cdn}}': `/applications/@youwol/js-playground/latest?content=${encodeURIComponent(example1)}`,
 }
@@ -31,32 +32,15 @@ function fromMd(file: string) {
         placeholders,
     })
 }
-const CodeApiModule = await installCodeApiModule()
-const NotebookModule = await installNotebookModule()
-const notebookOptions = {
-    runAtStart: true,
-    defaultCellAttributes: {
-        lineNumbers: false,
-    },
-    markdown: {
-        latex: true,
-        placeholders,
-    },
-}
-await NotebookModule.SnippetEditorView.fetchCmDependencies$('javascript')
 
-export const navigation = {
+export const navigation: Navigation = {
     name: 'Home',
     tableOfContent,
-    decoration: {
-        icon: {
-            tag: 'i',
-            class: 'fas fa-home mr-1',
-        },
-    },
+    decoration: decoration('fa-home'),
     html: fromMd('index.md'),
     '/how-to': {
         name: 'How to',
+        decoration: decoration('fa-question-circle'),
         tableOfContent,
         html: fromMd('how-to.md'),
         '/install': {
@@ -70,8 +54,26 @@ export const navigation = {
             html: fromMd('how-to.typings.md'),
         },
     },
-    '/tutorials': {
+    '/tutorials': tutorialsNav(),
+    '/api': apiNav(),
+}
+
+async function tutorialsNav(): Promise<Navigation> {
+    const NotebookModule = await installNotebookModule()
+    const notebookOptions = {
+        runAtStart: true,
+        defaultCellAttributes: {
+            lineNumbers: false,
+        },
+        markdown: {
+            latex: true,
+            placeholders,
+        },
+    }
+    await NotebookModule.SnippetEditorView.fetchCmDependencies$('javascript')
+    return {
         name: 'Tutorials',
+        decoration: decoration('fa-graduation-cap'),
         tableOfContent,
         html: ({ router }) =>
             new NotebookModule.NotebookPage({
@@ -99,33 +101,20 @@ export const navigation = {
                     options: notebookOptions,
                 }),
         },
-    },
-    '/api': {
-        name: 'API',
-        tableOfContent: (d: { html: HTMLElement; router: Router }) =>
-            Views.tocView({ ...d, domConvertor: CodeApiModule.tocConvertor }),
-        html: ({ router }) =>
-            CodeApiModule.fetchModuleDoc({
-                modulePath: project.name,
-                basePath: project.docBasePath,
-                configuration: CodeApiModule.configurationTsTypedoc,
-                project,
-            }).pipe(
-                map((module: Module) => {
-                    return new CodeApiModule.ModuleView({
-                        module,
-                        router,
-                        configuration: CodeApiModule.configurationTsTypedoc,
-                        project,
-                    })
-                }),
-            ),
-        '...': ({ path, router }: { path: string; router: Router }) =>
-            CodeApiModule.docNavigation({
-                modulePath: path,
-                router,
-                project,
-                configuration: CodeApiModule.configurationTsTypedoc,
-            }),
-    },
+    }
+}
+async function apiNav(): Promise<Navigation> {
+    const CodeApiModule = await installCodeApiModule()
+
+    return {
+        ...CodeApiModule.codeApiEntryNode({
+            name: 'API',
+            decoration: decoration('fa-code'),
+            entryModule: 'rx-vdom',
+            docBasePath: '../assets/api',
+            configuration: CodeApiModule.configurationTsTypedoc,
+        }),
+        // Explicitly set no children (no sub-modules).
+        '...': undefined,
+    }
 }

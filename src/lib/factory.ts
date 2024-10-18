@@ -23,13 +23,6 @@ type _ConfigSupportedHTMLTagsOK = Assert<
     >
 >
 
-/**
- * Make sure that `Configuration.WithFluxView` is valid.
- */
-type _ConfigWithFluxViewOK = Assert<
-    Has<false | true, Configuration['WithFluxView']>
->
-
 export const customElementPrefix = `${setup.name.split('/')[1]}-${
     setup.apiVersion
 }`
@@ -45,7 +38,6 @@ export const customElementPrefix = `${setup.name.split('/')[1]}-${
  * */
 export type SupportedHTMLTags = Configuration['SupportedHTMLTags']
 export type TypeCheck = Configuration['TypeCheck']
-export type WithFluxView = Configuration['WithFluxView']
 
 export function factory<Tag extends SupportedHTMLTags>(
     tag: Tag,

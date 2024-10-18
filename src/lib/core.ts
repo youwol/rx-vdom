@@ -33,8 +33,9 @@ class HTMLPlaceHolderElement extends HTMLElement {
     initialize(stream$: RxStream<unknown, AnyVirtualDOM>): Subscription {
         this.currentElement = this
 
-        const apply = (vDom: AnyVirtualDOM): HTMLElement => {
-            const div = render(vDom)
+        const apply = (vDom: AnyVirtualDOM | undefined): HTMLElement => {
+            const div = vDom && render(vDom)
+            // Replacing with 'undefined' will remove the child, which is what is expected.
             this.currentElement.replaceWith(div)
             this.currentElement = div
             return div
@@ -218,10 +219,19 @@ function extractRxStreams<Tag extends SupportedHTMLTags>(
 }
 
 /**
- * Transforms a regular HTMLElement into a reactive one by augmenting it with reactive capabilities, including:
+ * Transforms a regular `HTMLElement` into a reactive one by augmenting it with reactive capabilities.
+ * This allows you to manage the lifecycle of subscriptions and provides additional hooks for DOM events,
+ * such as when the element is added or removed from the page.
+ *
+ * The reactive enhancements include:
  * - `vDom: Readonly<VirtualDOM<Tag>>`: Represents the associated Virtual DOM.
- * - `ownSubscriptions(...subs: Subscription[]): void`: Allows providing subscriptions to the element, which will
- *   be automatically unsubscribed when the element is removed from the page.
+ * - `ownSubscriptions(...subs: Subscription[]): void`: Enables you to attach RxJS subscriptions to the element.
+ * These subscriptions will be automatically unsubscribed (last in, first out) when the element is removed from the page.
+ * - `hookOnDisconnected(...callbacks: (() => void)[]): void`: Registers callback functions to be executed when the
+ * element is removed from the DOM. Callbacks are executed in the reversed order of registration.
+ *
+ * The returned class extends the provided base `HTMLElement` constructor and adds the reactive functionality
+ * described above.
  *
  * @param Base The base constructor of the regular HTMLElement.
  * @returns A class that extends the provided `Base` constructor and adds reactive functionality to it.
@@ -242,6 +252,11 @@ export function ReactiveTrait<
          * @ignore
          */
         subscriptions = new Array<Subscription>()
+
+        /**
+         * @ignore
+         */
+        disconnectionHooks: (() => void)[] = []
 
         /**
          * @ignore
@@ -303,7 +318,8 @@ export function ReactiveTrait<
          * @ignore
          */
         disconnectedCallback() {
-            this.subscriptions.forEach((s) => s.unsubscribe())
+            this.subscriptions.reverse().forEach((s) => s.unsubscribe())
+            this.disconnectionHooks.reverse().forEach((cb) => cb())
             this.vDom?.disconnectedCallback?.(
                 this as unknown as RxHTMLElement<Tag>,
             )
@@ -345,12 +361,39 @@ export function ReactiveTrait<
         }
 
         /**
-         * The provided subscription get owned by the element:
-         * it will be unsubscribed when the element is removed from the DOM.
-         * @param subs subscriptions to own
+         * Adds subscriptions to the element, marking them as "owned" by it.
+         *
+         * When the element is removed from the DOM, all owned subscriptions are automatically unsubscribed.
+         *
+         * The resource cleanup process upon element disconnection follows these steps:
+         * 1. Unsubscribe all subscriptions registered via `ownSubscriptions`, in reverse order (LIFO).
+         * 2. Execute any hooks registered via `hookOnDisconnected`, in reverse order (LIFO).
+         * 3. Finally, invoke the optional `disconnectedCallback` defined in the associated {@link VirtualDOM},
+         * if present.
+         *
+         * @param subs - The subscriptions to be owned by this element. They will be unsubscribed upon disconnection.
          */
         ownSubscriptions(...subs: Subscription[]) {
             this.subscriptions.push(...subs)
+        }
+
+        /**
+         * Registers callbacks to be invoked when the element is disconnected from the DOM.
+         *
+         * These callbacks are executed after the element's owned subscriptions (registered via `ownSubscriptions`)
+         * have been unsubscribed, but before invoking the optional `disconnectedCallback` provided in the
+         * {@link VirtualDOM}.
+         *
+         * The callbacks are executed in reverse order of registration (last in, first out), ensuring that
+         * any resources or actions dependent on the order of registration are cleaned up correctly.
+         *
+         * This method is useful for performing additional resource cleanup or other actions when the element is
+         * removed from the DOM.
+         *
+         * @param callbacks - The functions to be executed when the element is disconnected from the DOM.
+         */
+        hookOnDisconnected(...callbacks: (() => void)[]) {
+            this.disconnectionHooks.push(...callbacks)
         }
     }
 }
